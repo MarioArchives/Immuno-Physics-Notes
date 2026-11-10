@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>III. Antigen discrimination | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section III of Quantitative Immunology for Physicists: kinetic proofreading and its adaptive version in T cells, the mechanics of the immunological synapse, antigen discrimination by B cells, and model reduction, with an interactive model.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="03-antigen-discrimination">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section III</span> Antigen discrimination</h1>
+<p class="lede">A T cell has to answer a handful of foreign peptides while ignoring a crowd of self peptides that stay bound almost as long. Kinetic proofreading, feedback, mechanical forces and membrane dynamics each supply part of the answer, and model reduction strips complicated models down to what matters.</p>
+</header>
+
+<p><a href="02-physical-chemistry.html#numbers">Measured binding rates</a> leave a puzzle: an agonist peptide stays on the T cell receptor only a few times longer than a non-agonist, yet only the agonist triggers a response, even against a vast excess of the other. The question therefore moves from molecules to the cell: how could the signaling networks beneath the receptor sort ligands so sharply in the first minutes after binding? What the cell then decides over hours and days is a matter of <a href="05-cell-fate.html">cell fate</a>.</p>
+
+<section id="t-cells" data-part="A" data-page="9">
+<h2>T cells</h2>
+
+<h3>Kinetic proofreading</h3>
+
+<p>The working framework is the <em>lifetime dogma</em>. A T cell receptor (TCR) recognizes a short peptide displayed on an MHC molecule, the pair being called a pMHC, and the dogma says that only the average bound lifetime \(\tau_{\rm off} = 1/\koff\) of that pair decides discrimination. It grew out of biophysical measurements, and like any dogma it needs regular rechecking; mechanics, which comes up with the immunological synapse below, is one challenge to it.</p>
+
+<p>A bound pMHC sets off a cascade of phosphorylations, in which phosphoryl groups are attached to conserved residues of the chains associated with the TCR. These enable further reactions, ending with the activation of transcription factors that change gene expression. Phenomenologically, then, the decision can be tracked through the receptor's phosphorylation state: once a complex carries \(N_{\rm P}\) phosphoryl groups, it flips a digital switch (activation of NFAT or ERK) that marks the onset of T cell activation.</p>
+
+<p>McKeithan's 1995 model, one of the first quantitative accounts of this specificity, borrowed the kinetic proofreading (KPR) scheme that Hopfield and Ninio had proposed for the accuracy of protein synthesis. The bound receptor climbs the cascade one step at a time, gaining a phosphoryl group at rate \(k_{\rm P}\) and losing one at rate \(k_{\rm deP}\) (<a href="https://arxiv.org/pdf/1907.03891v2#page=10">figure on page 10</a>). The key assumption is a reset: when the ligand unbinds, the complex is fully dephosphorylated, whatever step it had reached. The assumption is reasonable because the phosphatase CD45, which strips the TCR complex, is so bulky that it keeps the antigen from rebinding before the cleanup is complete.</p>
+
+<p>Each step is thus a race between phosphorylation and unbinding, won with probability \(k_{\rm P}/(k_{\rm P}+\koff)\). Short-lived complexes seldom win enough races to reach \(N_{\rm P}\); long-lived ones go deeper. Neglecting dephosphorylation (\(k_{\rm deP} \ll k_{\rm P}, \koff\)), the number of complexes carrying \(i\) groups is</p>
+
+<div class="equation">\[
+C_i = C_0 \left(\frac{k_{\rm P}}{k_{\rm P}+\koff}\right)^{i}.
+\]</div>
+
+<p>The total \(C_{\rm total} = \sum_{i=0}^{N_{\rm P}} C_i\) follows from balancing binding, at rate \((\kon/V\mathcal{N}_A)\,(L - C_{\rm total})(T - C_{\rm total})\) for \(L\) antigens and \(T\) receptors in a volume \(V\) (\(\mathcal{N}_A\) is Avogadro's number), against unbinding, at rate \(\koff C_{\rm total}\). When receptors are not limiting, \(C_{\rm total} \ll T\), this quadratic balance gives approximately</p>
+
+<div class="equation">\[
+C_{\rm total} \simeq \frac{(\kon/V\mathcal{N}_A)\, T L}{\koff + (\kon/V\mathcal{N}_A)\, T}.
+\]</div>
+
+<p>If phosphorylation is also slow, \(k_{\rm P} \ll \koff\), each factor in \(C_i\) becomes \(k_{\rm P}\tau_{\rm off}\) and \(C_{N_{\rm P}} \propto L\,\kon\,\tau_{\rm off}^{N_{\rm P}}\): linear in the amount of antigen, but a high power of its lifetime. Comparing an agonist with a non-agonist,</p>
+
+<div class="equation">\[
+\frac{C_{N_{\rm P}}(\text{agonist})}{C_{N_{\rm P}}(\text{non-agonist})} = \left(\frac{\tau_{\rm off}(\text{agonist})}{\tau_{\rm off}(\text{non-agonist})}\right)^{N_{\rm P}}.
+\]</div>
+
+<p class="aside"><b>Note on the printed text.</b> The paper prints the total with an extra factor \(C_0\) before the sum; the total is just the sum of the \(C_i\). Also, the scaling keeps its factor \(\kon\) only when \(\koff\) dominates the denominator of \(C_{\rm total}\); \(C_{\rm total}\) is then itself proportional to \(\tau_{\rm off}\), and combining the formulas strictly gives \(\tau_{\rm off}^{N_{\rm P}+1}\). The power \(N_{\rm P}\) is exact for the fraction of bound complexes that reach the last state, as in the plate below, and the extra power only strengthens the argument.</p>
+
+<p>Proofreading reads off the lifetime of the complex and amplifies differences in it, paying in energy for the phosphorylations, as in Hopfield and Ninio's scheme. The TCR complex has 20 phosphorylation sites (tyrosine residues), so \(N_{\rm P}\) could reach 20, and a twofold difference in lifetime could become a \(2^{20}\approx 10^{6}\)-fold difference in \(C_{N_{\rm P}}\). This would explain why nearly identical ligands can signal so differently, and it agrees with the lifetime dogma, since \(\tau_{\rm off}\) weighs far more than \(\kon\).</p>
+
+<figure class="plate" data-anim="proofreading">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Racing the clock.</b> Each row is one receptor. While its ligand stays bound it moves right one state at rate \(k_{\rm P}\); when the ligand leaves, after \(\tau_{\rm off}\) on average, it drops back to \(C_0\) and a new ligand binds. Receptors in the last state (shaded) turn pink, and the counts above each group show how many binding events got there. The left chart gives the exact chance, \((k_{\rm P}/(k_{\rm P}+\koff))^N\), which is also the share of bound receptors in \(C_N\); the right chart divides agonist by non-agonist. Add steps and the ratio climbs, while the agonist's own chance falls and the minimum time, \(N/k_{\rm P}\), grows. Slower phosphorylation approaches the limit \((\tau_{\rm a}/\tau_{\rm n})^N\) derived above (dashed), at a further cost in speed. The lifetimes span the typical measured ranges for agonists and non-agonists; no value is given for \(k_{\rm P}\). Dephosphorylation is neglected.</figcaption>
+</figure>
+
+<p>Proofreading alone is not enough, however. Altan-Bonnet and Germain stressed that T cells are also sensitive, responding to a single agonist ligand, and fast, responding within minutes of meeting an antigen-presenting cell. The three demands conflict. More steps sharpen discrimination but slow the response, since each step must be slow enough to separate agonists from non-agonists, and they cut sensitivity, since every step lowers the odds of reaching the end. Quantitative modeling thus rules out bare proofreading and calls for extra mechanisms.</p>
+
+<h3>Adaptive kinetic proofreading</h3>
+
+<p>Meeting all three demands takes an extra ingredient, adaptation, which retunes the proofreading steps. Altan-Bonnet and Germain, and later François and colleagues, built such an adaptive kinetic proofreading (AKPR) model on experiments by Štefanová and colleagues, and it accounts quantitatively for the main features of how the TCR tells ligands apart.</p>
+
+<p>The adaptation is negative feedback through a phosphatase \(S\). Receptors in the first phosphorylated state activate it, so that at steady state \(S = C_1/(C_1 + K_S)\) with \(K_S\) a parameter, and it raises the dephosphorylation rate to \(k_{\rm deP} + \gamma S\). The steady state is still available in closed form, as a root of a fourth-order polynomial.</p>
+
+<p>The two schemes part ways when \(C_N\) is plotted against the amount of pMHC. In plain KPR a large enough dose of non-agonist always crosses the activation threshold, so discrimination is only partial. With feedback, a large amount \(L\) of non-agonist still fills state \(C_1\) in proportion to \(L\), but this activates the phosphatase, which makes proofreading stricter. At large \(L\) the extra dephosphorylation exactly balances the extra engaged receptors, so the non-agonist output levels off below threshold however much ligand is added, while an agonist still crosses it. Specificity rises without a loss of sensitivity.</p>
+
+<p>Since a single ligand can suffice, the threshold on \(C_{N_{\rm P}}\) must be very low, and so few molecules call for stochastic equations, though these leave the qualitative picture unchanged. AKPR thus lets one agonist activate a T cell while more than \(10^{5}\) non-agonists cannot, and it is fast as well: Lalanne and François showed that two steps can be enough to sort ligands. Only once speed, sensitivity and specificity are put into numbers does it become clear what a feat it is to achieve all three.</p>
+
+<h3>Mechanics and the immunological synapse</h3>
+
+<p>Within minutes of the first signals, a T cell reorganizes its contact with the antigen-presenting cell into an <em>immunological synapse</em>. Antigen receptors gather in the center, in the central supramolecular assembly complex (c-SMAC), while other transmembrane receptors and signaling phosphatases collect in surrounding rings (p-SMAC and d-SMAC, peripheral and distal). The bullseye has been measured with high-resolution and time-lapse microscopy of single cells, and it matters for later stages of activation, such as directed killing of the presenting cell or directed cytokine secretion (<a href="https://arxiv.org/pdf/1907.03891v2#page=12">figure on page 12</a>).</p>
+
+<p>Could the synapse also help tell self from non-self? Qi and colleagues addressed this with a Ginzburg–Landau model of the T cell membrane, bridged to the other cell by several kinds of receptor–ligand pairs \(i\), TCR–pMHC among them. The membrane's free energy is</p>
+
+<div class="equation">\[
+\mathcal{F} = \sum_i \frac{\lambda_i}{2}\int dx\,dy\; C_i(x,y)\left[z(x,y) - z_i^{(0)}\right]^2
++ \frac{1}{2}\int dx\,dy\left[\gamma\,(\nabla z)^2 + \kappa\,(\nabla^2 z)^2\right],
+\]</div>
+
+<p>and the system evolves as</p>
+
+<div class="equation">\[
+\frac{\partial C_i}{\partial t} = D_i\left[\nabla^2 C_i + \frac{1}{\kBT}\nabla\!\cdot\!\left(C_i \nabla \frac{\delta\mathcal F}{\delta C_i}\right)\right] + k_i^{\rm on}(z)\,L_i R_i - k_i^{\rm off} C_i + \zeta_i,
+\qquad
+\frac{\partial z}{\partial t} = -M\,\frac{\delta \mathcal F}{\delta z} + \zeta.
+\]</div>
+
+<p>Here \(z(x,y)\) is the local height of the T cell's membrane; \(R_i\), \(L_i\) and \(C_i\) count receptors, ligands and complexes of type \(i\) per unit area; complex \(i\) has rest length \(z_i^{(0)}\) and stiffness \(\lambda_i\); \(\gamma\) and \(\kappa\) act as the membrane's tension and bending rigidity; and the \(\zeta\) are thermal noises, whose statistics the original work leaves unstated.</p>
+
+<p>The model is passive and purely mechanical, with no energy input and no biochemical feedback, yet it forms synapses spontaneously. Because synapse formation depends strongly on complex lifetimes, it can in principle separate agonists from non-agonists. Size matters too: a TCR–pMHC complex is about 15 nm long, while the adhesion complex of the integrin LFA-1 with ICAM-1 is about 42 nm, as experiments confirmed.</p>
+
+<p>Several predictions were later verified. First, the bullseye emerges from passive sorting by size, coupled to membrane deformation. Second, antigen accumulates most in the center at an optimal pMHC–TCR lifetime. With weak antigens, adhesion dominates the membrane energy and crowding leaves room for few TCR bonds. At intermediate times (around five minutes) or for ligands of intermediate affinity, the pattern inverts, with TCRs in the periphery and integrins in the center; this happens when integrins bind more strongly than the weak ligands, and their central position makes bending the membrane affordable. Such a bell-shaped dependence of activation on affinity has been observed, but not consistently, and the exceptions weaken it, all the more as clinicians now engineer chimeric antigen receptors (synthetic receptors for cancer therapy) with unnaturally high affinities. Third, the mechanical state of both membranes should influence activation, as seen when the cytoskeleton is depolymerized.</p>
+
+<p>The model cannot explain how a T cell answers one agonist while ignoring many non-agonists, but new evidence on mechanics has revived interest in it. Pulling on single pMHC–TCR pairs, Zhu and colleagues found two kinds of bonds, depending on the peptide. <em>Slip bonds</em> break sooner the harder they are pulled. <em>Catch bonds</em> instead last longer under tension, up to an optimal force of about 10 pN beyond which they too give way. Molecular dynamics simulations suggest that tension exposes new pMHC residues that improve the contact with the TCR.</p>
+
+<p>This may matter for activation: Sibener and colleagues found that, of two TCR–pMHC pairs with similar binding constants, the stimulatory one formed a catch bond and the non-stimulatory one a slip bond. How catch bonds connect to signaling is not yet known, but they may prove key to predicting receptor–antigen pairs and immunogenic tumor neoantigens (see <a href="02-physical-chemistry.html#specificity">receptor–antigen specificity</a>). The lifetime dogma could then hold with a twist: the relevant lifetime would be the one under the tension exerted by the membranes, about 10 pN, which would also explain why activation depends on membrane stiffness. The Ginzburg–Landau model would need revising, for instance by making \(k_i^{\rm off}\) of TCR–pMHC depend on the bond tension \(\lambda_i(z - z_i^{(0)})\), which could change how ligands are sorted.</p>
+
+<p>Super-resolution microscopy has since highlighted the active role of the cytoskeleton in concentrating TCRs, and the interplay of membrane ruffling, receptor sorting and tension. A fuller quantitative model would help find the steps that limit activation in different contexts, such as different antigen-presenting cells or co-stimulatory signals.</p>
+</section>
+
+<section id="b-cells" data-part="B" data-page="13">
+<h2>B cells</h2>
+
+<p>For B cells, Darwinian selection during <a href="08-affinity-maturation.html">affinity maturation</a> improves affinity from \(\KD = 10\ \mu\)M to about 100 pM, so simply counting occupied receptors at equilibrium might suffice for discrimination. As with TCRs, the association rate of the B cell receptor (BCR) does not depend on the antigen; but where TCR–pMHC binding must cross an activation barrier, BCR binding is essentially diffusion limited, \(\kon > 10^{6}\ \text{M}^{-1}\text{s}^{-1}\). Antigens therefore differ only in bound lifetime, from 0.1 s to \(10^{4}\) s. That leaves room for kinetic proofreading, as proposed by Tsourkas and colleagues, but the BCR complex has far fewer phosphorylation sites than the TCR, so proofreading may matter less.</p>
+
+<p>IgG, the monomeric form of the receptor, is itself a dimer with two binding sites, which makes IgM a pentamer of dimers. By analogy with other dimeric receptors such as those for epidermal growth factor and insulin, dimerization might concentrate kinases, the enzymes that add phosphoryl groups, and make receptors cluster. This cross-linking model fits the BCR microclusters that super-resolution microscopy shows after antigen exposure.</p>
+
+<p>Reth and colleagues proposed the opposite, a dissociation–activation model. BCRs cluster even without antigen, and clustered receptors inhibit one another. Clusters assemble and dissolve continually; monomers that escape are more likely to signal, and antigen binding keeps them monomeric, presumably by steric hindrance. This explains how a B cell's roughly 120,000 BCRs avoid spurious activation, since only isolated, antigen-bound monomers signal. The role of this cycle of clustering, release and reclustering remains a theoretical challenge; no full model of it, or of its effect on discrimination, exists yet.</p>
+
+<p>Membranes move too. Within ten minutes of signaling, B cells spread to gather as much antigen as possible from the presenting cell, then contract to concentrate the engaged receptors. In the model of Fleire and colleagues, binding and unbinding drive this spreading and contraction, and the dynamic contact captures many more agonist ligands than a static one would, widening the gap between strong and weak ligands; weak ones fail to concentrate. A hard deadline is built in: a cell that has not triggered enough BCRs within one minute shuts its signaling down. Otherwise it contracts, its area decaying as \(A_{\max}\,t^{-0.35}\), where \(A_{\max}\) is the maximal spread and the exponent comes from experiment. The model is phenomenological: it leaves out the biochemistry behind the spreading and the contraction, and what it assumes about them is ad hoc. Still, it shows quantitatively how membrane dynamics can help discriminate ligands.</p>
+
+<p>Discrimination is less stringent for B cells than for T cells, but it poses its own quantitative questions, with binding constants from 100 pM to 10 µM, timescales beyond ten minutes, and mechanisms based on receptor clustering and membrane dynamics. It also feeds into slower processes, validation by helper T cells and selection in germinal centers, the sites where B cells mutate and compete during affinity maturation.</p>
+</section>
+
+<section id="model-reduction" data-part="C" data-page="14">
+<h2>Coarse-graining and model reduction</h2>
+
+<p>Adding molecular detail multiplies species, reactions, intermediates and parameters, and that causes trouble. The system as a whole may still behave simply, so a phenomenological model, harder to map onto molecules but easier to interpret and analyze, may describe it as well and predict better. Even if the detail is real, many parameters invite overfitting: many of them, or combinations of them, are left undetermined by the data, and predictions suffer. And even well-determined parameters do not say which ones must be finely tuned, or which design principles govern them.</p>
+
+<p>Model selection, the classical statistical remedy, needs a predefined hierarchy of models from simple to complex and judges them by goodness of fit, whereas one often wants to capture a biological function rather than fit every data point.</p>
+
+<p>François and Hakim took another route: a genetic algorithm that builds simple molecular networks in silico and keeps those that best perform a desired function. Applied to the absolute discrimination of ligands by T cells, it yields a class of motifs called <em>adaptive sorting</em> that reproduces known features of T cell activation (Lalanne and François), with kinetic proofreading and biochemical adaptation emerging unprompted. The evolved species and reactions, however, need not match any known molecules.</p>
+
+<p>To stay close to real biochemistry, Proulx-Giraldeau and colleagues instead prune a detailed network of ordinary differential equations, sending parameters, singly or in ratios and products, to zero or infinity. Applied to the T cell recognition model of Lipniacki and colleagues, with nearly 100 parameters, this leaves just three coupled differential equations that keep its adaptation and discrimination and expose the design principles behind them. Approaches of this kind could help make sense of the many interacting components typical of the immune system.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Kinetic proofreading makes a T cell receptor win a series of races against unbinding before it signals, so differences in bound lifetime are raised to the power of the number of steps, up to about \(2^{20}\) for the TCR's twenty sites; but it trades speed and sensitivity for specificity, and large doses of non-agonist still get through. Adaptive proofreading adds a phosphatase switched on by engaged receptors, which flattens the response to non-agonists while a single agonist still triggers activation. Mechanics adds another layer, through size-based sorting in the immunological synapse and catch bonds that last longer under force. B cells, with diffusion-limited binding and a wide range of affinities, can rely on receptor clustering and membrane spreading instead. Finally, evolving networks in silico and pruning detailed ones are two ways to recover the simple principles hidden in complex models.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

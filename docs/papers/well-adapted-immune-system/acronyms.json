@@ -1,0 +1,58 @@
+[
+ {
+  "key": "B cell",
+  "expansion": "B lymphocyte (B for bursa of Fabricius, where first identified in birds)",
+  "description": "Lymphocyte that recognizes antigen through its B cell receptor and can secrete it as an antibody.",
+  "source": "standard",
+  "aliases": [
+   "B-cell",
+   "B lymphocyte"
+  ]
+ },
+ {
+  "key": "CRISPR",
+  "expansion": "clustered regularly interspaced short palindromic repeats",
+  "description": "Bacterial immune system that stores snippets of viral DNA as spacers and uses them to cut matching viruses.",
+  "source": "paper"
+ },
+ {
+  "key": "DNA",
+  "expansion": "deoxyribonucleic acid",
+  "description": "The molecule that carries genetic information.",
+  "source": "standard"
+ },
+ {
+  "key": "KKT",
+  "expansion": "Karush–Kuhn–Tucker conditions",
+  "description": "Optimality conditions that extend Lagrange multipliers to inequality constraints such as P ≥ 0.",
+  "source": "paper"
+ },
+ {
+  "key": "PNAS",
+  "expansion": "Proceedings of the National Academy of Sciences of the United States of America",
+  "description": "The journal in which the paper appeared.",
+  "source": "standard"
+ },
+ {
+  "key": "SIV",
+  "expansion": "simian immunodeficiency virus",
+  "description": "Primate relative of HIV; in natural hosts such as sooty mangabeys it persists at high levels with little damage.",
+  "source": "paper"
+ },
+ {
+  "key": "T cell",
+  "expansion": "T lymphocyte (T for thymus)",
+  "description": "Lymphocyte whose receptor recognizes peptide fragments presented on MHC molecules.",
+  "source": "standard",
+  "aliases": [
+   "T-cell",
+   "T lymphocyte"
+  ]
+ },
+ {
+  "key": "tRNA",
+  "expansion": "transfer RNA",
+  "description": "Adaptor molecule that reads a codon and delivers the matching amino acid during protein synthesis.",
+  "source": "standard"
+ }
+]

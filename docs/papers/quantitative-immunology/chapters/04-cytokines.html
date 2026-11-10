@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IV. Cell-to-cell communication through cytokines | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section IV of Quantitative Immunology for Physicists: JAK–STAT signaling as binding equilibria, tunable IL-2 responses, regulation by cytokine consumption, and the screening length that sets the size of cytokine niches, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="04-cytokines">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section IV</span> Cell-to-cell communication through cytokines</h1>
+<p class="lede">Immune cells coordinate through cytokines, small proteins that one cell secretes and others capture. Cytokine signaling can be treated as physical chemistry: binding equilibria inside a cell, and a contest between diffusion and consumption in the tissue around it, which together decide who hears a signal and how loudly.</p>
+</header>
+
+<p>Cytokines synchronize the activation of different immune cells and connect scales, from a single cell's response to the reaction of the whole body. They are small glycoproteins secreted by all cells, immune or not, with widely varying timing, amount and frequency; they diffuse, bind receptors on nearby cells and trigger signaling that changes gene expression. Quantitative models describe how individual leukocytes (white blood cells) answer them, mainly through the JAK–STAT pathway, over a range of times and distances, from one cell to a tissue.</p>
+
+<section id="jak-stat" data-part="A" data-page="14">
+<h2>Cytokine signaling and the JAK–STAT pathway</h2>
+
+<p>A cytokine receptor is built from two different chains, occasionally three, so it has at least two signaling domains inside the cell. Most cytokines signal through the JAK–STAT pathway. Binding changes the receptor's shape so that the phosphorylation sites on its Janus kinases (JAKs) come to face the kinase domain; the JAKs are phosphorylated and thereby activated. A STAT protein (signal transducer and activator of transcription) then docks on the receptor's intracellular domains, is phosphorylated by an active JAK, and pairs up with another STAT once released. The STAT dimers enter the nucleus, bind chromatin at specific sites and drive transcription (<a href="https://arxiv.org/pdf/1907.03891v2#page=16">figure on page 16</a>).</p>
+
+<p>Few routes from an extracellular messenger to transcription are simpler. The complexity lies in the numbers, more than 40 cytokine–receptor pairs and seven STAT proteins that, on a simple count, can form \(7^2 = 49\) dimers, and in feedback: signaling can induce more receptors, degrade the cytokine, internalize receptors, or switch on inhibitors such as the suppressor of cytokine signaling (SOCS) proteins.</p>
+
+<h3>Binding and signaling at equilibrium</h3>
+
+<p>Inside one cell the pathway can be treated as well mixed, leaving spatial effects for the <a href="#niches">tissue scale</a>. Molecule numbers are fairly high, about 1,000 per cell 10 µm across, and most reactions are assumed to be diffusion limited, with \(\kon > 10^{7}\ \text{M}^{-1}\text{s}^{-1}\).</p>
+
+<p class="aside"><b>Note on the printed text.</b> The paper equates 1,000 molecules per cell with about 100 nM. For a sphere 10 µm across the figure is closer to 3 nM. The point that matters here, many molecules per cell, is unaffected.</p>
+
+<p>Cytokine binding, which activates the JAK attached to the receptor, is a simple bimolecular reaction,</p>
+
+<div class="equation">\[
+\frac{d}{dt}\#\text{Receptor}^* = \kon\,[\text{Cytokine}]\,\#\text{Receptor} - \koff\,\#\text{Receptor}^*,
+\]</div>
+
+<p>where \(\#\text{Receptor}^*\) counts receptors engaged by cytokine. Binding is very tight, typically \(\KD = \koff/\kon \approx 10\) pM with \(\koff^{-1} \approx 3600\) s and \(\kon \approx 3\times10^{7}\ \text{M}^{-1}\text{s}^{-1}\): cytokines bind almost as fast as diffusion allows and then hold on. Assuming the extracellular volume is large enough that binding does not deplete the cytokine, and that each receptor comes pre-loaded with JAK, the steady-state number of active JAKs is</p>
+
+<div class="equation">\[
+\text{JAK}^* = \text{JAK}_{\rm total}\,\frac{[\text{Cytokine}]}{\KD + [\text{Cytokine}]}.
+\]</div>
+
+<p>STAT phosphorylation then follows Michaelis–Menten kinetics,</p>
+
+<div class="equation">\[
+\frac{d}{dt}[\text{pSTAT}] = k_{\rm cat}\,[\text{JAK}^*]\,\frac{[\text{STAT}]}{[\text{STAT}] + K_m} - k_{\rm dephos}\,[\text{pSTAT}],
+\]</div>
+
+<p>where \([\text{JAK}^*] = \text{JAK}^*/(V\mathcal{N}_A)\) is the concentration of active JAK in the cytoplasmic volume \(V\), \(k_{\rm cat}\) and \(k_{\rm dephos}\) are the rates at which the phosphoryl group is added and removed, and \(K_m\), STAT's dissociation constant for the receptor, sets the specificity between receptors and STAT variants. The phosphatases at work are often unknown, because their activities overlap, so their effect is lumped into a single rate.</p>
+
+<p>The system reaches steady state within minutes. Setting the derivative to zero and using conservation, \([\text{pSTAT}] + [\text{STAT}] = S_{\rm total}\), gives a quadratic equation for [pSTAT]; combined with the formula for \(\text{JAK}^*\), it expresses the STAT response directly in terms of the cytokine concentration. This is the building block for everything more elaborate.</p>
+
+<h3>Tunable responses</h3>
+
+<p>So far the receptor was taken to be pre-assembled. When its chains come together only on binding, the process has two steps:</p>
+
+<div class="equation">\[
+\text{L} + \text{R}_1 + \text{R}_2
+\;\underset{k_1^{\rm off}}{\overset{k_1^{\rm on}}{\rightleftharpoons}}\;
+\text{LR}_1 + \text{R}_2
+\;\underset{k_2^{\rm off}}{\overset{k_2^{\rm on}}{\rightleftharpoons}}\;
+\text{LR}_1\text{R}_2 .
+\]</div>
+
+<p>The cytokine L first binds chain \(\text{R}_1\), then recruits chain \(\text{R}_2\). With dissociation constants \(K_i = k_i^{\rm off}/k_i^{\rm on}\), equilibrium requires</p>
+
+<div class="equation">\[
+K_1[\text{LR}_1] = [\text{L}]\left([\text{R}_1]_{\rm total} - [\text{LR}_1]\right), \qquad
+K_2[\text{LR}_1\text{R}_2] = [\text{LR}_1]\left([\text{R}_2]_{\rm total} - [\text{LR}_1\text{R}_2]\right),
+\]</div>
+
+<p>and solving gives the concentration of complete, signaling receptors:</p>
+
+<div class="equation">\[
+[\text{LR}_1\text{R}_2] = \frac{[\text{R}_2]_{\rm total}}{1 + \dfrac{K_2}{[\text{R}_1]_{\rm total}}\left(1 + \dfrac{K_1}{[\text{L}]}\right)}.
+\]</div>
+
+<p>Feinerman and colleagues showed that this picture holds for IL-2, one of the best-studied cytokines. IL-2 binds weakly to the abundant α chain of its receptor (\(\text{R}_1 = \text{IL-2R}\alpha\)) and is then locked into a stable, signaling complex by the other two chains (\(\text{R}_2 = \text{IL-2R}\beta\)–\(\gamma_c\)). Because the first step is weak, \([\text{L}] \ll K_1\), and the result simplifies to</p>
+
+<div class="equation">\[
+[\text{LR}_1\text{R}_2] = [\text{R}_2]_{\rm total}\,\frac{[\text{L}]}{[\text{L}] + K_1K_2/[\text{R}_1]_{\rm total}}.
+\]</div>
+
+<p>Two lessons follow, for IL-2 and other cytokines. The amplitude of the response is proportional to the number of β–γ chains, the limiting component. The concentration giving half the maximal response, \([\text{L}]_{50} = K_1K_2/[\text{R}_1]_{\rm total}\), is inversely proportional to the amount of α chain, the component in excess.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The paper states the condition as \(K_1[\text{L}] \ll 1\), which mixes units; the simplification needs \([\text{L}] \ll K_1\). Just before the scheme, the text says the <em>cytokines</em> are made of sub-units and pre-assembled, where the receptors are meant. Further on, the IL-6 signaling chain is gp130, printed once as gp30.</p>
+
+<figure class="plate" data-anim="cytokine-dose">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Two knobs on one curve.</b> Complete receptor complexes from the exact two-step equilibrium (blue), against cytokine concentration in units of \(K_1\). The sliders set \([\text{R}_1]_{\rm total}\), in units of \(K_2\), and \([\text{R}_2]_{\rm total}\). More α shifts the curve to lower concentrations, making the cell more sensitive; more β–γ scales it up without moving it. The dashed curve is the weak-first-step formula, with its half-maximum \(K_1K_2/[\text{R}_1]_{\rm total}\) marked on the axis. It holds while α is plentiful; bring \([\text{R}_1]_{\rm total}\) down toward \(K_2\) and the half-maximum nears \(K_1\), where it fails. The gray curve is a fixed reference cell. No values are given for \(K_1\) and \(K_2\), hence the units.</figcaption>
+</figure>
+
+<p>Tuning amplitude and sensitivity through receptor numbers may be essential to the plasticity of immune responses, especially when cells compete for scarce cytokine. Effector and regulatory T cells, for example, play a tug-of-war over IL-2 decided by their exact levels of IL-2Rα. Stimulated effector T cells launch a response; stimulated regulatory T cells (Tregs) damp it, suppressing autoimmunity, that is, effector responses against self antigens. Tregs are thought to escape negative selection in the thymus despite recognizing self strongly, and then serve as pre-activated sentinels that react to inflammatory cues, such as a rise in self antigens, without adding to inflammation themselves: they constantly express the transcription factor FoxP3, which broadly represses cytokine production.</p>
+
+<p>When an effector T cell starts a spurious response against self, Tregs can quench it by soaking up cytokines such as IL-2 and blunting their inflammatory effect. Whichever cell type carries more receptors captures more IL-2 and deprives the other of a signal that T cells need to survive and proliferate. Models of this competition based on differences in IL-2Rα, by Busse, Feinerman, Höfer and their colleagues, show how discrimination between self and non-self can emerge from it.</p>
+
+<p>Some receptors also exist in soluble form, an extracellular domain released into the surrounding fluid, which can capture a cytokine and hand it to the complementary chain on a membrane, with effects that go either way. If the resulting complex lacks the intracellular domain of the soluble chain, its JAK has no partner to phosphorylate and no signal results, like one hand trying to clap. Such decoys antagonize the cytokine: viral analogues of interferon receptors, and IL-1 receptors, act this way and limit inflammation, to the benefit of viruses.</p>
+
+<p>Soluble receptors can instead boost signaling by trans-activation, as with IL-1, IL-2 and IL-6. The soluble IL-6 receptor (sIL-6R) stabilizes the short-lived IL-6 outside cells and, by attaching to gp130 dimers on cell surfaces, speeds up formation of the full signaling complex of IL-6, its receptor and gp130. A receiving cell then needs only gp130, which is present everywhere, and no IL-6 receptor of its own. Which way secreted receptors act depends on molecular details, and quantitative work can help pin down the physico-chemical parameters that decide in which regime inflammatory signals are regulated.</p>
+
+<h3>Regulation by consumption</h3>
+
+<p>Cytokines must be kept in check, because too much of them harms the whole body: high concentrations cause a capillary leak syndrome, in which tissues stop holding back blood serum, leading to septic shock or viral hemorrhagic fevers. A simple control is to limit their availability. Most cytokines are small (10 to 20 kDa) and short-lived in body fluids; IL-2 injected intravenously to treat renal cell carcinoma has a serum half-life of at most 3 hours, and in lymphoid organs rapid binding and consumption shorten it further.</p>
+
+<p>Since binding is so tight (typically \(\KD < 100\) pM, or \(\koff < (3000\ \text{s})^{-1}\)), cells can switch signaling off by buffering. Cytokine and receptor are internalized together by endocytosis and sent to lysosomes, whose low pH frees the cytokine for degradation; signaling can continue inside the cell while the pair stays engaged. The receptor's fate varies: an internalized IL-2 receptor comes apart, its \(\gamma_c\) chain degraded in lysosomes and its α chain recycled through early endosomes. Despite this complexity, a single step at a measured rate of about \((900\ \text{s})^{-1}\) is enough to model IL-2 availability (Tkach and colleagues; Voisinne and colleagues).</p>
+
+<p>Cytokines are therefore used up as they signal. At the scale of a tissue, a balance of production and consumption describes how inflammatory signals rise and fall:</p>
+
+<div class="equation">\[
+\frac{d}{dt}[\text{Cytokine}] = \kappa_{\rm prod} - \kappa_{\rm consum}.
+\]</div>
+
+<p>In the simplest case, production \(\kappa_{\rm prod} = N_{\rm prod}k_{\rm prod}/(V\mathcal{N}_A)\) is set by the number \(N_{\rm prod}\) of activated cells, each secreting \(k_{\rm prod}\) molecules per second into an extracellular volume \(V\). Consumption is set by binding to receptors, \(\kappa_{\rm consum} =\) \(\kon N_{\rm consum} N_{\rm R}[\text{Cytokine}]/(V\mathcal{N}_A)\), for \(N_{\rm consum}\) consuming cells with \(N_{\rm R}\) receptors each. How these quantities change in time can be arbitrarily complicated and has to be specified for each setting.</p>
+
+<p>Take IL-2 early in a response in a lymph node: a free volume \(V \approx 50\ \mu\)L, \(k_{\rm prod} = 10\ \text{s}^{-1}\), \(\kon = 3\times10^{7}\ \text{M}^{-1}\text{s}^{-1}\), and 10,000 consuming Tregs with about 3,000 receptors each. For IL-2 to reach about \(10^{-11}\) M, enough to trigger phosphorylation of STAT5, production must outpace consumption, which takes \(N_{\rm prod} > 1{,}000\). (At that concentration the Tregs remove about 9,000 molecules per second, against 10 from each secreting cell.) This is an activation threshold: a response only takes off once enough activated cells secrete cytokine to outrun consumption and push activation and differentiation forward (Polonsky and colleagues). The estimate ignores known complications, such as IL-2 secretion reinforcing itself, IL-2Rα chains being recycled and Tregs upregulating their IL-2 receptors, which call for numerical solutions.</p>
+
+<h3>Other regulations</h3>
+
+<p>Cells also have internal mechanisms that shorten or extend JAK–STAT signaling. Some pathways draw on stores of receptors inside the cell, recruited once signaling starts, which keep the surface receptors from saturating. Becker and colleagues showed quantitatively how this lets erythroid progenitors, the precursors of red blood cells, sense the cytokine Epo over more than a thousandfold range of concentrations, where plain ligand–receptor binding would saturate quickly.</p>
+
+<p>IL-2 signaling has a further positive feedback: it raises the expression of IL-2Rα, which by the equation above lowers the concentration needed for a half-maximal response and so encourages more IL-2 signaling. This feedback was shown to be critical for committing cells to long-term JAK activation and proliferation.</p>
+
+<p>There are negative regulators too. SOCS and CISH proteins (CISH is cytokine-inducible and carries an SH2 domain) compete with STAT for JAK and so prevent activation; they can be modeled as competitors of STAT in the Michaelis–Menten equation with a stronger \(K_m\). Varying that \(K_m\) lets them act in two separate ranges of cytokine concentration (Bachmann and colleagues), and this dual feedback widens the range of cytokine levels that trigger STAT5 phosphorylation without saturating, ultimately controlling cell survival. Such models must be integrated numerically, and the hard part is obtaining many system-specific parameters, such as protein abundances, biophysical constants and enzymatic rates, which quantitative studies are increasingly supplying.</p>
+
+<p>In sum, the JAK–STAT response has an analytical solution when it is fast compared with everything else, the adiabatic limit, but how cytokines build up and are used up over longer times depends on many feedbacks in leukocytes and still needs systematic quantitative study.</p>
+</section>
+
+<section id="niches" data-part="B" data-page="18">
+<h2>Communication across space and time: cytokine niches</h2>
+
+<p>Cytokines let immune cells act collectively. Lymphocyte differentiation is decided by toggle switches in <a href="05-cell-fate.html#gene-regulation">gene regulatory networks</a>, and most of their positive feedbacks are responses to cytokines, so these decisions are collective by nature. Understanding how antigen recognition becomes a collective response thus needs a quantitative grip on the nonlinear, spatial and temporal side of cytokine communication: how cytokines are released and captured across space, over the minutes to hours in which they carry information between cells.</p>
+
+<h3>Diffusion and degradation</h3>
+
+<p>Spreading in tissue is a reaction–diffusion process, the spatial version of the balance above:</p>
+
+<div class="equation">\[
+\frac{\partial c(\vec r, t)}{\partial t} = D\,\nabla^2 c(\vec r, t) + \kappa_{\rm prod}(\vec r, t) - \kappa_{\rm consum}(\vec r, t),
+\]</div>
+
+<p>where \(c(\vec r,t)\) is the cytokine concentration, \(D\) its diffusion coefficient in the extracellular medium, and \(\kappa_{\rm prod}\) and \(\kappa_{\rm consum}\) are rates per unit volume. Production sits on the surfaces of the discrete secreting cells. Consumption happens because cytokines bind tightly to receptors and are internalized with them; binding is the limiting step, so</p>
+
+<div class="equation">\[
+\kappa_{\rm consum} = \kon N_{\rm R}\, n_{\rm consum}\, c(\vec r, t) = k_c\, c(\vec r, t),
+\]</div>
+
+<p>with \(n_{\rm consum}\) the density of consuming cells. This holds at low concentrations, where receptors are far from saturated and binding is linear in \(c\), and it spreads the consumers uniformly, in mean-field fashion, instead of tracking their surfaces. Nonlinear cases, from spatial heterogeneity or receptor saturation, need numerical solutions (Thurley and colleagues). In the linear regime,</p>
+
+<div class="equation">\[
+\frac{\partial c(\vec r, t)}{\partial t} = D\left[\nabla^2 c(\vec r, t) - \xi^{-2}\, c(\vec r, t)\right],
+\]</div>
+
+<p>with a characteristic length \(\xi = \sqrt{D/k_c}\), the distance a cytokine travels before it is consumed. Everything below keeps to this homogeneous, linear case.</p>
+
+<h3>Screening by consuming cells</h3>
+
+<p>Diffusion and consumption together set how far a gradient reaches, and so the range of communication. How quickly is the gradient set up? Berezhkovskii and colleagues, and Kolomeisky, showed that for secreted proteins this is governed by the first arrival of molecules, not by the typical diffusion time of a single one, so the time to reach steady state grows linearly with the distance \(r\) from the source, not as \(r^2\):</p>
+
+<div class="equation">\[
+\tau(r) = \frac{1}{2k_c}\left(1 + \frac{r}{\xi}\right).
+\]</div>
+
+<p>Two timescales compete: diffusion, \(\tau_d(r) = r^2/2D\), and reaction, \(k_c^{-1}\). Near the source (\(r \ll \xi\)) consumption dominates and relaxation takes about the reaction time. Far away (\(r \gg \xi\)) both matter, and the relaxation time is their geometric mean, \(\tau(r) \sim (\tau_d(r)\,k_c^{-1})^{1/2} \propto r\). Simulations of immune settings by Oyler-Yaniv and colleagues confirmed this and found that the gradient settles within a few minutes.</p>
+
+<p>Regulation by cytokines acts far more slowly, over hours for gene regulation and days for decisions to divide or die, and cells move slowly too: early in an adaptive response, the responding T cells stay stuck to their antigen-presenting cells. The profile can therefore be taken as stationary. With spherical symmetry around a secreting cell of radius \(R_{\rm cell}\), the steady state is</p>
+
+<div class="equation">\[
+c(r) = c(R_{\rm cell})\,\frac{R_{\rm cell}}{r}\,e^{(R_{\rm cell} - r)/\xi},
+\]</div>
+
+<p>and the value at the surface follows from balancing the fluxes there:</p>
+
+<div class="equation">\[
+\kappa_{\rm prod} - \kappa_{\rm consum} = \oint \vec{j}\cdot d\vec{r} = -4\pi D R_{\rm cell}^2 \left.\frac{dc}{dr}\right|_{R_{\rm cell}} = 4\pi D\, c(R_{\rm cell})\, R_{\rm cell}\left(1 + \frac{R_{\rm cell}}{\xi}\right).
+\]</div>
+
+<p>Cells typically secrete at a steady rate \(k_{\rm prod}\) of 10 to 1,000 molecules per second (IL-2 and IFN-γ, for instance), while the secreting cell itself takes up \(k_{\rm consum} = \kon N_{\rm R}\, c(R_{\rm cell})\). Solving for the surface concentration,</p>
+
+<div class="equation">\[
+c(R_{\rm cell}) = \frac{k_{\rm prod}}{4\pi D R_{\rm cell}\left(1 + R_{\rm cell}/\xi\right) + \kon N_{\rm R}}.
+\]</div>
+
+<p>The length</p>
+
+<div class="equation">\[
+\xi = \sqrt{\frac{D}{k_c}} = \sqrt{\frac{D}{\kon N_{\rm R}\, n_{\rm consum}}}
+\]</div>
+
+<p>plays the role of the screening length of electrostatics and falls as the inverse square root of the density of consumers. Consuming cells screen the secreting ones, and so decide how far communication reaches in a dense tissue. Diffusion and consumption alone thus make cytokines unevenly available and create cytokine <em>niches</em>, the regions of space where a cytokine can be sensed.</p>
+
+<p>Both the density of consumers and their receptor numbers control \(\xi\). In close-packed tissue there is about one consuming cell every 10 µm, so \(n_{\rm consum} \sim 10^{-3}\ \mu\text{m}^{-3}\). For IL-2, \(D \approx 100\ \mu\text{m}^2/\text{s}\), since even packed tissue leaves room for free diffusion, and each cell typically consumes 10 molecules per second (Oyler-Yaniv and colleagues), implying \(\kon N_{\rm R} = 10^{11}\ \text{M}^{-1}\text{s}^{-1}\). Then \(\xi \sim 25\ \mu\)m, or 2.5 cell diameters. In more physiological conditions, with cells filling only 10% of the space and carrying fewer receptors, \(\xi\) rises to about 250 µm, or 25 diameters: screening is negligible and every cell in a lymph node or spleen can sense the cytokine. A tenfold change in \(\xi\) is a thousandfold change in the volume of the niche, and in the number of cells that might respond. Such tunability can settle the IL-2 tug-of-war between helper and regulatory T cells, and with it whether the response expands or dies out.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The paper gives the dilute density as \(n_{\rm consum} \sim 10^{-2}\ \mu\text{m}^{-3}\), higher than the close-packed value. Cells filling a tenth of the space corresponds to about \(10^{-4}\ \mu\text{m}^{-3}\); with ten times fewer receptors as well, \(k_c\) falls a hundredfold and \(\xi\) grows tenfold, to the quoted 250 µm.</p>
+
+<h3>Autocrine capture</h3>
+
+<p>Secreting cells often carry receptors for their own cytokine and could signal to themselves, which is called autocrine signaling. It matters most when the secreting cell is surrounded by consumers competing for the same molecules. At steady state, secretion is balanced by uptake on the secreting cell plus escape and uptake elsewhere, as in the flux balance above, so the chance that a molecule is captured by the cell that made it is</p>
+
+<div class="equation">\[
+P_{\rm auto} = \frac{k_{\rm consum}}{k_{\rm prod}} = \left[1 + \frac{4\pi D R_{\rm cell}\left(1 + R_{\rm cell}/\xi\right)}{\kon N_{\rm R}}\right]^{-1}.
+\]</div>
+
+<p>It reaches one half at \(N_{\rm R}^* = 4\pi D R_{\rm cell}(1 + R_{\rm cell}/\xi)/\kon\) \(\approx R_{\rm cell}/\sigma_{\rm R}\) receptors, assuming \(\xi \gg R_{\rm cell}\). Here \(\sigma_{\rm R} = R_{\rm receptor}\,e^{-\Delta G_{\rm assoc}}\) measures how large a target a receptor presents to a cytokine, once the <a href="02-physical-chemistry.html#arrhenius">binding barrier</a> is included.</p>
+
+<p>With leukocytes 5 to 10 µm in radius and \(\sigma \sim 0.5\) nm, \(N_{\rm R}^* \approx 10^{4}\). Cells with far fewer receptors, a common case, capture little of their own cytokine; cells with more capture a large share. Why a cell would need to respond to its own cytokine is still debated, and some mechanisms limit the effect: T cells that secrete IL-2 after recognizing antigen keep their IL-2 receptors low while the antigen response lasts. In the tug-of-war between cell types, however, autocrine and paracrine (neighbor-to-neighbor) signaling compete, so autocrine capture is significant (Höfer and colleagues). The two modes are often hard to tell apart, and dilution experiments in vitro have been proposed to do it (Marcou and colleagues).</p>
+
+<h3>Size of cytokine niches</h3>
+
+<p>The same profile gives the size of the niche around a single secreting cell. Without autocrine capture and for \(\xi \gg R_{\rm cell}\),</p>
+
+<div class="equation">\[
+c(r) = \frac{k_{\rm prod}}{4\pi D r}\,e^{-r/\xi}.
+\]</div>
+
+<p>The niche ends where \(c\) falls below the concentration needed to trigger signaling, of order \(\KD\), so its radius solves</p>
+
+<div class="equation">\[
+r_{\rm niche} = \xi \ln\frac{k_{\rm prod}}{4\pi D\, r_{\rm niche}\, \KD}.
+\]</div>
+
+<p class="aside"><b>Note on the printed text.</b> The printed equation leaves out the diffusion coefficient \(D\), which the profile above requires.</p>
+
+<p>The radius grows with the logarithm of \(k_{\rm prod}\), which matters because secretion varies widely with the cytokine and the state of the cell: CD8+ T cells can secrete up to 1,000 IFN-γ molecules per second, and CD4+ T cells 10 IL-2 molecules per second when activated from a naive state but 1,000 as they mature or when activated from a memory state. Computing niche sizes numerically across secretion rates and screening lengths, with \(\KD = 3\) pM and \(R_{\rm cell} = 5\ \mu\)m, shows how much the niche volume varies for realistic parameters (<a href="https://arxiv.org/pdf/1907.03891v2#page=21">figure on page 21</a>).</p>
+
+<figure class="plate" data-anim="cytokine-niche">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Screening carves out niches.</b> A tissue slice 300 µm across: consuming cells in blue, a secreting cell in pink, and the steady-state concentration in brown, on a log scale, from the profile above without autocrine capture. The black contour marks \(c = \KD\), and consumers inside it carry a solid dot. The dashed teal circle has radius \(\xi\); the chart compares the profile with the bare \(1/r\) decay of a tissue without consumers. Thin out the consumers or their receptors and \(\xi\) grows as \(1/\sqrt{n_{\rm consum}N_{\rm R}}\): the niche spreads until the \(1/r\) decay alone limits it, so its volume grows less than \(\xi^3\). Secretion moves the edge only logarithmically. With three secreting cells the fields add, and in sparse tissue the niches merge; the chart and readouts always describe a single cell, the last being \(\tau(r)\) at the niche edge. Fixed values: \(D = 100\ \mu\text{m}^2/\text{s}\), \(\kon = 3\times10^{7}\ \text{M}^{-1}\text{s}^{-1}\), \(\KD = 3\) pM, \(R_{\rm cell} = 5\ \mu\)m. Receptor saturation is ignored, as in the linear model.</figcaption>
+</figure>
+
+<p>Simple equations for diffusion and consumption thus account quantitatively for how tunable communication between immune cells is, and, strikingly, this modulation has a function. Early in activation, consumers are few, \(\xi\) exceeds 100 µm, and cytokines reach the whole lymphoid organ and its blood vessels: communication is global. Within 24 hours, many cells move closer to the secreting cells and upregulate their receptors, screening the cytokine down to \(\xi \sim 10\ \mu\)m and confining communication to nearest neighbors, in tight niches around the secreting cells.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Inside a cell, JAK–STAT signaling reduces to tight binding equilibria and a Michaelis–Menten step that settle within minutes. When the receptor assembles in two steps, as for IL-2, the limiting β–γ chains set the amplitude of the response and the abundant α chain its sensitivity, a handle cells use in competing for cytokine. Cytokines are consumed as they signal, so a response needs a critical mass of secreting cells. In tissue, diffusion against consumption defines a screening length \(\xi = \sqrt{D/k_c}\), about 25 µm in packed tissue and ten times more in sparse tissue, which decides whether a cytokine stays in a small niche around its source or fills a whole lymph node; the niche itself grows only logarithmically with secretion.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

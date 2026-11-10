@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. More uniform than the threats | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on the optimal repertoire without cross-reactivity in How a well-adapted immune system is organized: the KKT conditions, the closed-form optimum, and how different costs of infection make the repertoire flatter than the threats.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="03-flatter-than-the-threats">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 3</span> More uniform than the threats</h1>
+<p class="lede">Suppose each receptor recognized a single kind of antigen and nothing else. How should a fixed budget of receptors be shared among threats of very different sizes? The best allocation has a closed form, and for almost every plausible cost of infection it gives rare threats more than their share: the optimal repertoire is flatter than the threats it faces.</p>
+</header>
+
+<p>The setting is the one built in <a href="02-cost-of-infection.html">the cost of an infection</a>. Lymphocytes, the B and T cells of the adaptive immune system, each carry one kind of receptor, and \(P_r\) is the fraction of them that carry receptor \(r\); this distribution is the repertoire. Antigens are the molecular fragments of pathogens that receptors bind, and \(Q_a\) is the probability that the next infection brings antigen \(a\). Each encounter between antigen \(a\) and a randomly chosen receptor ends in recognition with probability \(\tilde P_a=\sum_r f_{r,a}P_r\), the coverage of \(a\). If \(F(m)\) is the harm done by the time \(m\) encounters have happened, the mean harm of an infection by \(a\) is</p>
+
+<div class="equation">\[
+\bar F_a(\tilde P_a) = \tilde P_a \int_0^{\infty} \rmd m\; F(m)\, e^{-m\tilde P_a},
+\]</div>
+
+<p>and the quantity to minimize is the expected cost \(\avg{F}=\sum_a Q_a \bar F_a(\tilde P_a)\), over all \(P_r\ge 0\) with \(\sum_r P_r=1\). The problem is convex, so a local minimum is also the global one.</p>
+
+<section id="specific-receptors" data-part="A" data-page="3">
+<h2>One receptor, one antigen</h2>
+
+<p>Real receptors are cross-reactive: each binds many antigens, with probabilities \(f_{r,a}\), and each antigen is bound by many receptors. The first step is to set this aside, which is less drastic than it sounds. Group similar antigens, together with the receptors that recognize them, into classes much broader than the range of cross-reactivity. A receptor in one class then recognizes antigens almost only from its own class, and the recognition matrix between classes is close to diagonal. Ignoring cross-reactivity therefore describes the repertoire as seen at scales larger than the cross-reactivity, a reading that <a href="04-cross-reactivity.html">the cross-reactive optimum</a> bears out.</p>
+
+<p>With uniquely specific receptors, each receptor type can be labeled by the antigen it recognizes, and \(f_{r,a}=\delta_{ra}\): meeting the matching receptor always leads to recognition, meeting any other never does. The coverage of an antigen is then just the share of the repertoire devoted to it, \(\tilde P_a = P_a\), and the cost splits into one term per type,</p>
+
+<div class="equation">\[
+\avg{F} = \sum_r Q_r\, \bar F(P_r).
+\]</div>
+
+<p>The types interact only through the budget \(\sum_r P_r = 1\): every receptor given to one antigen is a receptor taken from another.</p>
+
+<p>Here \(Q_r\) stands for more than a frequency. When antigen \(a\) does harm \(\mu_a F(m)\), with a virulence factor \(\mu_a\), the factor multiplies \(Q_a\) wherever it appears, and the two can be merged into one number, the threat \(\mu_a Q_a\). A rare but deadly pathogen such as anthrax and a frequent but mild one such as the common cold can pose comparable threats. From here on \(Q_r\) means this product of frequency and virulence.</p>
+
+<p>The optimum turns out to be</p>
+
+<div class="equation">\[
+P^*_r = \max\!\left[\, h\!\left(-\frac{\lambda}{Q_r}\right),\; 0 \right], \qquad h = \big(\bar F'\big)^{-1},
+\]</div>
+
+<p>where \(\bar F'\) is the derivative of the mean harm with respect to the coverage, \(h\) is its inverse function, and \(\lambda\) is a positive constant chosen so that the \(P^*_r\) add up to one. The derivation comes next, followed by what the formula gives for several forms of the cost.</p>
+</section>
+
+<section id="optimality-conditions" data-part="B" data-page="9">
+<h2>Conditions for an optimum</h2>
+
+<p>Minimizing under an equality constraint calls for a Lagrange multiplier. Adding inequality constraints such as \(P_r\ge 0\) leads to the Karush–Kuhn–Tucker (KKT) conditions, the standard extension of the method. They hold with or without cross-reactivity, so they are worth writing in general. The Lagrangian is</p>
+
+<div class="equation">\[
+\mathcal L(P,\lambda,\nu) = \avg{F}(P) + \lambda\Big(\sum_r P_r - 1\Big) - \sum_r \nu_r P_r ,
+\]</div>
+
+<p>with a multiplier \(\lambda\) for the normalization and a multiplier \(\nu_r\) for the positivity of each \(P_r\). (This \(\lambda\) is unrelated to the encounter rate \(\lambda_a(t)\).) At the optimum \(P^*\) the Lagrangian is stationary:</p>
+
+<div class="equation">\[
+\frac{\partial \avg{F}}{\partial P_r}\bigg|_{P^*} + \lambda^* - \nu^*_r = 0,
+\qquad
+\frac{\partial \avg{F}}{\partial P_r} = \sum_a Q_a\, \bar F_a'(\tilde P_a)\, f_{r,a},
+\]</div>
+
+<p>where the second expression is the chain rule, since \(\partial\tilde P_a/\partial P_r = f_{r,a}\). The inequality constraints bring two further conditions,</p>
+
+<div class="equation">\[
+\nu^*_r \ge 0, \qquad \nu^*_r P^*_r = 0 .
+\]</div>
+
+<p>The second one, complementary slackness, allows a positivity multiplier to be non-zero only where its constraint is active, that is, only for types that are absent from the optimum.</p>
+
+<p>Eliminating the \(\nu_r\) leaves two cases:</p>
+
+<div class="equation">\[
+\frac{\partial \avg{F}}{\partial P_r}\bigg|_{P^*} = -\lambda^* \quad\text{if } P^*_r>0,
+\qquad
+\frac{\partial \avg{F}}{\partial P_r}\bigg|_{P^*} \ge -\lambda^* \quad\text{if } P^*_r=0 .
+\]</div>
+
+<p>Both have a plain meaning. The quantity \(-\partial\avg{F}/\partial P_r\) is a marginal gain: how much the expected cost would drop if type \(r\) received slightly more of the repertoire. Suppose two types present in the optimum had different marginal gains. Then moving a sliver of receptors from the one with the smaller gain to the one with the larger would lower the cost, so at the optimum all present types share a single marginal gain, \(\lambda^*\).</p>
+
+<p>A type with no receptors cannot give any away. It can only receive some, taken from the others, and that must not pay either: its marginal gain can be at most \(\lambda^*\), so its derivative is at least \(-\lambda^*\). Put together, no transfer of receptors between types can lower the cost.</p>
+
+<p>Extra coverage never increases the harm, so every derivative \(\partial\avg{F}/\partial P_r\) is negative or zero; on the types present it equals \(-\lambda^*\), hence \(\lambda^*\ge 0\). The multiplier acts as the price of the budget: the cost that a slightly larger repertoire would save, per unit of extra repertoire. Because the problem is convex, the conditions are sufficient as well as necessary, and any repertoire that meets them is a global optimum.</p>
+</section>
+
+<section id="specific-solution" data-part="C" data-page="9">
+<h2>Solving for specific receptors</h2>
+
+<p>Without cross-reactivity the derivative involves only the type's own antigen, \(\partial\avg{F}/\partial P_r = Q_r\bar F'(P_r)\). For every type present in the optimum, then,</p>
+
+<div class="equation">\[
+Q_r\, \bar F'(P^*_r) = -\lambda^*
+\quad\Longrightarrow\quad
+P^*_r = h\!\left(-\frac{\lambda^*}{Q_r}\right).
+\]</div>
+
+<p>Since coverage always helps, \(\bar F'\) is negative, and \(h\) is only ever evaluated at negative arguments. The mean harm is also convex in the coverage. An integration by parts rewrites it as \(\bar F = F(0) + \int_0^\infty \rmd m\, F'(m)\,e^{-m\tilde P}\), and differentiating twice gives</p>
+
+<div class="equation">\[
+\bar F''(\tilde P) = \int_0^\infty \rmd m\; m^2\, F'(m)\, e^{-m\tilde P} > 0
+\]</div>
+
+<p>for any harm that increases with \(m\). So \(\bar F'\) is an increasing function, climbing toward zero as coverage grows, and so is its inverse \(h\). A larger threat brings \(-\lambda^*/Q_r\) closer to zero and so yields a larger \(P^*_r\): bigger threats always receive more receptors. How many more depends on the shape of \(\bar F'\), and that is where the cost function enters.</p>
+
+<p>For some costs the formula returns a negative \(P^*_r\) when \(Q_r\) is small. The remedy is to set those shares to zero, and the condition for absent types confirms that this is right. Because \(\bar F'\) increases and \(h(-\lambda^*/Q_r)\le 0\),</p>
+
+<div class="equation">\[
+Q_r\, \bar F'(0) \;\ge\; Q_r\, \bar F'\!\big[h(-\lambda^*/Q_r)\big] = -\lambda^* ,
+\]</div>
+
+<p>which is exactly the inequality an absent type has to satisfy. In words, \(-Q_r\bar F'(0)\) is the gain from the very first receptors for type \(r\). When that gain falls short of the going rate \(\lambda^*\), the type is better left empty. If \(\bar F'(0)\) is finite, small enough threats always fall below the line and receive nothing; if \(\bar F'(0)=-\infty\), the first receptor is infinitely valuable and every type gets some.</p>
+
+<p>Combining the two cases,</p>
+
+<div class="equation">\[
+P^*_r = \max\big\{h(-\lambda^*/Q_r),\;0\big\}, \qquad \sum_r P^*_r = 1 .
+\]</div>
+
+<p>Raising \(\lambda^*\) lowers every \(P^*_r\), so the sum falls steadily as \(\lambda^*\) grows and the normalization selects a single value.</p>
+
+<p>All that remains is to compute \(\bar F\) for a given cost, and one observation does most of the work. Measured in effective time, recognitions occur at rate \(\tilde P\), so the effective time of the first one is exponentially distributed with mean \(1/\tilde P\); its density \(\tilde P e^{-m\tilde P}\) is the weight in the integral above. The mean harm \(\bar F(\tilde P)\) is simply the average of \(F\) at this random moment.</p>
+</section>
+
+<section id="cost-families" data-part="D" data-page="3">
+<h2>How the cost shapes the optimum</h2>
+
+<p>The function \(F(m)\) summarizes how fast an unrecognized infection does damage, and so what a delay costs. Its shape decides how strongly the repertoire should favor large threats. Five cases are instructive, and each takes a line or two of algebra.</p>
+
+<h3>Linear cost: the square root</h3>
+
+<p>Pathogens multiply. Early in an infection their numbers grow exponentially, and both the harm done and the rate at which they meet receptors grow with them. If harm and encounter rate both grow as \(e^{\nu t}\), the effective time \(m(t)=\int_0^t\lambda(\tau)\,\rmd\tau\) grows in the same way, and harm is proportional to effective time: \(F(m)=m\) (<a href="https://arxiv.org/pdf/1407.6888v1#page=8">derivation on page 8</a>).</p>
+
+<p>The mean harm is then the mean effective time to recognition, \(\bar F = 1/\tilde P\), and the expected cost is \(\avg{F}=\sum_r Q_r/P_r\). With \(\bar F'(P) = -1/P^2\) and \(h(x) = (-x)^{-1/2}\),</p>
+
+<div class="equation">\[
+P^*_r = \sqrt{\frac{Q_r}{\lambda^*}} = \frac{\sqrt{Q_r}}{\sum_{r'}\sqrt{Q_{r'}}} .
+\]</div>
+
+<p>The share of the repertoire specific to an antigen grows as the square root of its threat. A threat a hundred times larger gets ten times more receptors, not a hundred.</p>
+
+<p>The obvious guess would be to allocate receptors in proportion to the threat. That would speed up the response to common or virulent antigens, but only by slowing the response to all the rest, and under a linear cost the losses on the many small threats outweigh the gains on the large ones. The square root balances the two pulls: it still favors the bigger threats, yet it makes the distribution more uniform than a proportional allocation would.</p>
+
+<p class="aside"><b>A worked comparison.</b> Take \(K\) types with linear cost and \(\sum_r Q_r=1\). The optimum costs \(\big(\sum_r\sqrt{Q_r}\big)^2\). The proportional allocation \(P_r=Q_r\) costs \(\sum_r Q_r/Q_r = K\), and the uniform one, \(P_r=1/K\), costs \(K\sum_r Q_r = K\) as well. By the Cauchy–Schwarz inequality \(\big(\sum_r\sqrt{Q_r}\big)^2\le K\), with equality only when all threats are equal. Under a linear cost, matching receptors to threats gains nothing over ignoring the threats altogether; the square root beats both.</p>
+
+<p>The same square root has turned up in other allocation problems. Xia found it for the optimal sizes of tRNA pools, the adaptor molecules that read codons during protein synthesis, as a function of how often each codon is used. Press found it in a model of screening a population for a rare wrongdoer: random screening works best when each person is checked with a probability that goes as the square root of their prior probability, rather than in proportion to it. Both share the structure of the linear cost, a waiting time inversely proportional to the share of a limited resource.</p>
+
+<h3>Power-law costs: steeper harm, flatter repertoire</h3>
+
+<p>Harm and encounters need not grow at the same rate. If harm grows as \(F(t)\propto e^{\nu t}\) and the encounter rate as \(\lambda(t)\propto e^{\nu' t}\), then at times beyond \(1/\nu'\) the effective time is \(m\approx \lambda(0)\,e^{\nu' t}/\nu'\), and eliminating \(t\) leaves a power law,</p>
+
+<div class="equation">\[
+F(m) \propto m^{\alpha}, \qquad \alpha = \nu/\nu' .
+\]</div>
+
+<p>The two rates can differ because whatever does the damage need not multiply like the antigen the receptors see. For example, the virulence of a pathogen and its exposure of antigen may both be cooperative effects, scaling as different powers of the number of invaders.</p>
+
+<p>The mean harm is now a moment of the exponential distribution, \(\bar F = \Gamma(1+\alpha)/\tilde P^{\alpha}\), with \(\Gamma\) the Gamma function. Its derivative is \(\bar F'(P) = -\alpha\Gamma(1+\alpha)\,P^{-(1+\alpha)}\), the inverse is \(h(x) = \big[-x/(\alpha\Gamma(1+\alpha))\big]^{-1/(1+\alpha)}\), and</p>
+
+<div class="equation">\[
+P^*_r = \left[\frac{\alpha\,\Gamma(1+\alpha)\,Q_r}{\lambda^*}\right]^{1/(1+\alpha)} \;\propto\; Q_r^{1/(1+\alpha)} .
+\]</div>
+
+<p>The exponent \(1/(1+\alpha)\) is below one, and it shrinks as the cost steepens. A large \(\alpha\) means that the harm explodes with every delay, so every threat, however unlikely, has to be brought under control early, and the optimal repertoire spreads out toward uniform coverage. A small \(\alpha\) means that the harm builds up slowly; the system can then afford to recognize rare pathogens late and put its resources into the common ones, and the exponent approaches one. The steeper the cost, the flatter the optimal repertoire. Here \(\bar F'(0) = -\infty\), so no type is ever left out.</p>
+
+<h3>Saturating cost: a cutoff for minor threats</h3>
+
+<p>Sometimes a late response is hardly worse than none at all, because the total harm of an infection levels off. A saturating cost describes this,</p>
+
+<div class="equation">\[
+F(m) = 1 - e^{-\beta m},
+\]</div>
+
+<p>which rises linearly at first and stops rising after about \(1/\beta\) encounters. One way to read it is as the probability that some harmful event, happening at rate \(\beta\) per encounter, has already occurred by effective time \(m\). The mean harm is then the probability that this event wins the race against recognition, two exponential clocks with rates \(\beta\) and \(\tilde P\):</p>
+
+<div class="equation">\[
+\bar F(\tilde P) = \frac{\beta}{\beta + \tilde P}, \qquad
+\bar F'(P) = -\frac{\beta}{(\beta+P)^2}, \qquad
+h(x) = \sqrt{-\beta/x} - \beta .
+\]</div>
+
+<p>The optimum is</p>
+
+<div class="equation">\[
+P^*_r = \max\left\{ C\sqrt{Q_r} - \beta,\; 0\right\}, \qquad C = \sqrt{\beta/\lambda^*} .
+\]</div>
+
+<p>Well-covered antigens, with \(P^*_r\gg\beta\), are usually recognized long before the harm saturates, while the cost is still nearly linear, so they follow the square root of the linear case. The difference lies at the bottom of the range: types with \(Q_r &lt; (\beta/C)^2 = \beta\lambda^*\) get no receptors at all. The slope \(\bar F'(0) = -1/\beta\) is finite, so the first receptors for a rare or harmless antigen buy little. Such an antigen would be recognized late anyway, by which time the harm has saturated and a few encounters more or less no longer matter.</p>
+
+<p>The cutoff is consistent with what is seen in some real infections: when an infection does little harm, an immune system may sometimes leave it alone. One example is the simian immunodeficiency virus (SIV) in sooty mangabeys, a natural host, which carry the virus at high levels for long periods with little immune-mediated damage.</p>
+
+<h3>Threshold cost: a logarithm</h3>
+
+<p>Real harm may begin only once the effective time passes a threshold. A step function models this, \(F(m)=\Theta(m-m_0)\), which is zero for \(m&lt;m_0\) and one beyond. The best repertoire then maximizes the chance of recognition within the first \(m_0\) encounters. The mean harm is the probability of missing that deadline,</p>
+
+<div class="equation">\[
+\bar F(\tilde P) = e^{-m_0\tilde P}, \qquad
+\bar F'(P) = -m_0\,e^{-m_0 P}, \qquad
+h(x) = -\frac{1}{m_0}\ln\!\left(-\frac{x}{m_0}\right),
+\]</div>
+
+<p>and the optimum is</p>
+
+<div class="equation">\[
+P^*_r = \max\left\{ \frac{\ln Q_r}{m_0} - C,\; 0\right\}, \qquad C = \frac{1}{m_0}\ln\frac{\lambda^*}{m_0} .
+\]</div>
+
+<p>Again \(\bar F'(0)=-m_0\) is finite, and the least threatening types, those with \(Q_r&lt;\lambda^*/m_0\), are left without receptors. Above the cutoff the repertoire follows only the logarithm of the threat, a drastic flattening: threats spread over a factor of a thousand change \(P^*_r\) by just \(\ln 1000/m_0\approx 7/m_0\). The chance of missing the deadline falls exponentially with coverage, so once an antigen is likely to be caught in time, further receptors for it are nearly wasted.</p>
+
+<h3>Logarithmic cost: no flattening</h3>
+
+<p>Is there a cost for which the repertoire simply tracks the threats? There is, if harm grows very slowly, as the logarithm of the effective time, \(F(m)=\ln m\). Then</p>
+
+<div class="equation">\[
+\bar F(\tilde P) = -\gamma - \ln\tilde P, \qquad
+\bar F'(P) = -\frac1P, \qquad
+h(x) = -\frac1x ,
+\]</div>
+
+<p>with \(\gamma\approx 0.577\) Euler's constant, which plays no part in the optimum. So \(P^*_r = Q_r/\lambda^*\), and with \(\sum_r Q_r = 1\) the normalization gives \(\lambda^*=1\) and \(P^*_r=Q_r\) exactly.</p>
+
+<p>Two remarks place this case. Up to a constant the expected cost is \(-\sum_r Q_r\ln P_r\), the cross-entropy of \(P\) relative to \(Q\), which is smallest at \(P=Q\) (Gibbs' inequality). And \(\ln m\) is the \(\alpha\to 0\) limit of the power family, since \((m^\alpha-1)/\alpha\to\ln m\) and shifting or rescaling a cost does not move its optimum; accordingly the exponent \(1/(1+\alpha)\) tends to one. The logarithm is a special, slowly growing case.</p>
+
+<h3>Flatter than the threats</h3>
+
+<p>The results line up as follows; \(C\) is a constant fixed by the normalization, different in each row.</p>
+
+<table>
+<thead>
+<tr><th>Cost \(F(m)\)</th><th>Mean harm \(\bar F(\tilde P)\)</th><th>Optimum \(P^*_r\)</th></tr>
+</thead>
+<tbody>
+<tr><td>\(m^\alpha\)</td><td>\(\Gamma(1+\alpha)/\tilde P^{\alpha}\)</td><td>\(C\,Q_r^{1/(1+\alpha)}\)</td></tr>
+<tr><td>\(1-e^{-\beta m}\)</td><td>\(\beta/(\beta+\tilde P)\)</td><td>\(\max\{C\sqrt{Q_r}-\beta,\,0\}\)</td></tr>
+<tr><td>\(\Theta(m-m_0)\)</td><td>\(e^{-m_0\tilde P}\)</td><td>\(\max\{\ln Q_r/m_0 - C,\,0\}\)</td></tr>
+<tr><td>\(\ln m\)</td><td>\(-\gamma-\ln\tilde P\)</td><td>\(C\,Q_r\)</td></tr>
+</tbody>
+</table>
+
+<p class="aside"><b>Note on the printed text.</b> The preprint's table of intermediate results (page 11) has two slips. For \(F=m^\alpha\) it gives \(h(x)=[-x/(\alpha\Gamma(1+\alpha))]^{1/(1+\alpha)}\); inverting \(\bar F'(P) = -\alpha\Gamma(1+\alpha)P^{-(1+\alpha)}\) gives the exponent \(-1/(1+\alpha)\), which is what yields \(P^*_r\propto Q_r^{1/(1+\alpha)}\) (the printed form would give \(Q_r^{-1/(1+\alpha)}\)). For \(F=\ln m\) it gives \(\bar F=\gamma-\ln\tilde P\); since \(\int_0^\infty \ln u\;e^{-u}\,\rmd u=-\gamma\), the constant is \(-\gamma\). Neither slip changes the optima stated in the main text.</p>
+
+<p>One formula summarizes how flat each optimum is. Differentiating \(Q_r\bar F'(P^*_r)=-\lambda^*\) with respect to \(Q_r\) gives the local slope of \(P^*\) against \(Q\) on logarithmic axes,</p>
+
+<div class="equation">\[
+\frac{\rmd\ln P^*_r}{\rmd\ln Q_r} = \frac{-\bar F'(P^*_r)}{P^*_r\,\bar F''(P^*_r)} .
+\]</div>
+
+<p>It equals \(1/(1+\alpha)\) for the power laws and exactly one for the logarithm. For the saturating cost it is \((\beta+P^*_r)/(2P^*_r)\), and for the threshold \(1/(m_0P^*_r)\): below one once \(P^*_r\) exceeds \(\beta\) or \(1/m_0\), above one just over the cutoff, where the share climbs steeply from zero.</p>
+
+<p>Apart from the slowly growing logarithm, then, the optimal repertoire is flatter than the distribution of threats. Over most of the range the share of receptors grows more slowly than the threat, and costs that saturate or have a threshold drop the smallest threats altogether. Rare pathogens above any cutoff end up with more receptors than their frequency alone would suggest, at the expense of the common ones.</p>
+
+<figure class="plate" data-anim="cost-tradeoff">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Sharing receptors among threats.</b> Twenty antigen classes, without cross-reactivity, whose threats \(Q_k\) fall off as \(k^{-s}\) (set the skew \(s\)) or are drawn at random. The bars compare each threat (brown outline) with its optimal share of the repertoire \(P^*_k\) (blue) for the cost chosen from the menu, and a pink dot marks a class left with no receptors. The second panel plots \(P^*\) against \(Q\) on logarithmic axes, with the proportional line \(P\propto Q\) and the flat line of a uniform repertoire for comparison. The readouts give the expected cost of the optimum, how much more a proportional and a uniform repertoire would cost, and the number of empty classes. Start with the power law at \(\alpha=1\): the slope is one half, and the proportional and uniform repertoires cost the same, as in the worked comparison. Raise \(\alpha\) and the slope \(1/(1+\alpha)\) flattens toward the uniform line. Then switch to the saturating cost and watch the rarest classes lose their receptors; the threshold cost does the same with a logarithmic profile, and with \(\ln m\) the blue bars fill the brown outlines.</figcaption>
+</figure>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Without cross-reactivity the expected cost splits into one term per antigen, tied together only by the size of the repertoire. The KKT conditions say that at the optimum every receptor type present has the same marginal gain \(\lambda^*\) and every absent type would gain less, which gives \(P^*_r=\max[h(-\lambda^*/Q_r),0]\), with \(h\) the inverse of the derivative of the mean harm and \(Q_r\) the threat, frequency times virulence. A linear cost, which arises when harm and encounters grow exponentially together, gives the square root of the threat, the same law found for tRNA pools and for screening suspects. Power-law costs \(m^\alpha\) give \(Q_r^{1/(1+\alpha)}\), flatter the steeper the cost. Saturating and threshold costs give a square root and a logarithm with a cutoff that leaves minor threats uncovered, and only a logarithmic cost reproduces the threats exactly. In general the optimal repertoire is more uniform than the threats it guards against.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

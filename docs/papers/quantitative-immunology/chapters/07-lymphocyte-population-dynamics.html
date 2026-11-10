@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VII. Lymphocyte population dynamics | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section VII of Quantitative Immunology for Physicists: neutral birth–death models of lymphocyte clones, how the various neutral processes differ, power-law clone sizes from antigen-driven expansions, and in-host HIV dynamics under therapy, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="07-lymphocyte-population-dynamics">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section VII</span> Lymphocyte population dynamics</h1>
+<p class="lede">B and T cells live in clones, families of cells that share one receptor and grow or shrink as their members divide and die. The questions here are what simple stochastic models of that process predict for clone sizes, why the purely neutral version cannot match the data, and how one of the best-known population models in immunology changed the treatment of HIV.</p>
+</header>
+
+<p>A clone is the set of T or B cells that express the same receptor. It grows and shrinks as its cells divide or die, spontaneously or because of outside signals such as antigen recognition or cytokines. How to model this, and what it implies for observables such as clone-size distributions or clonal expansion, is still largely open. Much work describes broad subpopulations without clonal detail using ordinary differential equations; a 2002 review by Perelson is a good entry point.</p>
+
+<p>The focus here is instead on stochastic models that follow the identity and size of every clone, the resolution that repertoire sequencing now provides. The field is young, but it promises insight into collective decisions of immune cells and a route to in vivo parameters, when most studies rely on cultured cells or mice. The last topic is differential-equation models of HIV, perhaps the greatest success of modeling in translational immunology.</p>
+
+<section id="neutral" data-part="A" data-page="37">
+<h2>Neutral dynamics</h2>
+
+<p>Start with a repertoire in which nothing drives proliferation from outside. This fits the naive pool, often (though not universally) thought to be unaffected by external stimuli, and gives a neutral baseline for other dynamics or for longitudinal data. Some of the results below first appeared in work by Desponds and colleagues; those on how the steady state is reached and on the number of clones are original results of Altan-Bonnet, Mora and Walczak.</p>
+
+<p>New clones of \(C\) cells leave the thymus (for T cells) or the bone marrow (for B cells) at rate \(\theta_C\), so the total output of cells is \(\theta = \sum_C C\,\theta_C\). Every cell then divides at rate \(\nu\) and dies at rate \(\mu > \nu\). The total number of cells obeys</p>
+
+<div class="equation">\[
+\frac{dC_{\text{tot}}}{dt} = \theta - (\mu - \nu)\,C_{\text{tot}},
+\]</div>
+
+<p>the equation behind many studies that measure lymphocyte turnover with isotope labeling or other markers of division. With constant rates and no cells at \(t = 0\),</p>
+
+<div class="equation">\[
+C_{\text{tot}}(t) = \frac{\theta}{\mu-\nu}\left(1 - e^{-t(\mu-\nu)}\right).
+\]</div>
+
+<p>At steady state \(C_{\text{tot}} = \theta/(\mu-\nu)\) balances production against net loss, and division and death rates are thought to adjust so as to keep it fixed; this regulation is known as homeostasis. For T cells, \(\theta\sim10^{6}\) per day in mice and \(\sim10^{8}\) per day in humans, varying with age. With \(C_{\text{tot}}\sim10^{11}\), that gives an effective decay time \((\mu-\nu)^{-1}\sim1{,}000\) days, consistent with T cell lifetimes measured in humans with deuterated water.</p>
+
+<p>Totals say nothing about how cells are shared among clones, and they cannot separate division from death, which enter only through \(\mu-\nu\). The expected number of clones of size \(C\) obeys (Desponds and colleagues)</p>
+
+<div class="equation">\[
+\frac{dN_C}{dt} = \nu\big[(C-1)N_{C-1} - C N_C\big] + \mu\big[(C+1)N_{C+1} - C N_C\big] + \theta_C .
+\]</div>
+
+<p>For sizes above the largest introduction size, the steady state falls off as \(1/C\) times an exponential cutoff,</p>
+
+<div class="equation">\[
+N_C \sim \frac{1}{C}\left(\frac{\nu}{\mu}\right)^{C},
+\]</div>
+
+<p>and the cutoff disappears when division balances death, \(\nu\approx\mu\). <a href="06-repertoires.html">Clone frequencies</a> in sequenced repertoires are described by a power law \(\rho(p)\sim p^{-1-\hat\beta}\). Through \(N_C = N_{\text{tot}}\,\rho(p = C/C_{\text{tot}})\), this model gives \(\hat\beta = 0\), which repertoire data on unsorted or memory cells do not support. The memory repertoire cannot be purely neutral; it must be shaped by selection, for instance by the expansions after antigen recognition modeled <a href="#external-signals">below</a>.</p>
+
+<p>The equation can be solved exactly with generating functions and the method of characteristics, a calculation due to Anand. For clones that arrive as single cells, \(\theta_C = \theta\,\delta_{C,1}\), and an empty repertoire at \(t=0\),</p>
+
+<div class="equation">\[
+N_C(t) = \frac{\theta}{\nu}\,\frac{1}{C}\left(\frac{\nu}{\mu}\right)^{C}\left(\frac{1-e^{-t(\mu-\nu)}}{1-(\nu/\mu)\,e^{-t(\mu-\nu)}}\right)^{C}.
+\]</div>
+
+<p>The power-law exponent stays at 1 throughout, while the cutoff moves outward as the system approaches steady state. The number of clones grows as</p>
+
+<div class="equation">\[
+N_{\text{tot}}(t) = \frac{\theta}{\nu}\,\ln\!\left(\frac{\mu - \nu\, e^{-t(\mu-\nu)}}{\mu-\nu}\right),
+\]</div>
+
+<p>while the number of cells, \(\sum_C C N_C\), follows the earlier formula. At steady state \(N_{\text{tot}} = (\theta/\nu)\ln[\mu/(\mu-\nu)]\) depends on the two rates separately, not just on their difference. If division is rare, \(\nu\ll\mu\), as is often assumed for naive cells, then \(N_{\text{tot}} = \theta/\mu \approx C_{\text{tot}}\): nearly every cell is its own clone. If division almost balances death, \(\mu-\nu\ll\mu\), then \(N_{\text{tot}}\sim C_{\text{tot}}\,\epsilon\ln(1/\epsilon)\) with \(\epsilon = (\mu-\nu)/\mu\), so there can be arbitrarily fewer clones than cells. Introducing clones at size \(k_0\) changes little: \(N_{\text{tot}}\sim(H_{k_0}/k_0)\,C_{\text{tot}}\) for \(\nu\ll\mu\), where \(H_n = \sum_{i=1}^{n}1/i\) are the harmonic numbers, and the same \(\epsilon\ln(1/\epsilon)\) scaling holds for \(\mu-\nu\ll\mu\).</p>
+
+<figure class="plate" data-anim="neutral-clones">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">How clone sizes build up.</b> Neutral mode: clones of one cell arrive at rate \(\theta\), and each cell divides at rate \(\nu\) and dies at rate \(\mu = 1\), so time is in mean cell lifetimes. The simulation is exact, one event at a time, from an empty repertoire. Left: clones per unit size (dots) against \(N_C(t)\) (dashed), its steady state (gray) and the pure \(1/C\) law (dotted); the slope stays at −1 while the cutoff moves out. Push \(\nu/\mu\) toward 1 to stretch the power law. Right: clones and cells against \(N_{\text{tot}}(t)\) and \(C_{\text{tot}}(t)\); at \(\nu/\mu = 0.95\) there are about six cells per clone, at 0.99 about twenty. The second mode is the antigen-driven expansion model described below: clones enter with \(C_0\) cells, shrink at rate \(\mu\) in log size and jump by \(\Delta x\) at rate \(sp\); the histogram is a running time average, the dashed line has the predicted slope \(-(1+\alpha)\), and the readouts test the steady-state totals predicted for it. Real repertoires are far too large for a browser; the scaled-down model keeps the shapes.</figcaption>
+</figure>
+
+<p>The model can be refined to include convergent recombination: the thymus can export the same sequence more than once, with probability \(\Pgen(s)\) for a sequence \(s\), so clones can also grow through new arrivals. With this correction, Zheng and colleagues found fair agreement between the neutral model with a source and the bulk distribution of clone frequencies in the naive repertoire of mice. They also found many outliers, large naive clones that the neutral assumption cannot explain. Such comparisons are hard because clone frequencies across the whole repertoire have a heavy tail, so a slight contamination by non-naive cells can create spurious outliers.</p>
+</section>
+
+<section id="neutral-processes" data-part="B" data-page="38">
+<h2>What "neutral" means</h2>
+
+<p>Four processes go by the name neutral in different fields: those of population genetics and of ecology, the Yule–Simon process of speciation, and the clone-size model above. They are often confused, through semantics or because several give power laws, so it pays to compare their clone-size distributions (<a href="https://arxiv.org/pdf/1907.03891v2#page=39">table on page 39</a>):</p>
+<ul>
+<li><strong>Lymphocyte dynamics</strong>: \(N_C\sim(\nu/\mu)^C/C\), with a source of new clones.</li>
+<li><strong>Population genetics</strong>: \(N_C\sim 1/C\), with a fixed population size.</li>
+<li><strong>Yule process</strong>: \(N_C\sim 1/C^{1+\rho}\), for an expanding population, with \(\rho = 1/(1-\alpha)\) and \(\alpha\) the probability of a mutation at division.</li>
+</ul>
+
+<p class="aside"><b>Note on the printed text.</b> The table gives the lymphocyte distribution as \((\mu/\nu)^C/C\), which would grow without bound since \(\nu&lt;\mu\). The equation it cites, and the text, have \((\nu/\mu)^C\), which we use.</p>
+
+<p>Ecological neutral models come in several flavors (Hubbell), but the simplest is essentially the lymphocyte equation above. Its size distribution, which ecologists call the species abundance distribution, is Fisher's log-series, although Fisher reached it by purely statistical reasoning built on unjustified assumptions.</p>
+
+<p>In population genetics the population size \(C_{\text{tot}}\) is fixed, and new types usually arise as mutations of existing ones. The site-frequency spectrum, the distribution of allele frequencies and the counterpart of \(N_C\), is then a pure power law of exponent −1. Besides the missing cutoff, the difference is that a mutant reaching the full population size becomes the new wild type and leaves the mutant statistics, whereas no lymphocyte clone ever takes over the repertoire.</p>
+
+<p>The Yule process describes a population that grows forever while mutating: individuals of every type divide at rate \(\mu\), and a division creates a new type with probability \(\alpha\). Beyond the absence of death, the crucial difference is that novelty arrives at a rate proportional to population size. Growth is exponential, so the clone-size distribution reaches only a quasi-steady state once rescaled by \(C_{\text{tot}}\), tending for \(\alpha\ll1\) to a power law of exponent −2. That is tantalizingly close to the data, but new T cell clones come from the thymus, not from circulating cells, so the premise fails for T cells. It may suit population-wide affinity maturation of B cells, whose receptors hypermutate as they expand.</p>
+</section>
+
+<section id="external-signals" data-part="C" data-page="39">
+<h2>Population dynamics with external signals</h2>
+
+<p>To account for the power laws in sequenced repertoires, the model must go beyond neutrality: external signals have to change the division and death rates, the fitness, of cells according to their phenotype or receptor. Many models of clonal growth and decline exist, general competition models among them; rather than going through each, it is enough to capture what they share. The key ingredient is that cells divide when stimulated by antigen, at a rate that depends on how much recognizable antigen is around. Cells of the clone with receptor \(r\) die at the constant rate \(\mu\) but divide at a clone-specific rate</p>
+
+<div class="equation">\[
+\nu_r\big(\{Q_a\},\{C_{r'}\}\big) = \nu\sum_a Q_a\, f_{r,a}\; A\Big(\sum_{r'} C_{r'}\, f_{r',a}\Big),
+\]</div>
+
+<p>where \(f_{r,a}\) is the cross-reactivity between receptor \(r\) and antigen \(a\), \(Q_a\) the frequency of antigen \(a\), and \(A(x)\) a decreasing function describing how much of an antigen stays available once other receptors bind it, for example \(A(x) = (1+\epsilon)/(1+\epsilon x)^2\) with \(\epsilon\) the strength of competition. Receptors interact only indirectly, through this competition.</p>
+
+<p>Models with <em>direct</em> interactions, antibodies binding one another in so-called idiotypic networks (Jerne), were once proposed to generate rich dynamics. Popular in the 1980s, and with physicists for their links to network theory and disordered systems (reviewed by Perelson), they are no longer a dominant paradigm, and already were not when that review appeared: clonal selection alone accounts for their predictions.</p>
+
+<p>Treating fluctuations in the linear noise approximation, clone \(r\) then obeys a stochastic differential equation,</p>
+
+<div class="equation">\[
+\frac{dC_r}{dt} = \big[\nu_r\big(\{Q_a\},\{C_{r'}\}\big) - \mu\big]\,C_r + \xi_r(t), \qquad \avg{\xi_r(t)\,\xi_r(t')} = \big(\nu_r + \mu\big)\,C_r\,\delta(t-t'),
+\]</div>
+
+<p>interpreted in Itô's convention. This general form covers many situations. For the naive repertoire, \(Q_a\) describes the self-antigens whose survival signals T cells compete for. Such models of competitive exclusion (De Boer and Perelson) have explained features of both T and B cell repertoires, for example that greater diversity improves the fitness of the repertoire as a whole. The same equation also arises as a way of approaching an <a href="06-repertoires.html">optimal repertoire</a> (Mayer and colleagues).</p>
+
+<p>It can also describe responses to transient stimulation. Antigens appear at rate \(s\) and are cleared as \(Q_a(t) = Q_a^0\,e^{-\lambda(t-t_a)}\), with \(t_a\) the time antigen \(a\) appeared; antigen is then not limiting, \(A(x) = 1\). When \(\lambda\) is much larger than \(\mu\) and \(\nu\), each clone experiences brief bursts of expansion, each multiplying its size by \(\exp(\nu\avg{Q^0}/\lambda)\), arriving at rate \(sp\). Here \(p\) is the probability that \(f_{ar} = 1\) for a random antigen and receptor, in an all-or-nothing approximation where otherwise \(f_{ar} = 0\). In the log size \(x = \ln C\), each burst is a jump \(\Delta x = \nu\avg{Q^0}/\lambda\).</p>
+
+<p>Desponds and colleagues had assumed small, frequent jumps, which leads to a diffusion equation for \(x\). The general case can be solved with Laplace transforms, an original result of Altan-Bonnet, Mora and Walczak. The density of clones in log size, \(\rho(x,t) = e^{x}N_{e^x}(t)\), obeys a jump process with a constant drift toward smaller sizes,</p>
+
+<div class="equation">\[
+\frac{\partial\rho}{\partial t} = \mu\,\frac{\partial\rho}{\partial x} + sp\,\big[\rho(x-\Delta x) - \rho(x)\big] + \tilde\theta(x),
+\]</div>
+
+<p>where \(\tilde\theta(x) = e^{x}\theta(C = e^{x})\) is the rate density of new clones entering at log size \(x\). A power law \(N_C\propto C^{-1-\alpha}\) means \(\rho(x) = \rho_0\,e^{-\alpha x}\), and substituting gives the condition</p>
+
+<div class="equation">\[
+\mu\alpha + sp\,\big[1 - e^{\alpha\Delta x}\big] = 0 .
+\]</div>
+
+<p>For a fixed introduction size, \(\theta_C = \theta\,\delta_{C,C_0}\), the steady-state numbers of clones and cells are</p>
+
+<div class="equation">\[
+N_{\text{tot}} = \frac{\theta\,\ln C_0}{\mu - sp\,\Delta x}, \qquad C_{\text{tot}} = \frac{\theta\,(C_0-1)}{\mu - sp\,(e^{\Delta x}-1)} .
+\]</div>
+
+<p class="aside"><b>Note on the printed text.</b> The printed version swaps the labels, giving the cells \(\ln C_0\) and the clones \(C_0-1\). It also writes both denominators with the opposite sign, here and in the Methods derivation, which would make both totals negative in the regime the model requires, where clones eventually die out. We follow the derivation's labels with positive denominators; a clone's mean lifetime is \(\ln C_0/(\mu - sp\Delta x)\), and the simulation in the plate above reproduces both totals.</p>
+
+<p>For many small jumps, \(\Delta x\ll1\), expanding the exponential to second order recovers the exponent found by Desponds and colleagues,</p>
+
+<div class="equation">\[
+\alpha = \frac{\mu - sp\,\Delta x}{sp\,\Delta x^{2}/2},
+\]</div>
+
+<p>whose numerator is the net decay rate of a clone, death minus average expansion, and whose denominator is an effective diffusion coefficient arising from the random timing of expansions.</p>
+
+<p>Many models with random, clone-dependent expansion or selection therefore give power laws with arbitrary exponents, in line with memory and unfractionated repertoires. Telling them apart will need more detail on individual infection events and on the kinetics of unstimulated clones.</p>
+
+<p>A constant \(\Delta x\), independent of clone size, is questionable. In secondary responses the expanding cells are memory cells, which expand less than naive cells do in a primary infection, and inflammatory signals should depend on how many cells respond. It would also seem wise not to expand clones that are already large, since their targets are already covered. Within the same optimal-repertoire framework, with a logarithmic cost \(c(x) = -\ln x\), a perfectly specific kernel \(f_{ar} = \delta_{a,r}\) and Bayesian prediction, Mayer and colleagues found that the optimal dynamics approximately follow</p>
+
+<div class="equation">\[
+\frac{dC_r}{dt} = \chi\sum_{i\in E_r}\delta(t - t_i) - \tau_m^{-1}\big(C_r - \chi\,\theta_a\big),
+\]</div>
+
+<p>where \(E_r\) is the set of infection events, at times \(t_i\), to which clone \(r\) responds, \(\chi\) is a scale setting the total number of lymphocytes, and \(\tau_m = 2\tau/(\chi^{-1}C_{\text{tot}} - 1)\), with \(\tau\) the effective timescale of pathogen dynamics, is the time over which a clone relaxes back toward \(\chi\theta_a\). Unlike in the models above, growth here is not exponential, since each encounter adds a fixed amount. Some regulation or homeostasis must then tune the size of an expansion to the size of the antigen-specific part of the repertoire.</p>
+
+<p>So far selection has acted on whole clones, all cells of a clone sharing one average growth rate. It could instead act cell by cell, if individual cells react differently to signals other than antigen, such as cytokines, and evidence of such heterogeneity, from differences in receptor expression, signaling molecules and diffusion, is growing. Cell-dependent fitness gives long tails but no power law (Desponds and colleagues). With present experimental cutoffs, repertoire data alone may not tell the two apart; tracking clone sizes over time may.</p>
+</section>
+
+<section id="hiv" data-part="D" data-page="41">
+<h2>In-host HIV dynamics</h2>
+
+<p>Perelson and collaborators studied a modified SIS model of HIV infection, one of the most influential cases of computational models shaping medicine. It served to predict what two kinds of antiviral drug would do: reverse transcriptase (RT) inhibitors, which stop the virus from infecting cells, and protease inhibitors (PI), which make infected cells release non-infectious virus particles. Target cells \(T\), mostly CD4+ T cells, are produced at rate \(\alpha\), die at rate \(\mu\), and become infected cells \(I\) at a rate set by the infection constant \(\beta\). Infected cells die at rate \(\nu\), and while alive each releases virions \(V\) at rate \(p\), which are cleared at rate \(c\):</p>
+
+<div class="equation">\[
+\frac{dT}{dt} = \alpha - \mu T - \beta V T, \qquad \frac{dI}{dt} = \beta V T - \nu I, \qquad \frac{dV}{dt} = pI - cV .
+\]</div>
+
+<p>To include the drugs, the virus is split into infectious (\(V_{\text{I}}\)) and non-infectious (\(V_{\text{NI}}\)) particles,</p>
+
+<div class="equation">\[
+\frac{dV_{\text{I}}}{dt} = (1-\epsilon_{\text{PI}})\,pI - cV_{\text{I}}, \qquad \frac{dV_{\text{NI}}}{dt} = \epsilon_{\text{PI}}\,pI - cV_{\text{NI}},
+\]</div>
+
+<p>where \(\epsilon_{\text{PI}}\) and \(\epsilon_{\text{RT}}\), both between 0 and 1, are the efficacies of the protease and reverse transcriptase inhibitors. The RT inhibitor lowers the infection rate by the factor \(1-\epsilon_{\text{RT}}\), and only \(V_{\text{I}}\) can infect. Starting from the steady state of an untreated infection and holding \(T\) constant, a fully effective protease inhibitor makes the total viral load decay as</p>
+
+<div class="equation">\[
+V(t) = V(0)\,e^{-ct} + \frac{c\,V(0)}{c-\nu}\left[\frac{c}{c-\nu}\big(e^{-\nu t} - e^{-ct}\big) - \nu t\,e^{-ct}\right].
+\]</div>
+
+<p class="aside"><b>Note on the printed text.</b> The paper writes the infection term of the first equation as \(\beta IS\), but \(\beta VT\) in the second; we use \(\beta VT\) in both. It writes \(\beta = 1-\epsilon_{\text{RT}}\), which we read as the infection rate being multiplied by \(1-\epsilon_{\text{RT}}\). In the decay formula, the factor inside the square brackets is printed as \(cV(0)/(c-\nu)\), which has the wrong units; Perelson and colleagues have \(c/(c-\nu)\). And the formula is stated for both drugs fully effective, but it describes a perfect protease inhibitor acting alone: with \(\epsilon_{\text{RT}} = 1\) as well, no new cells are infected and the term in \(\nu t\) disappears.</p>
+
+<p>Fitting this curve to the viral load of a treated patient, by least-squares adjustment of \(c\) and \(\nu\), gave very good agreement (Perelson and colleagues, 1996). Combination therapy, the three-drug cocktails, could be explained only by adding long-lived infected cells as a second source of virus. Fitting these still very simple models to data gave the half-lives of the model's populations, which made it possible to schedule triple therapy so that the virus could hardly escape. In the end, a very simple calculation saved lives.</p>
+
+<figure class="plate" data-anim="hiv-dynamics">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Viral decay under therapy.</b> The model above with target cells held constant, starting from the untreated steady state; in units of pre-treatment levels only \(c\), \(\nu\) and the efficacies matter. Blue: total viral load, split into infectious (teal) and non-infectious (brown) virions; gold: infected cells; dashed pink: the decay formula. With a perfect protease inhibitor alone the simulation follows the formula exactly: a shoulder of about a day, while virions made before treatment still infect cells, then a decline whose late slope is \(\nu\). The early phase reflects \(c\) and the late one \(\nu\), which is how fits to patient data reveal both lifetimes. The defaults, \(c = 3\) and \(\nu = 0.5\) per day, are close to the original 1996 fits, which are not quoted alongside the model. A perfect RT inhibitor on top shortens the shoulder. With target cells fixed, any efficacy eventually clears the virus here, just more slowly for weak drugs.</figcaption>
+</figure>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>With a thymic source and neutral division and death, the number of lymphocytes depends only on death minus division, but the number of clones and their size distribution, a \(1/C\) law with an exponential cutoff that recedes as the repertoire fills, depend on both rates. Neutral models from genetics, ecology and speciation give related but distinct laws, and none matches the heavier tails of memory repertoires. Random antigen-driven expansions do: a drift-and-jump process yields power laws of any exponent, set by a simple consistency condition, though size-dependent expansion and cell-level heterogeneity remain open. Finally, a few equations for target cells, infected cells and virus, fitted to viral decay under therapy, revealed how fast HIV turns over and guided the combination treatments that followed.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

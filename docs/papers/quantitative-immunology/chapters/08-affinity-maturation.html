@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIII. Affinity maturation | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section VIII of Quantitative Immunology for Physicists: models of somatic hypermutation, cycles of mutation and selection in germinal centers, broadly neutralizing antibodies, and population-genetics views of B cell evolution, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="08-affinity-maturation">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section VIII</span> Affinity maturation</h1>
+<p class="lede">Once a B cell has recognized an antigen, its receptor keeps changing: in germinal centers B cells mutate and compete, and within weeks their antibodies bind about a thousand times more tightly. How do the mutations arise, how does selection act on them, how might immunization steer the process toward broad protection, and what can population genetics read from the sequences?</p>
+</header>
+
+<p>After stimulation by antigen, B cell receptors acquire somatic hypermutations (SHM) that let a clone explore the binding landscape. Clustering and tree-building methods group sequenced descendants into lineages (McCoy and colleagues; Yaari and Kleinstein). As this is Darwinian evolution inside one body, much effort goes into extracting its details from data, and a review by Hoehn and colleagues argues for methods built for hypermutation rather than borrowed from traditional population genetics. Packages such as Immcantation, Partis, SPURF and IGoR learn hypermutation models, described below, from large datasets. Lineage reconstruction is a general problem in immunology; using the fact that abundant clones tend to leave more offspring helped reconstruct B cell lineages from imaging of germinal centers (DeWitt and colleagues).</p>
+
+<p>Naive B cells that recognize an antigen, even weakly (Jacob and colleagues), migrate to germinal centers in the lymph nodes, where the reaction starts about 3 days after antigen injection (Nieuwenhuis and Opstelten). For about 7 days the cells divide without mutating, reaching about 1,500. About a week into the infection they enter the dark zone, where the enzyme activation-induced cytidine deaminase (AID) mutates their receptor genes as they keep dividing. A cycle follows (<a href="https://arxiv.org/pdf/1907.03891v2#page=41">figure on page 41</a>): mutation in the dark zone, testing in the light zone, then another round, or exit to become a memory B cell or a plasma cell that secretes antibodies.</p>
+
+<section id="hypermutation" data-part="A" data-page="42">
+<h2>Modeling the hypermutation process</h2>
+
+<p>Sequencing of mutations that escaped selection shows that AID acts very unevenly, with hotspots and strong dependence on the surrounding motif (Yaari and colleagues; Elhanati and colleagues; Marcou and colleagues). The difficulty is to remove the effect of selection, which has already shaped memory sequences.</p>
+
+<p>One answer is to count only synonymous mutations, which leave the protein unchanged and should be invisible to selection. The S5F model, learned this way from long heavy-chain sequences, gives a mutability to every 5-mer (Yaari and colleagues). Only half of all 5-mers were seen with synonymous mutations; the rest were filled in by averaging over related observed ones. An older approach learned models depending on two or three neighboring nucleotides from out-of-frame memory sequences of heavy-chain V and J segments, in low-throughput data (Shapiro and colleagues).</p>
+
+<p>S5F gives the probability that the central base of a motif \(\vec\pi=(\pi_{-2},\ldots,\pi_2)\) mutates. Restricting to synonymous mutations calls for ad hoc normalizations:</p>
+
+<div class="equation">\[
+P_{\rm mut}(\vec\pi) = \mu\, \frac{m_{\vec\pi}}{\sum_{\vec\pi'} m_{\vec\pi'}},
+\qquad
+m_{\vec\pi} = \frac{1}{\sum_{j,\vec\pi'} C^j_{\vec\pi'}} \sum_j \frac{C^j_{\vec\pi}/B^j_{\vec\pi}}{\sum_{\vec\pi'} C^j_{\vec\pi'}/B^j_{\vec\pi'}} \sum_{\vec\pi'} C^j_{\vec\pi'},
+\]</div>
+
+<div class="equation">\[
+C^j_{\vec\pi} = \sum_i I_{\vec\tau^j}(i,\vec\pi,\sigma^j_i), \qquad B^j_{\vec\pi} = \sum_{i,b} s^{\vec\pi}_b\, I_{\vec\tau^j}(i,\vec\pi,b).
+\]</div>
+
+<p>Here \(\mu\) is an adjustable baseline rate not learned by S5F, and \(m_{\vec\pi}\) the expected number of mutations of the motif in a sequence. The indicator \(I_{\vec\tau^j}(i,\vec\pi,b)\) is 1 when the unmutated germline ancestor \(\vec\tau^j\) of sequence \(\vec\sigma^j\) matches \(\vec\pi\) over positions \(i-2\) to \(i+2\) and changing \(\tau^j_i\) to \(b\) is synonymous. The weight \(s^{\vec\pi}_b = N^{\vec\pi}_b/\sum_{b'\neq\pi_0}N^{\vec\pi}_{b'}\), with \(s^{\vec\pi}_{\pi_0}=0\), is the share of the dataset's synonymous mutations of \(\vec\pi\) that go to base \(b\). \(C\) counts synonymous mutations that happened and \(B\) the opportunities for them; their ratio is normalized per sequence, then averaged with weights set by each sequence's synonymous mutations.</p>
+
+<p class="aside"><b>Note on the printed text.</b> In the definition of \(s^{\vec\pi}_b\) the paper writes the summand of the denominator as \(N^{\vec\pi}_b\); the sum runs over \(b'\), so \(N^{\vec\pi}_{b'}\) is meant.</p>
+
+<p>S5F maps the hot and cold spots of unselected hypermutation and is widely used, notably as the baseline for measuring selection from synonymous mutations (Uduman and colleagues; Yaari and colleagues). In mice, a 5-mer model has also been learned without the synonymous trick, from V and J genes of both chains in rearrangements engineered to be nonproductive (Cui and colleagues). To limit overfitting, one can further assume that each position of the motif contributes additively, as Marcou and colleagues did for nonproductive human heavy chains. For a motif of \(2m+1\) bases around the mutating site,</p>
+
+<div class="equation">\[
+P_{\rm mut} = \frac{\mu\, \exp\!\left(\sum_{i=-m}^{m} e(\pi_i)\right)}{1+\mu\, \exp\!\left(\sum_{i=-m}^{m} e(\pi_i)\right)},
+\]</div>
+
+<p>where the \(e(\pi_i)\) form a position-weight matrix (PWM) learned by expectation-maximization within IGoR, the software that also infers <a href="06-repertoires.html#generation">V(D)J recombination models</a>.</p>
+
+<p>Real hypermutation is more complicated. With context-dependent rates the order of mutations matters, and summing over all histories is out of reach; Feng and colleagues sampled orderings with a Gibbs sampler and validated the model on simulated data. More importantly, mutations cluster along the sequence (Marcou and colleagues). Hypermutation starts with a DNA lesion followed by error-prone repair over about 20 nucleotides (Unniraman and Schatz), which can create several nearby mutations at once and lets context act over long distances, since the faulty repair may lie far from the original damage. Context models also leave part of the variation unexplained, so other factors, such as length, probably matter.</p>
+</section>
+
+<section id="selection-cycles" data-part="B" data-page="42">
+<h2>Cycles of selection</h2>
+
+<p>Mutated B cells then move to the light zone for the selection half of the Darwinian cycle. A receptor must bind antigen on follicular dendritic cells (FDC) firmly enough for the cell to take it in and present its peptides on MHC to helper T cells, for whose peptide-specific survival signal B cells then compete. Selection is thus twofold, for recognizing antigen and for winning T cell help, and higher affinity helps at both steps by raising antigen uptake and the chance of help. One unverified hypothesis is that helper T cells, trained against self-proteins in the thymus, also screen out mutations that make B cells self-reactive. Cells that get no survival signal die.</p>
+
+<p>Theory by Oprea and Perelson, later confirmed experimentally, showed that one pass through the two zones cannot yield as many high-affinity cells as are observed, hence the recycling hypothesis: about 90% of selected cells return to the dark zone. By the end, affinity has risen about 1000-fold (Berek and Milstein; Oprea and colleagues), even about 10,000-fold in rabbits (Eisen and Siskind). The population stays oligoclonal (Tas and colleagues), with a large diversity of receptors (Kuraoka and colleagues), and germinal centers appear binary: each either produces many high-affinity cells or none (Victora and Nussenzweig).</p>
+
+<h3>Brainbow mice</h3>
+
+<p>"Brainbow" experiments revealed how heterogeneous germinal centers are (Victora and colleagues; Tas and colleagues). When a B cell acquires its receptor it is permanently tagged with one of 10 combinations of four fluorescent proteins, so its descendants share its color and can be mapped by imaging. Tas and colleagues, in Victora's group, found many germinal centers active at once in one lymph node, with different diversities. Most centers examined at days 6 and 15 held many colored clusters, at least about 50 clones per center and up to hundreds. Tagging cells only once inside the center showed that selection keeps several colors: lineage diversity persists, though one lineage later dominates somewhat, typically with under 40% of the cells.</p>
+
+<p>The variation between centers was huge. Two weeks after infection the dominant lineage held up to 80% of the cells in some centers and only about 20% in others. Some centers converged on one lineage within days, others took more than two weeks, and some never did. Adoptive transfers of high-affinity clones before a bacterial or viral challenge gave the same range, from nearly monoclonal centers to an effectively neutral spread of lineages. Single-lineage centers trace back to one ancestral receptor, possibly already mutated, that expanded in a short clonal burst. Yet receptors from centers with very different lineage diversity have similar affinities. Serum antibody sequencing confirms the oligoclonality: antibodies against a given antigen at physiologically relevant concentrations come from 3 to 147 distinct CDR3s (Lee and colleagues).</p>
+
+<figure class="plate" data-anim="germinal-center">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">A germinal center in cycles.</b> Fifty founder clones, already expanded to 1,500 cells, start hypermutating. In the dark zone each cell divides twice, and each daughter mutates with probability \(\mu\): 30% of mutations destroy the receptor, the rest shift the binding energy \(E\) by a random, usually harmful step. In the light zone a cell survives with probability \(P_s = Ae^{-E}/(1+Ae^{-E})\) (dashed), where \(A\) is the amount of antigen on display; this lumps antigen capture and T cell help into one test. Of the survivors, 90% recycle and 10% leave. Ten colors are shared among the fifty lineages, as in brainbow mice. Mutation smears the histogram leftward and selection trims its left side, so the distribution moves right as a few lineages take over. In line with the frustration argument below, a center that fills up stops evolving: the run ends when it is back to 1,500 cells, or empty. The mutation statistics are chosen for illustration only.</figcaption>
+</figure>
+</section>
+
+<section id="bnabs" data-part="C" data-page="43">
+<h2>Evolution of broadly neutralizing antibodies</h2>
+
+<p>Viruses such as influenza and HIV come in many strains. Antibodies usually mature against one strain, aimed at easily reached epitopes that the virus can mutate at little cost to escape. Conserved epitopes, where mutations would hurt the virus, are better targets but usually hidden. Antibodies that bind strongly to many strains, broadly neutralizing antibodies (BnAb), require training on antigens from several strains, which raises a concrete question for vaccines: which antigens, in what order?</p>
+
+<p>Wang and colleagues explored this for HIV by simulating germinal centers with three antigens, the wild type (WT) and two mutants, and a <a href="02-physical-chemistry.html#specificity">string model</a> of binding, the viral epitope having a conserved part, where mutations harm the virus, and a variable part. The schedules were all three variants together (scheme 1); the wild type with mutant 1, then mutant 2 (scheme 2); and all three in sequence (scheme 3). Output antibodies were tested against a standard panel, breadth being the number of panel antigens recognized.</p>
+
+<p>Scheme 1 produced no BnAbs and hardly any germinal center with output, because B cells died fast. Unable to tell conserved from variable residues, the cells faced a frustrated task: each round of selection showed a receptor a very different antigen, so nothing was consistently selected. Scheme 2 produced BnAbs, but rarely. It probably resembles a natural infection, which starts with one strain that later diversifies: the first round creates binders to the conserved residues, breaking the frustration. Scheme 3 produced BnAbs with high probability, about 69%, because sequential presentation lets the evolving receptors focus on the one part of the target that does not move. In experiments, sequentially immunized mice did focus their responses.</p>
+
+<h3>Neither too harsh nor too lenient</h3>
+
+<p>Two parameters effectively govern the germinal center in this picture: the chance \(P_s\) that a cell survives selection and the chance \(\mu\) that it mutates. A B cell expands with probability \(P_s(1-\mu)\), mutates with probability \(P_s\mu\), and dies with probability \(1-P_s\). Wang and colleagues argue that the system is optimally frustrated. Too stringent a selection (small \(P_s\)) kills every cell; too lenient a selection (large \(P_s\)) fills the germinal center with existing cells, since \(\mu\) is small. Only intermediate \(P_s\) lets mutants survive many rounds of selection and accumulate the mutations that bring breadth. Simulations in which intermediate amounts of antigen give receptors the most mutations support this view, but it awaits experimental validation.</p>
+
+<figure class="plate" data-anim="germinal-center" data-variant="scan">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Neither too harsh nor too lenient.</b> The model of the plate above, run 60 times at each of 17 amounts of antigen \(A\), which set how stringent selection is. Left: the share of germinal centers that refill rather than die out. Right: hypermutations per cell when the run ends, in centers that refilled (dashed) and averaged over all attempts, a failure counting as zero (solid). Scarce antigen kills nearly every center, though rare survivors are highly mutated; plentiful antigen lets a center refill within a cycle or two with almost unmutated cells; the most mutations per attempt come in between (circled). Changing \(\mu\) scales the counts, but the best level stays intermediate, just above the amount at which centers start to fail. This illustrates the argument in a simplified setting, not the model of Wang and colleagues.</figcaption>
+</figure>
+
+<h3>Naive cells, mutated cells and age</h3>
+
+<p>Besides mutation, the recruitment of new naive cells adds novelty. Murugan and colleagues compared the two routes using the human B cell response to the malaria parasite and string models of maturation: simple antigens generated good binders far more efficiently by hypermutation, while complex ones relied on recruiting naive cells. Both routes are observed. After a booster influenza vaccine about 7% of BCRs carried no hypermutation (Neu and colleagues), though those experiments also showed strong clonal dominance, about 10% of clones making up about 90% of sequences (Lee and colleagues). The model also predicts, as experiments confirm, that prolonged exposure to little antigen selects heavily mutated antibodies, whereas brief exposure to much antigen selects among existing naive variants. These results, valid over a few months, agree with Wang and colleagues for chronic infections. Both groups found that most hypermutations do not necessarily improve binding and that both routes can reach equally high affinities, consistent with the brainbow heterogeneity. Why some people make no good antibodies against so strong a challenge as malaria is unclear.</p>
+
+<p>Age matters too. In older people positive and negative selection act differently, producing longer, more promiscuous CDR3s that are more likely to bind self-proteins, and the share of BCRs carrying hypermutations shifts between infancy and adulthood (Wendel and colleagues). After influenza vaccination (Neu and colleagues), people born before 1977 showed less diversity between clones but the same affinity as younger people. Adapting less by hypermutation and more from their larger memory pools, they make antibodies against the conserved stalk of the influenza protein, as BnAbs do, while younger people's heavily mutated antibodies target the variable head, aiming at strain-specific protection. Younger people can make BnAbs under a strong challenge, a vaccine combined with a pandemic, as Wang and colleagues predict, but respond specifically to later infections. Maturation thus draws on both unmutated and heavily mutated cells, with details set by the dose and timing of exposure, earlier infections, age and how complex the antigen is.</p>
+</section>
+
+<section id="population-genetics" data-part="D" data-page="44">
+<h2>Population genetics approaches to affinity maturation</h2>
+
+<h3>Reading evolution from repertoire data</h3>
+
+<p>RepSeq has been used to classify the evolutionary regime of B cells during HIV infection (Nourmohammad and colleagues) and after influenza vaccination, a stand-in for a short, acute infection (Horns and colleagues). BCRs sampled at 9 time points over about two weeks around vaccination formed very skewed lineage trees with a U-shaped site frequency spectrum (SFS). The SFS counts how many mutations are found at each frequency in the population and carries information about the underlying evolution; a U shape indicates strong selection. Yet three of the five strongly selected BCRs recognized neither the vaccine epitope nor the whole virus. This suggests bystander evolution, in which non-responding clonotypes expand in response to many signals, perhaps a way of keeping memory clones between infections by the same or similar pathogens.</p>
+
+<p>Lineages in people infected with HIV also show skewed trees and U-shaped spectra (Nourmohammad and colleagues), but so do out-of-frame sequences from healthy people. That is expected: healthy repertoires are under constant selection, and an out-of-frame sequence rides in a cell with a working receptor, hitchhiking on the selection of the whole cell. Tracking synonymous and non-synonymous mutations over time separates the selection due to chronic infection from this background, and shows that the CDR3 of BCRs in untreated carriers evolves under <em>clonal interference</em>: several beneficial mutations arise at similar times and compete, and since only one can survive, adaptation slows. The analysis uses the probability that a beneficial mutation first climbs to a threshold frequency \(x\) and is then driven extinct by a competitor,</p>
+
+<div class="equation">\[
+H(x, x_i) = G(0\,|\,x)\, G(x\,|\,x_i),
+\]</div>
+
+<p>where the propagator \(G(x|y)\) is the probability of ever reaching \(x\) from \(y\), and \(x_i\) the mutant's starting frequency. Data give estimates of both \(H\) and \(G\), which can also be computed under various models. Neither neutral evolution nor selection with a fixed advantage explains the observations; a model of varying selection, where a mutant's advantage fluctuates as competitors come and go, fits them.</p>
+
+<p>Phylogenetic trees from repertoire data of HIV patients, combined with S5F, also revealed constraints on BCR adaptation (Vieira and colleagues). Ancestral sequences are more likely to mutate in the CDR3 than in the framework regions (FWR). Residue mutability fell more in the framework than in the CDR3, and in both, losses of mutability were much more likely than gains. In the CDR3, under strong positive selection for binding, most of the change came from non-synonymous mutations, yet in all regions up to 21% of the loss of mutability came from synonymous, neutrally evolving mutations. This too points to adaptation slowed by clonal interference.</p>
+
+<h3>Models of co-evolution of phenotypic traits</h3>
+
+<p>When BCRs chase HIV, fitness on both sides depends on how well antibodies recognize the virus, a possibly nonlinear function of affinity. Following one antibody lineage and a viral population, Nourmohammad and colleagues obtained an effective stochastic equation for \(\epsilon\), the rescaled average binding energy of antibodies to viral epitopes:</p>
+
+<div class="equation">\[
+\frac{d\epsilon}{dt} = -2\left[\theta_A + \theta_V\frac{N_A}{N_V}\right]\epsilon + s_A\sigma_A - s_V\sigma_V + \sqrt{\sigma_A + \frac{N_A}{N_V}\sigma_V}\;\xi_\epsilon .
+\]</div>
+
+<p>The \(\sigma_i\) are the variances of binding energy within each population, with \(\theta_i\), \(s_i\), \(N_i\) the mutation rate, selection coefficient and size for antibodies (\(i=A\)) or viruses (\(i=V\)), \(\xi_\epsilon\) a Gaussian noise, and time in units of the antibody coalescence time. The derivation assumes fitness linear in binding energy and an additive string model; the same kind of reduction, from evolving genotypes to an equation for a phenotype, can be worked through in simpler settings. Mutations on either side erode recognition, pulling \(\epsilon\) toward zero; antibody diversity raises \(\epsilon\) as selection picks the best binders, and viral diversity lowers it as selection picks the best escapers. For BnAbs the targeted epitope is conserved, so \(\theta_V=0\) and \(\sigma_V=0\).</p>
+
+<p>Binding energy alone is a poor signature of co-evolution; time-shifted statistics do better. The time-delayed viral fitness (<a href="https://arxiv.org/pdf/1907.03891v2#page=46">figure on page 46</a>) pits the virus at time \(t\), with genotype frequencies \(y^\gamma(t)\), against antibodies from time \(t+\tau\), with frequencies \(x^\alpha(t+\tau)\):</p>
+
+<div class="equation">\[
+F_{V,\tau}(t) \sim -s_V(t) \sum_{\alpha\gamma} E_{\alpha\gamma}\, y^{\gamma}(t)\, x^{\alpha}(t+\tau),
+\]</div>
+
+<p>with \(E_{\alpha\gamma}\) the string-model binding energy of antibody \(\alpha\) to epitope \(\gamma\); at \(\tau=0\) this is \(-\epsilon\) up to a selectivity constant. When selection acts comparably on both sides, \(s_A\theta_A\approx s_V\theta_V\), today's virus is fittest against antibodies of the recent past, which it has escaped, and less fit against future antibodies, which have caught up; at long delays mutations randomize the genomes and \(F_{V,\tau}\to0\). When selection on the virus dominates, \(s_V\theta_V\gg s_A\theta_A\), the virus effectively faces a neutral antibody population: it still beats antibodies it has seen, and randomization erodes its edge against future ones, but without a penalty. The slopes on either side of \(\tau=0\) define the fitness flux and the transfer flux,</p>
+
+<div class="equation">\[
+\phi_V(t) = \partial_\tau F_{V,\tau}(t-\tau)\big|_{\tau=0^-} = \sum_\gamma \frac{\partial F_V}{\partial y^\gamma}\frac{dy^\gamma}{dt},
+\qquad
+\mathcal{T}_{A\to V}(t) = \partial_\tau F_{V,\tau}(t)\big|_{\tau=0^+} = \sum_\alpha \frac{\partial F_V}{\partial x^\alpha}\frac{dx^\alpha}{dt},
+\]</div>
+
+<p>measuring how the virus adapts to present antibodies and the pressure that adapting antibodies put on it. At stationarity they sum to zero and the derivative is continuous. The S-shaped curve expected for \(s_A\theta_A\approx s_V\theta_V\) signals two competing populations, and neutralization measurements from several studies show it: viruses resist past antibodies better than future ones. Blanquart and Gandon also found that antibodies from one patient carrying HIV target another person's virus better than that person's own current antibodies do, which remains unexplained.</p>
+
+<p>In a germinal center several lineages compete. Extending the analysis, Nourmohammad and colleagues let the frequency \(\rho^C=\sum_{\alpha\in C}x^\alpha\) of a lineage \(C\) of genotypes \(\alpha\) follow its mean fitness \(F_A^C=\sum_\alpha f^\alpha_C x^\alpha_C\) relative to the average \(F_A=\sum_C F_A^C\rho^C\):</p>
+
+<div class="equation">\[
+\frac{d\rho^C}{dt} = \left(F_A^C - F_A\right)\rho^C + \sqrt{\frac{\rho^C(1-\rho^C)}{N_A}}\;\xi_C ,
+\]</div>
+
+<p>with \(\xi_C\) Gaussian white noise; the genotype fitnesses \(f^\alpha_C\), weighted by their frequencies \(x^\alpha_C\) within the lineage, depend on the viral frequencies \(y^\gamma\). The lineage's fixation probability then depends not only on its fitness advantage and the population size, as in the classic result for a constant advantage, but also on its ability to adapt:</p>
+
+<div class="equation">\[
+\frac{P^C_{\rm fix}}{P^0_{\rm fix}} \approx 1 + \avg{N_A\left(F_A^C(0)-F_A(0)\right)} + \frac{N_A^2}{3}\avg{\phi_A^C(0)-\phi_A(0)} - N_A N_V\avg{\abs{\mathcal{T}^C_{V\to A}(0)} - \abs{\mathcal{T}_{V\to A}(0)}},
+\]</div>
+
+<p>where \(P^0_{\rm fix}=\rho^C(0)\) is the neutral value, \(\phi^C_A\) and \(\mathcal{T}^C_{V\to A}\) are the antibody counterparts of the viral fluxes for lineage \(C\), and \(\phi_A\), \(\mathcal{T}_{V\to A}\) their averages over lineages. The first correction is the usual fitness advantage, the second rewards lineages that keep adapting to recognize the virus, and the third accounts for the virus's ability to adapt or escape. For ordinary antibodies aimed at a variable region, broad viral diversity is harmful because it allows escape (large \(\mathcal{T}^C_{V\to A}\)). For BnAbs this effect vanishes and even reverses: high viral diversity makes a BnAb lineage more likely to fix than an ordinary one, while at low diversity both are equally likely. This has been offered as the reason BnAbs appear late in infection, when viral diversity is large.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Affinity maturation is Darwinian evolution compressed into weeks. AID mutates receptor genes with a strongly context-dependent pattern, captured in part by S5F and additive position-weight matrices, though clustered and order-dependent mutations escape them. In germinal centers, B cells alternate between mutation in the dark zone and twofold selection in the light zone, recycling about 90% of the time and gaining about a thousandfold in affinity, while lineage diversity varies enormously between centers. Simulations suggest that selection must be neither too harsh nor too lenient, and that presenting antigen variants in sequence can steer maturation toward broadly neutralizing antibodies. Population genetics reads strong selection, bystander expansion and clonal interference from repertoire data, and co-evolution models built on time-shifted fitness offer a reason why broadly neutralizing antibodies emerge late in HIV infection.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

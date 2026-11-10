@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IX. Pathogens and hosts | Immuno-Physics Notes</title>
+<meta name="description" content="Section IX of Quantitative Immunology for Physicists: a model of a virus population and host immune memory, with a link to the paper's own text.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="09-pathogens-and-hosts">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section IX</span> Population dynamics of pathogens and hosts</h1>
+<p class="lede">From one body to whole populations: the immunity a host population builds up decides which virus strains can spread next, and the viruses keep moving away from it. Full notes for this part are not written yet; the original text starts on <a href="https://arxiv.org/pdf/1907.03891v2#page=46">page 46</a>, and the model below can be explored alongside it.</p>
+</header>
+
+<section id="model" data-page="47">
+<h2>A model to explore</h2>
+
+<p>In models of host–pathogen co-evolution, each infection leaves immune memory behind, and that memory protects against the infecting strain and, more weakly, its close relatives. A virus population then survives only by mutating away from the immunity it has created. The plate below simulates one such model.</p>
+
+<figure class="plate" data-anim="antigenic-chase">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Immune memory and a moving virus population.</b> Virus strains sit on a line, and neighboring strains are similar. Hosts follow susceptible–infected–recovered dynamics, and recovering from one strain protects against nearby strains, with protection falling off over a cross-immunity distance \(d\). New strains arise by mutation at rate \(\mu\). The infected population moves along the line as a wave, led by a few infections at its front, the strains of highest fitness \(f_m\). In the fitness-wave picture of this process, new mutations at the front arise at a rate \(r \approx f_m/\ln(f_m/\mu)\); the readouts compare it with the speed measured in the simulation. The model is stochastic, and in some runs the virus dies out after a boom-and-bust cycle; when that happens, reset to start again.</figcaption>
+</figure>
+</section>
+
+</article>
+</main>
+</body>
+</html>

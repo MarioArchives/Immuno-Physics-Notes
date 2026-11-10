@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Reaching the optimum by competition | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on competition for antigens in How a well-adapted immune system is organized: clonal dynamics, availability matched to the cost of infection, why stable fixed points are optimal, simulations, and the cost as a Lyapunov function.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="05-competition">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 5</span> Reaching the optimum by competition</h1>
+<p class="lede">The optimal repertoire ties every clone to every other, which seems to call for a central planner. It does not. Lymphocytes that divide when antigen stimulates them, and compete for a limited supply of it, settle on the optimum by themselves, provided the way antigen availability drops under competition is matched to the cost of infection.</p>
+</header>
+
+<p>The optimal repertoires found <a href="03-flatter-than-the-threats.html">without cross-reactivity</a> and <a href="04-cross-reactivity.html">with it</a> are global objects. The share of each receptor depends on all the others through the multiplier \(\lambda^*\), and with cross-reactivity it depends in detail on its neighbors. It is tempting to conclude that only some centralized mechanism, aware of the whole antigen distribution and the whole repertoire and moving cells around accordingly, could build such a thing. Nothing so implausible is needed: a population of lymphocytes that grows on antigen and competes for it can organize itself into the optimal repertoire.</p>
+
+<section id="clonal-competition" data-part="A" data-page="6">
+<h2>Clones that compete for antigen</h2>
+
+<p>A lymphocyte whose receptor recognizes an antigen is stimulated to divide. Its descendants carry the same receptor and form a clone, and \(N_r\) denotes the number of cells carrying receptor \(r\). The model is close to the competition models that de Boer and Perelson built for T cells and that de Boer, Freitas and Perelson built for B cells. It rests on two assumptions: lymphocytes divide when antigen stimulates them, and they compete for a limited supply of antigen.</p>
+
+<p>Competition enters through the coverage of each antigen, now counted in cells,</p>
+
+<div class="equation">\[
+\tilde N_a = \sum_r N_r\, f_{r,a},
+\]</div>
+
+<p>the size of the pool of receptors able to bind \(a\), each weighted by how well it recognizes it. The more receptors crowd onto an antigen, the less of it remains for any one of them. An availability function \(A(\tilde N_a)\) that decreases with coverage describes this: a receptor that on its own would be stimulated in proportion to \(f_{r,a}\) is instead stimulated in proportion to \(A(\tilde N_a)\,f_{r,a}\).</p>
+
+<p>Infections arrive one at a time. In the stochastic version of the model, time advances in steps of \(\Delta t\). At each step a single antigen \(a\) is drawn from \(Q_a\), and every clone changes by</p>
+
+<div class="equation">\[
+\Delta N_r = N_r\,\Delta t\,\big[A(\tilde N_a)\, f_{r,a} - d\big].
+\]</div>
+
+<p>The first term is proliferation of the cells that recognized the antigen. The second is death at a constant rate \(d\), so that \(1/d\) is the lifetime of a cell. Averaged over the antigen drawn, the increment is \(N_r\Delta t\,\big[\sum_a Q_a A(\tilde N_a) f_{r,a} - d\big]\). When antigens are sampled quickly, \(\Delta t\to 0\), many presentations take place before any clone changes appreciably, the fluctuations average out, and the dynamics become deterministic. In this mean-field limit,</p>
+
+<div class="equation">\[
+\frac{\rmd N_r}{\rmd t} = N_r\Big[\sum_a Q_a\, A\Big(\sum_{r'} N_{r'} f_{r',a}\Big)\, f_{r,a} - d\Big].
+\]</div>
+
+<p>The total population is not imposed from outside. Clones grow until their antigens are covered so thoroughly that the stimulation each cell receives just balances its death; for a given environment the steady-state total \(N_{\rm st}=\sum_r N_r\) is therefore set by \(d\). In a real organism the capacity to reorganize declines with age, but for simplicity every rate here is constant.</p>
+</section>
+
+<section id="matching" data-part="B" data-page="6">
+<h2>Matching availability to cost</h2>
+
+<p>Suppose the availability is tied to the cost function by</p>
+
+<div class="equation">\[
+A(\tilde N_a) = -c'\,\bar F'\!\left(\frac{\tilde N_a}{N_{\rm st}}\right),
+\]</div>
+
+<p>with \(c'\) a positive constant. Then every stable fixed point of the mean-field dynamics is an optimal repertoire. At steady state \(\tilde N_a/N_{\rm st}\) is the coverage \(\tilde P_a\) of the normalized repertoire \(P_r=N_r/N_{\rm st}\), and \(-\bar F'(\tilde P_a)\) is the marginal gain from covering antigen \(a\) a little better. The condition says that an antigen should stimulate receptors in proportion to how much extra coverage of it would still lower the cost. A poorly covered antigen whose recognition matters stays plentiful; a thoroughly covered one becomes scarce.</p>
+
+<h3>Separate niches</h3>
+
+<p>The case without cross-reactivity shows how this works. With \(f_{r,a}=\delta_{ra}\) the coverage of antigen \(r\) is just the clone \(N_r\), and each clone obeys an equation of its own,</p>
+
+<div class="equation">\[
+\frac{\rmd N_r}{\rmd t} = N_r\big[Q_r A(N_r) - d\big].
+\]</div>
+
+<p>Clones then compete only with their own kind. Each occupies its own antigenic niche, like a species with a food supply nobody else touches. It grows while \(Q_rA(N_r)>d\) and settles at the carrying capacity of its niche,</p>
+
+<div class="equation">\[
+N_r = A^{-1}\!\left(\frac{d}{Q_r}\right),
+\]</div>
+
+<p>or dies out when that capacity would be negative, that is, when even an uncontested antigen cannot sustain it, \(Q_rA(0)\le d\). With the matched availability the steady state reads \(-c'Q_r\bar F'(N_r/N_{\rm st}) = d\), or</p>
+
+<div class="equation">\[
+Q_r\,\bar F'(P_r) = -\frac{d}{c'} ,
+\]</div>
+
+<p>which is the optimality condition for <a href="03-flatter-than-the-threats.html#specific-solution">specific receptors</a> with \(\lambda^* = d/c'\). The clones that die out are the types the optimum leaves empty. The death rate sets the price of the budget: a clone persists only if its antigen stimulates it enough to make up for its losses.</p>
+
+<h3>Availability for each cost</h3>
+
+<p>Inserting the mean harms of the four cost families gives the matching availabilities; \(C'\) is a positive constant in each row (\(c'\alpha\Gamma(1+\alpha)\), \(c'\beta\), \(c'm_0\) and \(c'\) respectively).</p>
+
+<table>
+<thead>
+<tr><th>Cost \(F(m)\)</th><th>\(\bar F'(\tilde P)\)</th><th>Availability \(A(\tilde N)\)</th></tr>
+</thead>
+<tbody>
+<tr><td>\(m^\alpha\)</td><td>\(-\alpha\Gamma(1+\alpha)\,\tilde P^{-(1+\alpha)}\)</td><td>\(C'\,(N_{\rm st}/\tilde N)^{1+\alpha}\)</td></tr>
+<tr><td>\(1-e^{-\beta m}\)</td><td>\(-\beta/(\beta+\tilde P)^2\)</td><td>\(C'/(\beta+\tilde N/N_{\rm st})^2\)</td></tr>
+<tr><td>\(\Theta(m-m_0)\)</td><td>\(-m_0\,e^{-m_0\tilde P}\)</td><td>\(C'\exp(-m_0\tilde N/N_{\rm st})\)</td></tr>
+<tr><td>\(\ln m\)</td><td>\(-1/\tilde P\)</td><td>\(C'\,N_{\rm st}/\tilde N\)</td></tr>
+</tbody>
+</table>
+
+<p>For the power law the carrying capacities come out as \(N_r = N_{\rm st}(C'Q_r/d)^{1/(1+\alpha)}\propto Q_r^{1/(1+\alpha)}\), as they should. The table also shows a pattern: the faster the cost grows, the more sensitive availability is to load. For large \(\alpha\), \(A\) falls as a high power of the coverage. Rare infections are then nearly as dangerous as frequent ones, and the growth of clones specific to frequent antigens has to be held back to leave room for the others; a steep availability does exactly that, since a clone feeding on a frequent antigen soon depletes it and stops growing.</p>
+
+<p>The saturating and threshold costs give an availability that stays finite at zero coverage, \(A(0)=C'/\beta^2\) or \(C'\). A clone whose antigen is too rare cannot outgrow its death rate even with that antigen all to itself, and this is the cutoff of the optimum. For the power law and the logarithm, availability diverges at zero coverage, and any antigen, however rare, supports a small clone.</p>
+
+<h3>Competitive exclusion</h3>
+
+<p>With cross-reactivity, clones share antigens. The growth of one clone lowers the availability of every antigen it covers, and so slows the growth of every clone with a similar receptor. Ecologists call the outcome competitive exclusion: of two species living on nearly the same resources, one tends to drive the other out. De Boer and Perelson stressed its importance for lymphocyte populations. Here it is the mechanism behind the discrete peaks of the optimal repertoire. A clone wedged between two strong neighbors finds its antigens already taken and declines, and the survivors end up well separated. The correspondence between availability and cost carries over to this case, as the next argument shows.</p>
+</section>
+
+<section id="fixed-points" data-part="C" data-page="13">
+<h2>Why stable fixed points are optimal</h2>
+
+<p>Write \(\pi_r = \sum_a Q_a A(\tilde N_a) f_{r,a}\) for the growth rate of clone \(r\), so that \(\rmd N_r/\rmd t = N_r(\pi_r - d)\). At a fixed point the total is \(N_{\rm st}\) and \(\tilde N_a/N_{\rm st} = \tilde P_a\) is the coverage of \(P_r=N_r/N_{\rm st}\). Two kinds of clone have to be checked against the <a href="03-flatter-than-the-threats.html#optimality-conditions">KKT conditions</a>.</p>
+
+<p><b>Clones present at the fixed point.</b> If \(N_r>0\), a fixed point requires \(\pi_r = d\). Substituting the matched availability gives</p>
+
+<div class="equation">\[
+\sum_a Q_a\,\bar F'(\tilde P_a)\, f_{r,a} = -\frac{d}{c'} ,
+\]</div>
+
+<p>and the left side is \(\partial\avg{F}/\partial P_r\). This is the condition for types present in the optimum, with \(\lambda^* = d/c'\), positive as it should be.</p>
+
+<p><b>Clones absent from it.</b> If \(N_r=0\), then \(\rmd N_r/\rmd t=0\) whatever the rest of the repertoire does: an absent clone stays absent. Deleting any set of clones from a fixed point therefore yields another fixed point, and being a fixed point says nothing about the clones that are missing. What singles out the optimum is stability. The Jacobian of the dynamics is</p>
+
+<div class="equation">\[
+J_{r,r'} = \delta_{r,r'}\,(\pi_r - d) + N_r \sum_a Q_a\, A'(\tilde N_a)\, f_{r,a}\, f_{r',a} .
+\]</div>
+
+<p>For an absent clone the second term vanishes, so row \(r\) of the Jacobian has a single non-zero entry, on the diagonal. That entry, \(\pi_r - d\), is then an eigenvalue (the unit vector along \(r\) is a left eigenvector), and a stable fixed point needs it to be negative, \(\pi_r&lt;d\). With the matched availability this becomes</p>
+
+<div class="equation">\[
+\sum_a Q_a\,\bar F'(\tilde P_a)\, f_{r,a} > -\frac{d}{c'} = -\lambda^* ,
+\]</div>
+
+<p>the condition for types absent from the optimum. In biological terms, a few cells of the missing clone, if they appeared, would die out, because the antigens they recognize are already well covered by other clones. The optimum is the repertoire that no absent clone can invade.</p>
+
+<p>Since the cost is convex, any repertoire satisfying the KKT conditions is a global minimum, so every stable fixed point of the dynamics is an optimal repertoire. The argument does not say that the dynamics will get there. That question is for the simulations and, in a special case, for a Lyapunov function.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The preprint (page 13) writes the right-hand side of both conditions as \(-c'd\) and identifies \(\lambda^*=c'd\); in the second step it also replaces \(A\) by \(-\bar F'\), dropping \(c'\). With the availability defined as \(A=-c'\bar F'\), dividing the fixed-point condition \(\sum_a Q_aA f_{r,a}=d\) by \(-c'\) gives \(-d/c'\), so \(\lambda^*=d/c'\). Only the positivity of \(\lambda^*\) matters, so the conclusion stands.</p>
+</section>
+
+<section id="simulations" data-part="D" data-page="6">
+<h2>Simulations</h2>
+
+<p>Whether the dynamics actually reach the optimum can be checked by simulating both the stochastic model and its mean-field limit in a random two-dimensional antigen landscape. The simulations use these settings:</p>
+
+<ul>
+<li><strong>Environment.</strong> \(Q_a\) generated from log-normal noise with power spectrum \(\propto 1/(1+(5q)^2)\) and coefficient of variation 1, on a square of side \(10\sigma\), where \(\sigma\) is the range of cross-reactivity.</li>
+<li><strong>Dynamics.</strong> Availability \(A(\tilde N)=1/(1+\tilde N/N_0)^2\) with \(N_0=10^6\), death rate \(d=0.001\), and the saturating cost \(F(m)=1-e^{-\beta m}\) with \(\beta=1/110\) to measure the result against.</li>
+<li><strong>Start.</strong> A random repertoire from log-normal noise with the same power spectrum and coefficient of variation 2, with \(\sum_r N_r(0)=1.1\times10^8\) cells.</li>
+<li><strong>Sampling.</strong> In the stochastic runs, one antigen every \(\Delta t = 0.005/d\), that is, 200 infections per cell lifetime.</li>
+</ul>
+
+<p>The numbers fit together. Matched to the saturating cost, the availability is \(C'/(\beta+\tilde N/N_{\rm st})^2\) \(= (C'/\beta^2)/\big(1+\tilde N/(\beta N_{\rm st})\big)^2\), which has the simulated form with \(N_0=\beta N_{\rm st}\). With \(N_0=10^6\) and \(\beta=1/110\), the steady state must hold \(N_{\rm st}=1.1\times10^8\) cells, exactly the initial total: the runs start from the population size that the matching requires at steady state.</p>
+
+<p>Starting from the random repertoire, the distribution \(P_r(t)=N_r(t)/\sum_{r'}N_{r'}(t)\) breaks up into localized peaks, which grow more prominent and more widely separated as time goes on. Departure from optimality is measured by the relative cost gap</p>
+
+<div class="equation">\[
+\frac{\avg{F}\big(P(t)\big) - \avg{F}(P^*)}{\avg{F}(P^*)} .
+\]</div>
+
+<p>Three independent stochastic runs behave alike and all come close to the global minimum, and most of their gain comes within the first few cell lifetimes. In the mean-field limit the gap goes all the way to zero, indicating that the steady state is indeed the optimum. The saturating availability is not of the scale-invariant kind covered by the Lyapunov argument below, so for it convergence rests on the numerics.</p>
+
+<figure class="plate" data-anim="competition-dynamics">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Competition finds the optimum.</b> A ring of shape space, one-dimensional where the simulations above are two-dimensional, with a smooth random antigen landscape (brown). Clones grow and shrink by the competitive dynamics with \(A(\tilde N)=1/(1+\tilde N/N_0)^2\), the availability matched to the saturating cost, and the death rate is chosen so that the steady state holds \(N_{\rm st}\) cells. At the top, a space–time picture shows the repertoire \(P_r(t)\) as it evolves from a random start, with time running down on a logarithmic scale from a tenth of a cell lifetime to a thousand lifetimes. Below it, the current repertoire (blue bars) is compared with the optimum found by minimizing the cost directly (pink diamonds), and the bottom chart tracks the relative cost gap. Most of the cost is recovered within the first few lifetimes, while the repertoire still looks diffuse. Clones squeezed between stronger neighbors decline only slowly, so the separated peaks of the optimum take hundreds of lifetimes to stand out, and the mean-field run then closes in on the optimum (the readout gives the overlap between the two repertoires). Switch to the stochastic version, which presents one antigen at a time, 200 per lifetime: it settles close to the optimum, with a gap of about a percent, but keeps fluctuating around it. A uniform start or a new landscape behaves the same way.</figcaption>
+</figure>
+</section>
+
+<section id="lyapunov" data-part="E" data-page="13">
+<h2>The cost as a Lyapunov function</h2>
+
+<p>A Lyapunov function is a quantity that never increases along the trajectories of a dynamical system; if it is bounded below, the system must come to rest where it stops decreasing. The expected cost is such a function whenever the availability is scale invariant, meaning that rescaling its argument by any factor \(\gamma\) only multiplies it by a factor, \(A(\gamma x) = v(\gamma)\,A(x)\). The availabilities matched to the costs \(m^\alpha\) and \(\ln m\) have this property, with \(v(\gamma)=\gamma^{-(1+\alpha)}\) and \(v(\gamma)=1/\gamma\); those of the saturating and threshold costs do not.</p>
+
+<p>Start from the relative frequencies \(P_r = N_r/N_{\rm tot}\), with \(N_{\rm tot}=\sum_rN_r\). Since \(\rmd N_{\rm tot}/\rmd t = \sum_r N_r(\pi_r-d)\),</p>
+
+<div class="equation">\[
+\frac{\rmd P_r}{\rmd t}
+= \frac{1}{N_{\rm tot}}\frac{\rmd N_r}{\rmd t} - \frac{N_r}{N_{\rm tot}^2}\frac{\rmd N_{\rm tot}}{\rmd t}
+= P_r\Big[\pi_r(N) - \sum_{r'}P_{r'}\,\pi_{r'}(N)\Big].
+\]</div>
+
+<p>The death rate has dropped out, since it is the same for every clone. With a scale-invariant availability the growth rates depend on the total only through a prefactor, \(\pi_r(N) = \pi_r(N_{\rm tot}P) = v(N_{\rm tot})\,\pi_r(P)\), so</p>
+
+<div class="equation">\[
+\frac{\rmd P_r}{\rmd t} = v(N_{\rm tot})\,P_r\,(\pi_r - \bar\pi), \qquad \bar\pi = \sum_r P_r\,\pi_r ,
+\]</div>
+
+<p>where \(\pi_r\) now stands for \(\pi_r(P)\). This is a replicator equation, familiar from evolutionary dynamics: a type gains in frequency when its growth rate beats the population average. The total population only sets the speed of the clock.</p>
+
+<p>Now follow the cost along a trajectory. Its gradient is \(\partial\avg{F}/\partial P_r = \sum_a Q_a\bar F'(\tilde P_a)f_{r,a}\). The matching condition gives \(\bar F'(\tilde P_a) = -A(N_{\rm st}\tilde P_a)/c'\), and scale invariance turns this into \(-v(N_{\rm st})A(\tilde P_a)/c'\), so the gradient is \(-v(N_{\rm st})\,\pi_r/c'\). Then</p>
+
+<div class="equation">\[
+\begin{aligned}
+\frac{\rmd\avg{F}}{\rmd t}
+&= \sum_r \frac{\partial\avg{F}}{\partial P_r}\,\frac{\rmd P_r}{\rmd t}
+= -\frac{v(N_{\rm tot})\,v(N_{\rm st})}{c'}\sum_r P_r\,\pi_r\,(\pi_r-\bar\pi) \\
+&= -\frac{v(N_{\rm tot})\,v(N_{\rm st})}{c'}\sum_r P_r\,(\pi_r-\bar\pi)^2 \;\le\; 0 ,
+\end{aligned}
+\]</div>
+
+<p>where the last step subtracts \(\bar\pi\sum_rP_r(\pi_r-\bar\pi)=0\). The expected cost keeps falling as long as the clones present grow at different rates, and stops only when their rates are equal, at a fixed point. The dynamics therefore come to rest at a stable fixed point, which by the previous argument is the global minimum of the cost. The starting repertoire does not matter, provided every receptor type is present in it, since a type that is absent can never appear.</p>
+
+<p>One caveat applies to all of this. The dynamics should slow down as the organism ages. Reshaping the repertoire depends on naive cells, lymphocytes that have not yet met an antigen they recognize, and their numbers dwindle over a lifetime, so the adaptive system becomes less plastic.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Two assumptions, that lymphocytes divide when antigen stimulates them and that they compete for limited antigen, give the dynamics \(\rmd N_r/\rmd t = N_r[\sum_a Q_a A(\tilde N_a) f_{r,a} - d]\), the mean-field limit of a model in which antigens arrive one at a time. If the availability of an antigen is proportional to the marginal gain from covering it, \(A(\tilde N) = -c'\bar F'(\tilde N/N_{\rm st})\), every stable fixed point satisfies the KKT conditions with \(\lambda^*=d/c'\): present clones because growth balances death, absent ones because stability forbids them to invade. Without cross-reactivity each clone fills its own niche up to its carrying capacity; with it, competitive exclusion carves the repertoire into separated peaks. Fast-growing costs need availabilities that fall steeply with load. Simulated repertoires make most of their progress within a few cell lifetimes, come close to the optimum in stochastic runs and reach it exactly in the mean-field limit, and for scale-invariant availabilities the expected cost is a Lyapunov function of a replicator equation. In reality the dynamics should slow with age, as naive cells run out.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

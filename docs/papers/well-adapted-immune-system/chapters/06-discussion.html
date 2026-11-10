@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Discussion | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on the discussion of How a well-adapted immune system is organized: extensions and experimental tests, sensory systems that cover large spaces with few component types, limiting similarity in ecology, and bacterial CRISPR immunity.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="06-discussion">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 6</span> Discussion</h1>
+<p class="lede">The theory predicts what an immune repertoire should look like from three ingredients: a limited number of receptors, cross-reactive recognition, and a cost that grows with the time to recognition. The same ingredients appear wherever a living system covers a vast space of inputs with a few kinds of components, and the clustering they produce has a close cousin in ecology.</p>
+</header>
+
+<section id="extensions" data-part="A" data-page="7">
+<h2>Extending and testing the theory</h2>
+
+<p>The framework predicts the makeup of the repertoire that minimizes the expected cost of infections drawn from a known distribution of antigens \(Q_a\). It is deliberately bare, and it could be made more faithful to biology in several directions. Infections could unfold differently from one antigen to another, instead of all following one cost curve \(F(m)\) scaled by a virulence factor. The pathogen landscape could also evolve, rather than stay fixed while the repertoire adapts to it; a fixed \(Q_a\) was an idealization resting on the assumption that pathogens change slowly compared with the immune system.</p>
+
+<p>The predictions concern how the environment shapes a repertoire, and two kinds of experiment can address that. High-throughput sequencing can now read out whole populations of receptors, for instance to follow how a repertoire shifts after immunization or which memory B cells are recalled on a second exposure (memory cells being the long-lived descendants of clones that have already responded). Alternatively, one can isolate and sequence only the receptors that recognize chosen antigens, as has been done to count the naive T cells, those that have not yet met their antigen, specific to different epitopes, the parts of an antigen that a receptor actually binds. Setting such data against the theory should reveal which functional constraints govern how the immune system recognizes antigens.</p>
+</section>
+
+<section id="other-senses" data-part="B" data-page="7">
+<h2>Few kinds of parts for a vast space</h2>
+
+<p>The immune system is not alone in facing this problem. Many living systems must respond to an enormous, often high-dimensional space of external influences with strictly limited means. To detect these influences, represent them and act on them, they usually employ many distinct kinds of component, for instance different cell types or different genes, with each kind tuned to a small region of the space.</p>
+
+<p>Vision offers one example. Ganglion cells are the output neurons of the retina, and they come in many types, each responding to a different feature of the image, as Gollisch and Meister have reviewed; together they encode the aspects of a scene that matter for behavior. Smell offers another. The mammalian olfactory system has about 1,000 distinct receptors, from the gene family discovered by Buck and Axel; each binds a broad range of odor molecules, and jointly they cover the space of odors.</p>
+
+<p>In such systems the limited number of component types is a central constraint on information processing. Resources have to be committed wisely, matched to the structure of the environment, and breadth of coverage has to be weighed against depth of resolution according to priorities, costs and constraints, as Balasubramanian and Sterling argued for the design of the retina. The immune optimum is shaped by the same elements, and they can be read off the model: the threat distribution \(Q_a\) is the structure of the environment, the cost function \(F(m)\) encodes the priorities, normalization of \(P_r\) is the limited resource, and the cross-reactivity width \(\sigma\) is where breadth trades against resolution.</p>
+</section>
+
+<section id="ecology" data-part="C" data-page="7">
+<h2>Limiting similarity in ecology</h2>
+
+<p>The fragmentation of the optimal repertoire under cross-reactivity has a counterpart in ecology, the idea of limiting similarity that follows from competitive exclusion. MacArthur and Levins asked how alike two species can be and still coexist when they compete for a continuum of resources. Species that use resources too similarly cannot both persist, so the survivors are spaced out along the axis of traits.</p>
+
+<p>Two results from that line of work echo what was found for repertoires. When competition acts on the same scale over which resources vary, gaps open up in the space of phenotypes. In competitive Lotka–Volterra models, where each species' growth is reduced by its competitors in proportion to their abundance and to a kernel that falls off with the distance between their traits, Pigolotti, López and Hernández-García found that species form clusters and that a continuous spread of coexisting species arises only in exceptional cases. The same family of kernels, and the question of whether their Fourier transform stays positive, appeared in the <a href="04-cross-reactivity.html#robustness">robustness checks of the peaked repertoires</a>. Szabó and Meszéna found more generally that heterogeneity of the niche space promotes such clustering, much as any heterogeneous antigen distribution breaks the optimal repertoire into separate peaks.</p>
+
+<p>The analogy is most direct for the <a href="05-competition.html">competitive dynamics</a> that can reach the optimum. There the clones are the species, the antigens are the resources they compete for, and each clone's growth depends on how much antigen it manages to capture.</p>
+</section>
+
+<section id="crispr" data-part="D" data-page="7">
+<h2>Other distributed protection systems</h2>
+
+<p>The model is a simple abstraction of adaptive immunity, but the framework and its results are expected to carry over to other protection systems in which a varied set of threats is met by an array of specific responses. Bacteria have one such system, CRISPR (clustered regularly interspaced short palindromic repeats). A bacterium that survives a viral infection can insert a short piece of the viral DNA, a spacer, into the CRISPR region of its own genome; transcripts of the spacers then guide the cell's machinery to cut matching viral sequences in later infections, so the spacers form an inherited record of past attacks. Population dynamics models of this system already exist, for example by He and Deem. A framework like the present one, with spacers in the place of receptors and viruses in the place of antigens, could predict the relative abundances of spacers and of the viruses they target in bacteria and viruses that evolve together.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>The framework could be made more realistic with antigen-specific infection dynamics and a pathogen landscape that evolves, and it can be tested by sequencing whole receptor repertoires or the receptors specific to chosen antigens. Its central tension, a limited set of broadly tuned components covering a huge space of inputs, also governs the retina's ganglion cell types and the roughly 1,000 olfactory receptors, which likewise balance breadth against resolution. The breakup of the repertoire into peaks parallels limiting similarity in ecology, where competition opens gaps between species and heterogeneous niches promote clustering, an analogy made literal by the competitive dynamics of clones. The same approach could predict the abundances of CRISPR spacers in bacteria coevolving with their viruses.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

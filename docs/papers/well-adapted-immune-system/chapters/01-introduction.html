@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Introduction | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on how a well-adapted immune system is organized: what a lymphocyte receptor repertoire does, the few general assumptions behind a theory of the optimal repertoire, and the predictions that theory makes.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="01-introduction">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 1</span> Introduction</h1>
+<p class="lede">The body has a limited stock of lymphocyte receptors with which to face a huge and uneven variety of pathogens. Asking how that stock should be shared out, so that infections do as little harm as possible on average, gives a theory built on a handful of general assumptions. It predicts that rare threats get more than their share, that well-adapted repertoires are sparse and differ from one person to the next, and that plain competition between clones can find the best arrangement.</p>
+</header>
+
+<p>The approach is normative. Rather than modeling in detail how immune cells signal, divide and die, it fixes what the system has to accomplish and asks which arrangement of its parts would accomplish it best. The answer comes from two pressures acting in opposite directions. Detecting a pathogen in time is a matter of chance, and the statistics of detection reward spreading receptors widely. Cross-reactivity, the ability of one receptor to bind many different targets, rewards the opposite: it concentrates the best repertoire onto a few highly abundant clones. The balance between the two sets the shape of the optimum.</p>
+
+<section id="repertoire" data-part="A" data-page="1">
+<h2>What a repertoire does</h2>
+
+<p>The adaptive immune system is the branch of immunity that learns from experience. It keeps a large population of specialized cells, each one suited to a particular kind of challenge, and together they span the range of threats an organism is likely to meet. Its main cells are the <em>lymphocytes</em>, white blood cells of two kinds, B cells and T cells.</p>
+
+<p>Each lymphocyte carries on its surface many copies of a single <em>receptor</em> protein, and that receptor is how the cell recognizes its targets. What it looks for are <em>antigens</em>: small molecular pieces of pathogens, such as fragments of their proteins. When a receptor binds an antigen specifically, the lymphocyte carrying it is activated, and an immune response begins. Recognition is therefore a binding event between two molecules.</p>
+
+<p>Receptors are not written into the genome one by one. Each new lymphocyte assembles its own by combining, at random, pieces chosen from a set of gene segments that the genome does encode. The result is that practically every new cell carries a receptor of its own. A lymphocyte and the descendants it produces by dividing all share its receptor and form a <em>clone</em>. The <em>repertoire</em> is the collection of clones present, together with their sizes, and its diversity decides which threats the adaptive system can target at all.</p>
+
+<p>The repertoire is not fixed once generated. Lymphocytes divide and die, and the odds of each depend on the receptor they carry, so the population is under constant selection. B cells have an extra tool: during a response they mutate their receptors, and the variants that bind better are kept.</p>
+
+<p>Selection is also how the system remembers. A lymphocyte that has not yet met its antigen is called <em>naive</em>. During an infection, the clones that recognize the pathogen proliferate at the expense of others, and the enlarged population left behind, the <em>memory</em> cells, answers faster the next time the same antigen turns up. This selective expansion is the heart of Burnet's theory of clonal selection. The effect of an infection also reaches beyond the clones that bind best: sequencing studies in mice have tracked changes across the whole receptor repertoire after immunization.</p>
+
+<p>It follows that what matters for protection is the composition of the repertoire, not only how broad it is. Many distinct receptors give protection against a wide range of threats. A large clone of one receptor gives more effective protection against the pathogens that particular receptor binds. Because the total number of receptors is limited, the two goods compete: every cell spent enlarging one clone is a cell not spent on another receptor. This trade-off between diversity and clone size is what the whole theory is about.</p>
+</section>
+
+<section id="assumptions" data-part="B" data-page="1">
+<h2>The question and its assumptions</h2>
+
+<p>The question is how the repertoire ought to be organized so that infections cost the organism as little as possible on average. Answering it does not need a model of every cell and every signal. Three general features of adaptive immunity are enough:</p>
+
+<ul>
+<li><strong>Bounded size.</strong> The number of receptors is finite, so covering one threat better means covering others worse.</li>
+<li><strong>Cross-reactivity in both directions.</strong> Binding is many-to-many: each receptor binds many antigens, and each antigen is bound by many receptors.</li>
+<li><strong>A cost that grows with time.</strong> The longer an infection goes unrecognized, the more harm it does.</li>
+</ul>
+
+<p>To these is added one simplification about the world outside. Infections are treated as draws from a fixed probability distribution over pathogens, which the repertoire can be tuned to. Posed at this level, the problem can be solved without knowing the detailed dynamics of an immune response, and the solutions say something general about which repertoires best fit which pathogenic environments. <a href="02-cost-of-infection.html">The cost of an infection</a> turns these words into a formula.</p>
+
+<p>The framework does not try to be a complete account of immunity. A full one would need at least two more ingredients. One is the interplay between the adaptive arm and the innate arm, the older branch of immunity whose cells, such as macrophages, recognize generic molecular features of pathogens using receptors fixed in the genome. The other is avoiding autoimmunity, an attack on the body's own tissues.</p>
+
+<p>Telling self from nonself is the problem that many theoretical studies of the immune system have concentrated on, among them Perelson and Oster's analysis of how large a repertoire must be for that discrimination to be reliable, and later work by Forrest, Perelson and colleagues. Here the emphasis is elsewhere: on how the adaptive repertoire should match the pathogens it has to face. Other components and constraints can be added to the model afterward, and avoiding self, for example, returns later as a set of receptors excluded from the optimization.</p>
+</section>
+
+<section id="predictions" data-part="C" data-page="1">
+<h2>What the theory predicts, and how to test it</h2>
+
+<p>Three predictions come out, each of them a little surprising.</p>
+
+<ul>
+<li><strong>Rare threats are over-covered.</strong> Counterintuitively, pathogens that are rarely met get more receptors than their frequency of encounter would suggest, and common ones get correspondingly fewer. The optimal repertoire is flatter than the distribution of threats.</li>
+<li><strong>Repertoires are sparse and individual.</strong> Two organisms facing the same mix of infections settle on sparse repertoires, concentrated on relatively few abundant clones, and those clones are largely different in the two. Because cross-reactivity lets each receptor cover a neighborhood of antigens, the two repertoires nonetheless cover the antigens equally well.</li>
+<li><strong>Competition can reach the optimum.</strong> No central controller is needed to distribute receptors across the whole system. If clones compete to bind the available antigens, and the clones that are stimulated get selectively amplified, a naive repertoire can evolve toward the optimal composition.</li>
+</ul>
+
+<p>All three come from the tension described at the top of the page. Probability favors a broad spread of receptors, because any threat left uncovered will be slow to be caught. Cross-reactivity pulls toward a few large clones, each protecting a patch of antigens around its own target.</p>
+
+<p>These predictions can be confronted with data. High-throughput sequencing now reads out B-cell and T-cell receptor repertoires in zebrafish, in mice and in humans. As methods also improve for mapping the landscape of pathogens and for measuring how cross-reactive receptors are, the optimal repertoires computed from the theory can be compared directly with measured ones, and the theory in turn can guide how surveys of repertoires are designed and read.</p>
+
+<p>The method deserves to be stated plainly. Rather than start from the dynamics of cells and molecules and ask which repertoire results, the theory asks how a repertoire should be organized to do its job well. Behind this lies a proposal about the immune system as a whole: its universal features would follow from general statistical considerations, while the particular dynamical machinery that implements them would reflect the historical accidents of evolution. On that view, the broad structure of a repertoire can be predicted without first knowing the mechanisms that build it.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>An adaptive immune repertoire is a finite collection of lymphocyte clones, generated at random and then reshaped by division, death, mutation and the selective expansion that leaves memory, and it has to cover a vast and uneven range of pathogens. Keeping only bounded size, cross-reactivity in both directions and a cost that rises the longer recognition takes, and treating infections as draws from a fixed distribution, one can ask which repertoire minimizes the expected cost, leaving aside the innate arm and self/nonself discrimination. The answer gives rare threats more receptors than their frequency suggests, makes repertoires sparse and different between individuals yet equally protective, and can be reached by competition between clones; repertoire sequencing can test it, and it rests on the proposal that universal features come from statistics and the details from evolutionary history.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

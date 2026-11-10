@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>II. Ligand–receptor binding | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section II of Quantitative Immunology for Physicists: diffusion-limited binding, energy barriers, receptor numbers and receptor–antigen specificity, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="02-physical-chemistry">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section II</span> Physical chemistry of ligand–receptor interaction</h1>
+<p class="lede">Every immune decision starts with a molecule landing on a receptor. Physical chemistry and simple counting answer four questions about it: how fast that can happen, what slows it down, how receptor counts translate into concentrations, and why a single receptor must be able to recognize many different antigens.</p>
+</header>
+
+<p>At the smallest scale, immune cells read their surroundings through receptors on their surface, and the molecules those receptors bind come in two broad kinds. <em>Antigens</em> are fragments of proteins that the immune system can recognize, whether they come from a pathogen or from the body itself. <em>Cytokines</em> are small signaling molecules that immune cells secrete to tell each other what they have seen and what state they are in. A binding event is the raw datum; everything a cell later decides is an interpretation of many such events.</p>
+
+<p>The chemistry is a textbook reversible reaction, followed by a downstream consequence:</p>
+
+<div class="equation">\[
+\text{Ligand} + \text{Receptor}
+\;\underset{\koff}{\overset{\kon}{\rightleftharpoons}}\;
+\text{Complex} \longrightarrow \text{Activation}
+\]</div>
+
+<p>The ratio \(\KD = \koff/\kon\), the equilibrium dissociation constant, is the concentration of ligand at which half the receptors are occupied. For immunological pairs it ranges from picomolar to millimolar. This simple scheme already puts hard limits on how quickly signals can spread, which is useful: some proposed regulatory mechanisms can be ruled out simply because they would need rates the physics does not allow.</p>
+
+<p class="aside"><b>A unit worth memorizing.</b> One nanomolar is about 0.6 molecules per cubic micrometer, since \(10^{-9}\,\text{mol/L}\times 6\times10^{23}\,\text{mol}^{-1} = 6\times10^{14}\) molecules per liter, and a liter is \(10^{15}\,\mu\text{m}^3\). A cell about 10&nbsp;µm across therefore sees only a few hundred molecules in its own volume at nanomolar concentrations.</p>
+
+<section id="diffusion" data-part="A" data-page="4">
+<h2>The diffusion limit</h2>
+
+<p>Two molecules cannot bind before they meet. If every encounter led to binding, the association rate would be set by how often diffusion brings them together. Treating the binding pocket and the ligand as spheres, classical physical kinetics gives this ceiling, a standard result whose derivation is not repeated here:</p>
+
+<div class="equation">\[
+\kon \le k_{\text{diffusion}} = 4\pi\,(R_{\text{Ligand}} + R_{\text{Receptor}})\,(D_{\text{Ligand}} + D_{\text{Receptor}}).
+\]</div>
+
+<p>The rate grows with the combined size of the two targets and with how fast they move relative to each other. Receptors sit in the cell membrane and move much more slowly than a ligand in solution, so the receptor's diffusion coefficient can usually be dropped.</p>
+
+<p>For a ligand of radius about 1&nbsp;nm in extracellular fluid (viscosity close to water, \(\eta \approx 0.7\) mPa·s) at body temperature, the Stokes–Einstein relation gives</p>
+
+<div class="equation">\[
+D_{\text{Ligand}} = \frac{\kB T}{6\pi\eta R_{\text{Ligand}}} \approx 300\ \mu\text{m}^2\,\text{s}^{-1}.
+\]</div>
+
+<p>Substituting this back, with the receptor pocket much smaller than the ligand, the radius cancels and leaves a number that depends only on temperature and viscosity:</p>
+
+<div class="equation">\[
+k_{\text{diffusion}} = 4\pi R_{\text{Ligand}} D_{\text{Ligand}} = \frac{2\kB T}{3\eta} \approx 2\times10^{9}\ \text{M}^{-1}\text{s}^{-1}.
+\]</div>
+
+<p>This is a universal upper bound on association rates, immunological or not. It plays the part of a speed of light for binding: not as fundamental, but the same kind of limit that nothing should exceed.</p>
+
+<h3>Apparent violations</h3>
+
+<p>Some protein pairs do seem to associate faster than this. The resolution is that the ligand first sticks weakly and non-specifically to something large, such as the whole membrane of a cell or a coil of DNA, and then searches for its true target while confined to that object, hopping between non-specific sites. The first step has a target radius of micrometers instead of nanometers, so the formula above, applied to that step, gives a much larger rate. The overall bound has to be recalculated for this two-stage search, a calculation that has been worked out carefully in the literature.</p>
+
+<h3>Slower diffusion in crowded places</h3>
+
+<p>Large complexes diffuse more slowly, and inside a cell the effective viscosity can be about ten times that of water. Membranes are far more viscous still: a protein of radius 2&nbsp;nm diffuses at about 200&nbsp;µm²/s in solution but only about 5&nbsp;µm²/s in a membrane. When a soluble molecule meets a membrane protein, for example a cytokine meeting its receptor, or a kinase or phosphatase meeting an activated receptor from the inside, the membrane protein is effectively immobile and only the solution diffusion coefficient enters the rate.</p>
+</section>
+
+<section id="arrhenius" data-part="B" data-page="5">
+<h2>From collisions to binding</h2>
+
+<p>Meeting is not the same as binding. The two molecules must also cross a free-energy barrier, and the fraction of collisions that succeed follows Arrhenius's law:</p>
+
+<div class="equation">\[
+\kon = k_{\text{diffusion}}\; e^{-\Delta G_{\text{association}}/\kBT}.
+\]</div>
+
+<p>The barrier \(\Delta G_{\text{association}}\) includes both energy and entropy, and predicting it from structure is hard. A rule of thumb handles the entropic part. Lining two molecules up, in position and in orientation, removes degrees of freedom and costs at least about \(6\,\kBT\). That alone cuts the success rate per collision by \(e^{6}\approx 400\), bringing a typical association rate down from about \(2\times10^{9}\) to about \(5\times10^{6}\ \text{M}^{-1}\text{s}^{-1}\) before any finer molecular details are considered.</p>
+
+<figure class="plate" data-anim="binding">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Collisions versus bindings.</b> Ligands (brown) diffuse above a membrane carrying receptors (blue). Every time a ligand enters a free receptor's binding zone it is a collision, shown as a faint ring, and it binds with probability \(e^{-\Delta G/\kBT}\), shown as a pink ring; bound receptors turn pink and release their ligand after an average time \(1/\koff\). Raise the energy barrier and the measured number of collisions per binding climbs as the Arrhenius factor predicts: about 400 at \(6\,\kBT\), the estimated cost of aligning two proteins. Use the speed setting to collect statistics faster. The dashed line is the occupancy expected for a well-mixed system, using the collision rate measured in this box and the reaction scheme above.</figcaption>
+</figure>
+</section>
+
+<section id="numbers" data-part="C" data-page="5">
+<h2>Rates and numbers inside the body</h2>
+
+<h3>Association rates</h3>
+<p>Most binding constants are measured with purified molecules in solution, for example by calorimetry or by surface plasmon resonance (where one partner is fixed to a surface). The diffusion formula is the tool for translating those numbers into other settings. Inverting Arrhenius's law with the measured \(\kon\) and the estimated \(k_{\text{diffusion}}\) gives the barrier; the barrier can then be combined with a different viscosity and collision cross-section, say those of the cytoplasm or of a membrane, to estimate the rate where it actually matters.</p>
+
+<h3>Dissociation rates</h3>
+<p>Unbinding spans an enormous range. Early in a response, antibodies may hold onto their target for less than a tenth of a second (\(\koff > 10\ \text{s}^{-1}\)), while cytokines can stay bound to their receptors for more than three hours (\(\koff < 10^{-4}\ \text{s}^{-1}\)). Cellular responses then add delays of hours to days. This contrast is the heart of the problem: each interaction is simple physical chemistry, yet the system assembles them into behavior of great complexity.</p>
+
+<h3>Receptors per cell</h3>
+<p>When both partners are on membranes, as for a T cell receptor meeting its antigen on another cell, the relevant quantities are surface densities and membrane diffusion. When the ligand is soluble, as for cytokines, it helps to express the receptors as an equivalent concentration in the volume they share. With \(\#R_{\text{cell}}\) receptors on each of \(N_{\text{cell}}\) cells in a volume \(V\),</p>
+
+<div class="equation">\[
+[R]_{\text{total}} = \frac{\#R_{\text{cell}}\, N_{\text{cell}}}{V\, \mathcal{N}_{\text{Avogadro}}}.
+\]</div>
+
+<p>Take a lymph node as the example: about \(10^{7}\) T cells in 50&nbsp;µL, each carrying about \(10^{3}\) receptors for the cytokine IL-7. That is an effective receptor concentration of about 300&nbsp;pM, thirty times the dissociation constant of IL-7 for its receptor (about 10&nbsp;pM). Any IL-7 released into such a node is captured almost at once. Dense lymphoid tissue therefore sets up real competition between cells for soluble signals, a theme that returns with <a href="04-cytokines.html">cytokine signaling</a>. Simple as the conversion is, it is often the very step that connects molecular rates to what happens at the scale of tissues.</p>
+
+<h3>Typical binding rates, and the biology behind them</h3>
+<p>Seen from far away, the immune system is a population of white blood cells, the leukocytes, which become activated when something new appears and respond by secreting antibodies, killing infected cells or engulfing them. What counts as new differs between the two arms of the system.</p>
+
+<p>In the <strong>innate</strong> system the answer is built into the molecules. Monocytes, macrophages, dendritic cells and mast cells carry Toll-like receptors, encoded in the genome, that recognize parts of pathogens that cannot easily mutate: components of bacterial membranes, or unmethylated CpG motifs in viral DNA. Recognition is close to lock and key, and it happens early.</p>
+
+<p>The <strong>adaptive</strong> system is harder. Each B or T cell clone carries one receptor, assembled by random genetic events, and its targets are not known in advance; some may belong to virus strains that did not exist when the organism was born. How binding and unbinding rates feed into the decision between self and foreign is one of the central questions of the field.</p>
+
+<p>The two cell types see antigen differently. A TCR inspects the surface of antigen-presenting cells for peptides about ten amino acids long, cut from the cell's own proteins or from a pathogen and displayed on a large protein called the MHC; the displayed unit is the pMHC. A BCR binds whole proteins, at a site called the epitope, and antibodies are the secreted form of the BCR with the same specificity.</p>
+
+<p>Antibody affinities change during a response. Early antibodies are IgM, pentamers whose individual arms bind weakly (\(\KD > 10\ \mu\text{M}\)) and rely on binding at several points at once. Through <a href="08-affinity-maturation.html">affinity maturation</a>, which needs T cell help and somatic hypermutation, B cells reach \(\KD < 1\) nM and switch from IgM to the monomeric IgG. The gain does not come from faster binding: both classes associate at about \(10^{6}\ \text{M}^{-1}\text{s}^{-1}\), set mostly by collisions with little contribution from a barrier. It comes from a better fit, which means a smaller \(\koff\).</p>
+
+<p>T cells pose the sharpest puzzle. A single pMHC of the right kind can activate a T cell, while a version of the same peptide with one amino acid changed can fail to do so even at more than a million copies. The single mutation barely changes \(\koff\). Activating ligands, the agonists, typically stay bound for 1 to 10 seconds; non-agonists for 0.3 to 3 seconds, so at least three times shorter. A difference of a few-fold in bound lifetime becomes a difference of \(10^{5}\) or more in response, whatever the concentrations. Explaining that amplification is the problem of <a href="03-antigen-discrimination.html">antigen discrimination</a>.</p>
+</section>
+
+<section id="specificity" data-part="D" data-page="7">
+<h2>Receptor–antigen specificity</h2>
+
+<p>Immune receptors and antigens are not matched one to one. Each receptor binds many ligands and each ligand is bound by many receptors. Simple counting shows why the map has to be many-to-many, and a family of models describes it.</p>
+
+<h3>Cross-reactivity</h3>
+<p>A counting argument shows why it must be so. Roughly 5% of peptides can be presented by at least one of the six MHC genes a person expresses, for each of the two MHC classes. For peptides of length 12 that gives about \(0.05\times 20^{12}\approx 2\times10^{14}\) possible antigens. Humans have about \(10^{12}\) B and T cells, mice about \(10^{8}\), and longer peptides make the gap worse. Mason concluded that each receptor must recognize more than one antigen, which is called cross-reactivity or polyspecificity.</p>
+
+<p>The flip side gets less attention: every antigen must be recognized by many receptors. With \(N\) antigens each bound by \(k\) receptors, and \(R\) receptors each binding \(\ell\) antigens, counting the binding pairs both ways gives \(Nk = R\ell\). The ratio \(p = \ell/N = k/R\) is the chance that a random receptor and a random antigen bind, and estimates put it near \(10^{-5}\).</p>
+
+<p>Which pairs actually bind is still a matter of experiment. Cheaper sequencing has made high-throughput binding and functional screens possible, databases of known pairs are growing, and machine learning is being tried on them, but there is no reliable predictive model yet. The models that follow are best read as toys for exploring the general properties of cross-reactivity.</p>
+
+<h3>Toy models of binding</h3>
+<p>Binding strength is written through a free energy, \(\KD = c_0\, e^{\Delta G(a,r)/\kBT}\), where \(c_0\) is a constant, and a common simplification treats both the antigen \(a\) and the receptor \(r\) as strings of \(N\) facing residues whose contributions simply add:</p>
+
+<div class="equation">\[
+\Delta G(a, r) = \sum_{k=1}^{N} J_k(a_k, r_k).
+\]</div>
+
+<p>Each \(J_k\) is a \(q\times q\) table of interaction energies between the possible residues at position \(k\). Different choices of \(q\) and \(J\) give a family of models:</p>
+<ul>
+<li><strong>Amino acids.</strong> With \(q = 20\), an empirical contact-energy table (the Miyazawa–Jernigan matrix) was used to argue that thymic selection favors receptors built from moderately interacting residues, and later to study how thymic selection shapes responses to tumor peptides. The strongest binding a receptor achieves across a large set of antigens matters for thymic selection, and it can be analyzed with extreme-value statistics, which gives results that do not depend much on model details.</li>
+<li><strong>Shape space and bit strings.</strong> Residues can be projected onto a few abstract "shape" coordinates. An early string model used integers combined by a bitwise exclusive-or, chosen because it was easy to compute rather than because it was realistic; Perelson and colleagues used it to study thymic selection and immune responses.</li>
+<li><strong>Spins.</strong> The most drastic reduction is binary. Each epitope site is either the wild-type residue (\(a_k = +1\)) or a mutant (\(a_k = -1\)). In one version the receptor exerts a random continuous "field" on each site, \(J_k = r_k a_k\); in another both strings are binary and each site has a fixed strength, \(J_k = \kappa_k r_k a_k\). In both, sites beyond some index \(M\) are conserved in the virus and fixed at \(+1\). A mismatch between receptor and antigen "spins" costs energy, lower energy means tighter binding, and these models were used to study the co-evolution of B cells and HIV.</li>
+</ul>
+
+<h3>Learning binding energies from data</h3>
+<p>Going beyond toys means measuring binding energies for many specific pairs at once. One deep mutational scan measured \(\KD\) for a large library of antibody variants against a single target, the small molecule fluorescein. An additive model, with one energy per residue as in the sum above but with the antigen held fixed, explained less than two thirds of the variation seen in double and triple mutants. Epistasis, meaning non-additive effects, accounted for 25 to 35% of the variation, and much of it improved binding.</p>
+
+<p>Such non-additivity is probably general for both TCRs and BCRs, so accurate prediction will need models with interactions within each protein or of higher order. A practical obstacle is that most experiments vary only one side, a library of receptors against one antigen or a library of antigens against one receptor. Mapping the full landscape would require screening libraries of both at once, at very high throughput.</p>
+
+<h3>Predicting immunogenicity without modeling the receptor</h3>
+<p>A different strategy skips the receptor and asks how likely an antigen is to provoke a response. It was applied to cancer patients receiving immunotherapy, using the neoantigens their tumors present. Each neoantigen \(a\) gets a score from its alignment scores \(s_{a,a'}\) against a database \(D\) of antigens already known to trigger responses, with an adjustable parameter \(k\):</p>
+
+<div class="equation">\[
+S(a) = \sum_{a' \in D} e^{k\, s_{a,a'}}, \qquad I(a) = \frac{S(a)}{S_0 + S(a)}.
+\]</div>
+
+<p>The predicted immunogenicity \(I(a)\) saturates once the antigen resembles enough known ones. It was multiplied by the probability \(A(a)\), from a neural network, that the neoantigen is displayed by class I MHC, and the product with a minus sign, \(-I(a)A(a)\), served as the fitness of tumor cells carrying that antigen. These scores predicted patient survival after immunotherapy. Caution is in order: the link from survival back to T cell recognition is indirect, many neoantigens and tumor clones are involved at once, and direct functional tests against antigen libraries are needed before the method can be relied on more widely.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Diffusion caps association at about \(10^{9}\ \text{M}^{-1}\text{s}^{-1}\), and an entropic barrier of a few \(\kBT\) brings realistic rates down by orders of magnitude. Converting receptor counts to concentrations shows that lymphoid tissues soak up soluble signals. Antibody affinity improves through slower unbinding rather than faster binding. T cells turn small differences in bound lifetime into enormous differences in response. Finally, simple counting forces receptors to be cross-reactive, a property that toy string models capture and that data-driven models are only beginning to map.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

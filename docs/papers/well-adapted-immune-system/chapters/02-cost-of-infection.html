@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. The cost of an infection | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on how a well-adapted immune system is organized: receptor coverage, the random time to first recognition, the expected cost of infections that a repertoire should minimize, why that cost is convex, and why it grows like a power of the number of encounters.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="02-cost-of-infection">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 2</span> The cost of an infection</h1>
+<p class="lede">To ask which repertoire is best, the harm done by infections has to be written as a function of the repertoire. Every meeting between a pathogen and a random receptor is a lottery whose odds are the pathogen's coverage. Counting time in encounters makes the wait for the first winning draw exponential, and the expected cost becomes a simple convex function of the coverages.</p>
+</header>
+
+<p>The question from the <a href="01-introduction.html">introduction</a>, which repertoire makes infections least costly on average, needs a cost that can be evaluated for any repertoire. It is built in steps: describe the environment and the repertoire as probability distributions, define how well each antigen is covered, work out the random time it takes to recognize an antigen, and average the harm over that time and over antigens.</p>
+
+<section id="requirements" data-part="A" data-page="2">
+<h2>What the cost has to capture</h2>
+
+<p>A penalty for failing to recognize antigens has to respect three facts. Recognition must come in time, before the invading population has grown much. Whether a receptor recognizes an antigen it meets is a matter of chance, because binding is a molecular event. And antigens are not all equally common.</p>
+
+<p>The immune system cannot foresee which pathogens will arrive, or when. What it can carry, from the experience of past infections, is an estimate of how likely each one is. The model grants it exactly that knowledge: probabilities, not a forecast.</p>
+
+<p>Those probabilities are also held constant in time. This is an idealization, justified by a separation of timescales: the mix of antigens in the environment is assumed to change slowly compared with the time the repertoire needs to adapt to it.</p>
+
+<p>Two distributions then carry the whole description. The environment is \(Q_a\), the probability that the next infection is caused by antigen \(a\), where an antigen is a molecular piece of a pathogen that immune receptors can bind. The repertoire is \(P_r\), the fraction of lymphocytes (the B and T cells of adaptive immunity, each displaying one kind of receptor) that carry receptor \(r\). All cells of a clone, the descendants of a single lymphocyte, share its receptor, so \(P_r\) is also the relative size of clone \(r\), and a lymphocyte that happens to meet an antigen is modeled as a random draw from this distribution. Both indices run over large spaces of possible antigens and receptors.</p>
+</section>
+
+<section id="coverage" data-part="B" data-page="2">
+<h2>Coverage and the expected cost</h2>
+
+<p>How likely an encounter is to end in recognition depends on how well the two molecules fit, which is set by their binding affinity. Call \(f_{r,a}\) the probability that antigen \(a\), on meeting receptor \(r\), is recognized, meaning that the lymphocyte carrying \(r\) is activated. This is the <em>cross-reactivity function</em>. In general it is non-zero for many pairs, which is what cross-reactivity means: one receptor can recognize many antigens, and one antigen many receptors.</p>
+
+<p>An encounter between antigen \(a\) and a receptor drawn at random from the repertoire therefore recognizes the antigen with probability</p>
+
+<div class="equation">\[
+\tilde P_a = \sum_r f_{r,a}\, P_r .
+\]</div>
+
+<p>This is the <em>coverage</em> of antigen \(a\): the chance that one random encounter succeeds. It is linear in the repertoire. Without cross-reactivity, with \(f_{r,a}=1\) for \(r=a\) and zero otherwise, it reduces to \(\tilde P_a = P_a\), the share of the repertoire specific to \(a\). With cross-reactivity, every receptor contributes to the coverage of all the antigens it can bind, weighted by how well it binds them.</p>
+
+<p>The harm caused by antigen \(a\) will turn out to depend on the repertoire only through this coverage. Write it \(\bar F_a(\tilde P_a)\), the average harm done by \(a\); it decreases as \(\tilde P_a\) grows, as intuition demands, and both properties are derived below. Averaging over which antigen causes the infection gives the expected cost of a repertoire:</p>
+
+<div class="equation">\[
+\mathrm{Cost}(\{P_r\}) = \langle F\rangle = \sum_a Q_a\, \bar F_a(\tilde P_a). \tag{1}
+\]</div>
+
+<p>The trade-off sits inside this sum. The repertoire is normalized, so raising the coverage of one antigen means moving receptors away from others and leaving those threats less well defended.</p>
+
+<p>To compute \(\bar F_a\), follow a single infection. Once antigen \(a\) is in the periphery (the blood, lymph nodes and tissues where mature lymphocytes circulate), it starts running into receptors. The rate of these encounters, \(\lambda_a(t)\), climbs as the pathogen multiplies, and each encounter is with a fresh receptor drawn from \(P_r\). Counting from the moment the antigen arrives, \(t=0\), the expected number of encounters by time \(t\) is</p>
+
+<div class="equation">\[
+m_a(t) = \int_0^t \rmd\tau\, \lambda_a(\tau),
+\]</div>
+
+<p>which is called the <em>effective time</em>. Because \(\lambda_a\) is positive, \(m_a\) only increases and can be inverted: \(t_a(m)\) is the time it takes for \(m\) encounters to be expected. The time of the first recognition, the response time, is random, and its distribution depends on the coverage.</p>
+</section>
+
+<section id="first-recognition" data-part="C" data-page="7">
+<h2>The time of first recognition</h2>
+
+<p>Ask for the probability \(H_a(t)\,\rmd t\) that the first recognition happens between \(t\) and \(t+\rmd t\). Three things must all happen:</p>
+
+<ol>
+<li>an encounter takes place in that interval, which has probability \(\lambda_a(t)\,\rmd t\);</li>
+<li>it succeeds, which has probability \(\sum_r P_r f_{r,a} = \tilde P_a\), because the receptor met is a random draw from the repertoire;</li>
+<li>no encounter before \(t\) succeeded.</li>
+</ol>
+
+<p>For the third factor, cut the interval \([0,t]\) into \(N\) short pieces of length \(t/N\), at times \(t_i = i\,t/N\). In piece \(i\), a successful encounter happens with probability \(\lambda_a(t_i)\,(t/N)\,\tilde P_a\). Encounters in different pieces are independent, so the probability that none of them succeeds is a product:</p>
+
+<div class="equation">\[
+\Pr(\text{no recognition before } t) = \lim_{N\to\infty} \prod_{i=1}^{N} \Big( 1 - \lambda_a(t_i)\,\frac{t}{N}\,\tilde P_a \Big).
+\]</div>
+
+<p>Take the logarithm. Each factor is close to one, and \(\ln(1-x) = -x + O(x^2)\) with \(x\) of order \(1/N\), so the second-order terms add up to something of order \(1/N\) and vanish in the limit. What is left is a Riemann sum for an integral:</p>
+
+<div class="equation">\[
+\begin{aligned}
+\ln \Pr(\text{no recognition before } t) &= -\tilde P_a \lim_{N\to\infty} \sum_{i=1}^{N} \lambda_a(t_i)\,\frac{t}{N} \\
+&= -\tilde P_a \int_0^t \rmd t'\,\lambda_a(t') = -m_a(t)\,\tilde P_a .
+\end{aligned}
+\]</div>
+
+<p>Multiplying the three factors gives the density of the response time:</p>
+
+<div class="equation">\[
+H_a(t) = \lambda_a(t)\,\tilde P_a\, e^{-m_a(t)\,\tilde P_a}.
+\]</div>
+
+<p>This is the waiting time for the first event of a Poisson process whose rate, \(\lambda_a(t)\tilde P_a\), changes with time: encounters arrive at rate \(\lambda_a\), and each is a success, independently, with probability \(\tilde P_a\). It integrates to \(1 - e^{-m_a(\infty)\tilde P_a}\), which is one as long as encounters keep coming, \(m_a(t)\to\infty\), so the antigen is recognized eventually.</p>
+
+<p>The formula is simplest in effective time. Since \(\rmd m = \lambda_a(t)\,\rmd t\), the probability of first recognition between \(m\) and \(m+\rmd m\) is</p>
+
+<div class="equation">\[
+H_a(t)\,\rmd t = \tilde P_a\, e^{-m\tilde P_a}\,\rmd m .
+\]</div>
+
+<p>Measured in encounters, the wait is exponential with rate \(\tilde P_a\), however the pathogen grows; on average it takes \(1/\tilde P_a\) encounters to get one that succeeds. All the details of the growth have been moved into the clock \(m_a(t)\), which is why the cost is best written as a function of \(m\).</p>
+</section>
+
+<section id="mean-harm" data-part="D" data-page="2">
+<h2>The mean harm</h2>
+
+<p>The longer an antigen goes undetected, the more likely the infection is to do damage. Let \(F_a(t)\) be the harm an antigen has caused in total, from the start of the infection up to its first recognition at time \(t\); it rises with \(t\). How fast it rises may depend strongly on the type of infection and on the receptors involved, so for now it is left general.</p>
+
+<p>The mean harm averages \(F_a\) over the random response time:</p>
+
+<div class="equation">\[
+\bar F_a = \int_0^{\infty} \rmd t\, F_a(t)\, H_a(t).
+\]</div>
+
+<p>Now change variables from \(t\) to \(m = m_a(t)\). The factor \(\lambda_a(t)\,\rmd t\) in \(H_a\) becomes \(\rmd m\), the exponent becomes \(-m\tilde P_a\), the harm becomes \(F_a[t_a(m)]\), and the limits \(t=0\) and \(t\to\infty\) go over to \(m=0\) and \(m\to\infty\):</p>
+
+<div class="equation">\[
+\bar F_a = \tilde P_a \int_0^{\infty} \rmd m\; F_a[t_a(m)]\; e^{-m\tilde P_a}.
+\]</div>
+
+<p>Harm only enters through its value at a given number of encounters, so \(F_a[t_a(m)]\) is shortened to \(F_a(m)\), the <em>effective cost function</em>.</p>
+
+<p>Two properties can be read off at once. The mean harm depends on the repertoire only through \(\tilde P_a\), as promised: it is the average of \(F_a(m)\) when \(m\) is exponentially distributed with rate \(\tilde P_a\). And it decreases with \(\tilde P_a\), because better coverage makes short waits more likely and \(F_a\) is increasing. The derivative is computed explicitly in the convexity argument further down.</p>
+
+<p class="aside"><b>A Laplace transform.</b> Apart from the factor \(\tilde P_a\) in front, \(\bar F_a\) is the Laplace transform of the effective cost, evaluated at the coverage. Mean harms for specific cost functions can therefore be read from a table of transforms.</p>
+
+<h3>A worked example: power-law costs</h3>
+
+<p>Take \(F(m) = m^\alpha\) with \(\alpha > 0\). Substituting \(u = m\tilde P\), so that \(\rmd m = \rmd u/\tilde P\),</p>
+
+<div class="equation">\[
+\bar F = \tilde P \int_0^\infty \rmd m\, m^{\alpha} e^{-m\tilde P} = \tilde P^{-\alpha} \int_0^\infty \rmd u\, u^{\alpha} e^{-u} = \Gamma(1+\alpha)\, \tilde P^{-\alpha}.
+\]</div>
+
+<p>For \(\alpha = 1\) this is \(1/\tilde P\), the mean effective time to recognition. For \(\alpha > 1\) the factor \(\Gamma(1+\alpha)\) exceeds one, so the mean harm is larger than the harm at the mean waiting time: the rare long waits weigh heavily when the cost is steep. Steep costs also punish thin coverage harder. Halving \(\tilde P\) doubles the mean wait but multiplies the mean harm by \(2^\alpha\). The other cost families used later (logarithmic, saturating and threshold) are averaged the same way, alongside <a href="03-flatter-than-the-threats.html#cost-families">the optimal repertoire each one implies</a>.</p>
+
+<figure class="plate" data-anim="first-recognition">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Waiting for the first recognition.</b> Time runs in effective time \(m\), so encounters with receptors arrive at a steady unit rate, one tick each. Each encounter succeeds with probability equal to the coverage \(\tilde P\), and the first success ends the infection. The top panel follows one infection: failed encounters are faint ticks, the recognizing one is highlighted, and the harm \(F(m) = m^\alpha\) climbs until then. The bottom panel collects the effective time at recognition over many infections and compares it with the exponential density \(\tilde P e^{-m\tilde P}\). Press "Run 1,000 infections" and compare the readouts with \(1/\tilde P\) for the mean wait and \(\Gamma(1+\alpha)\,\tilde P^{-\alpha}\) for the mean harm. Then halve the coverage: the mean wait doubles, but the mean harm grows by \(2^\alpha\), which is why steep costs punish thin coverage.</figcaption>
+</figure>
+</section>
+
+<section id="effective-cost" data-part="E" data-page="2">
+<h2>What the effective cost stands for</h2>
+
+<p>The effective cost \(F_a(m)\) carries a great deal of biology that is not modeled explicitly. Signaling within cells, cell differentiation (cells turning into more specialized types), the activation of cofactors, the coordination between different kinds of immune cells, the interplay with innate immunity, and recognition itself in all its intricacy are all left out. The idea is that \(F_a(m)\) sums up their combined effect as a single cost of late recognition. The goal is a general framework for thinking about repertoires, not a complete physiology.</p>
+
+<p>One thing the cost clearly depends on is the pathogen, since some do far more damage than others. The simplest way to allow for this is to factor it, \(F_a(m) = \mu_a F(m)\), with a virulence factor \(\mu_a\) for each pathogen and a single function \(F(m)\) for how every threat develops with time. The expected cost then reads</p>
+
+<div class="equation">\[
+\langle F\rangle = \sum_a \mu_a Q_a\, \tilde P_a \int_0^\infty \rmd m\, F(m)\, e^{-m\tilde P_a}.
+\]</div>
+
+<p>Virulence and frequency appear only through their product \(\mu_a Q_a\), the overall threat posed by pathogen \(a\), and in that sense they play the same role. Some pathogens are rare but deadly, like anthrax; others are common but mild, like the common cold; a good immune system has to cope with both. From here on \(\mu_a\) is absorbed into \(Q_a\), which then measures threat rather than bare frequency. Rescaling the weights so that they sum to one only multiplies the cost by a constant, which does not move the optimum.</p>
+
+<p>With that, the problem is fully posed. For a given environment \(Q_a\), the optimal repertoire is the one that minimizes Eq. 1,</p>
+
+<div class="equation">\[
+\min_{\{P_r\}}\; \sum_a Q_a\, \bar F(\tilde P_a) \qquad \text{subject to} \qquad P_r \ge 0, \quad \sum_r P_r = 1 .
+\]</div>
+
+<p>The first constraint says that clone sizes cannot be negative. The second is the limit on the total number of receptors, written in normalized form so that each \(P_r\) is a fraction of the whole.</p>
+</section>
+
+<section id="convexity" data-part="F" data-page="8">
+<h2>Why local conditions are enough</h2>
+
+<p>Minimizing a function of many variables is far easier when the function is convex. Any point that satisfies the local conditions for a minimum is then the global minimum, and there are no false minima to get trapped in. The expected cost has this property, and showing it takes three steps.</p>
+
+<p><strong>Rewrite the mean harm.</strong> Integrate by parts with \(u = F(m)\) and \(\rmd v = \tilde P e^{-m\tilde P}\,\rmd m\), so that \(v = -e^{-m\tilde P}\):</p>
+
+<div class="equation">\[
+\begin{aligned}
+\bar F &= \Big[ -F(m)\, e^{-m\tilde P} \Big]_0^{\infty} + \int_0^\infty \rmd m\, F'(m)\, e^{-m\tilde P} \\
+&= F(0) + \int_0^\infty \rmd m\, F'(m)\, e^{-m\tilde P},
+\end{aligned}
+\]</div>
+
+<p>assuming \(F\) grows more slowly than \(e^{m\tilde P}\), so that the boundary term at infinity vanishes. The new form has a direct reading: the harm present from the outset, plus each increment of harm \(F'(m)\,\rmd m\) weighted by \(e^{-m\tilde P}\), the probability that the infection is still unrecognized when that increment accrues.</p>
+
+<p><strong>Differentiate.</strong> Only the exponential depends on the coverage, so</p>
+
+<div class="equation">\[
+\begin{aligned}
+\frac{\rmd \bar F}{\rmd \tilde P} &= -\int_0^\infty \rmd m\, m\, F'(m)\, e^{-m\tilde P} < 0, \\
+\frac{\rmd^2 \bar F}{\rmd \tilde P^2} &= \int_0^\infty \rmd m\, m^2\, F'(m)\, e^{-m\tilde P} > 0 .
+\end{aligned}
+\]</div>
+
+<p>Both signs follow from \(F' > 0\), the assumption that harm grows the longer recognition takes. The first confirms that the mean harm falls as coverage improves. The second says that each \(\bar F_a\) is a convex function of its own coverage \(\tilde P_a\). Neither involves \(F(0)\), and both can be checked by differentiating the original integral directly, so they hold even when \(F(0)\) is infinite, as it is for a logarithmic cost.</p>
+
+<p><strong>Sum and compose.</strong> The expected cost is a sum of convex functions with non-negative weights \(Q_a\), so it is convex in the coverages \(\{\tilde P_a\}\). The coverages are linear in the repertoire. Mixing two repertoires, \(\theta P + (1-\theta) P'\) with \(0 \le \theta \le 1\), mixes their coverages in the same proportions, and by convexity the cost of the mixture is at most the same mixture of the two costs. So \(\langle F\rangle\) is a convex function of \(\{P_r\}\) as well.</p>
+
+<p>The constraints \(P_r \ge 0\) and \(\sum_r P_r = 1\) define a simplex, which is a convex set. A convex function on a convex set has no local minima other than the global one, so simple local conditions for an extremum, taking care at the boundary where some \(P_r\) vanish, are enough to identify the optimal repertoire. Those conditions are the starting point for every optimum worked out later.</p>
+</section>
+
+<section id="power-law" data-part="G" data-page="8">
+<h2>Why the cost grows like a power of <em>m</em></h2>
+
+<p>To make predictions, the framework needs a concrete effective cost \(F(m)\). Several forms are used later. Power laws, \(F(m) = m^\alpha\), have a simple biological motivation, sketched here as a plausible scenario rather than something derived from data.</p>
+
+<p>Until the immune system reacts, the pathogen multiplies unopposed in its host, and starting from a small population its growth is roughly exponential. Two quantities ride on that growth. The more pathogens there are by the time recognition happens, the more damage they can have done. And the more pathogens there are, the more often their antigens meet receptors. Both the harm and the encounter rate are therefore taken to grow exponentially:</p>
+
+<div class="equation">\[
+F_a(t) = F_a(0)\, e^{\nu_a t}, \qquad \lambda_a(t) = \lambda_a(0)\, e^{\nu'_a t}.
+\]</div>
+
+<p>The two rates need not be equal, because the agents that do the harm and the antigens the immune system can see need not scale in the same way with the number of invaders. If, for instance, antigen exposure and virulence are both cooperative effects, each scales as some power of the population size, and raising one exponential to two different powers gives two exponentials with different rates.</p>
+
+<p>Now change the clock. Integrating the encounter rate gives</p>
+
+<div class="equation">\[
+m_a(t) = \int_0^t \rmd\tau\, \lambda_a(0)\, e^{\nu'_a \tau} = \frac{\lambda_a(0)}{\nu'_a} \big( e^{\nu'_a t} - 1 \big).
+\]</div>
+
+<p>Once \(t\) is large compared with \(1/\nu'_a\), or equivalently once \(m \gg \lambda_a(0)/\nu'_a\), the \(-1\) can be dropped and the relation inverted: \(e^{\nu'_a t} \approx \nu'_a m/\lambda_a(0)\), so that \(t \approx \ln[\nu'_a m/\lambda_a(0)]/\nu'_a\). Substituting this into the harm,</p>
+
+<div class="equation">\[
+F_a(m) = F_a(0) \left( \frac{\nu'_a\, m}{\lambda_a(0)} \right)^{\nu_a/\nu'_a} \propto m^{\alpha}, \qquad \alpha = \frac{\nu_a}{\nu'_a}.
+\]</div>
+
+<p class="aside"><b>Note on the printed text.</b> The preprint inverts the effective time as \(t \approx \ln[m_a/\lambda_a(0)]/\nu'_a\) and so writes the prefactor as \(F_a(0)\,(m/\lambda_a(0))^{\nu_a/\nu'_a}\), without the factor \(\nu'_a\); the argument of that power is then not dimensionless, since \(m\) is a number and \(\lambda_a(0)\) a rate. Inverting \(m_a(t)\) as above restores the factor. Only the constant prefactor is affected, so \(F_a(m) \propto m^\alpha\) stands.</p>
+
+<p>An exponential in real time becomes a power law in effective time, with an exponent equal to the ratio of the two growth rates. If harm and encounters grow at the same rate, \(\alpha = 1\) and the cost is linear in the number of encounters, \(F(m) = m\). This is the simplest scenario, and much of what follows uses it. If harm outpaces exposure, \(\alpha > 1\) and every delay costs disproportionately more; if exposure outpaces harm, \(\alpha < 1\). How the exponent reshapes the optimal repertoire is <a href="03-flatter-than-the-threats.html">the first result of the theory</a>.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>The expected cost of infections is \(\langle F\rangle = \sum_a Q_a \bar F_a(\tilde P_a)\), where the coverage \(\tilde P_a = \sum_r f_{r,a} P_r\) is the chance that one encounter with a random receptor recognizes antigen \(a\). Encounters arrive at a rate that grows with the pathogen; counted in effective time \(m\), the expected number of encounters so far, the wait for the first recognition is exponential with rate \(\tilde P_a\), and the mean harm is the average of the effective cost \(F_a(m)\) over that wait, \(\Gamma(1+\alpha)\,\tilde P_a^{-\alpha}\) for a power-law cost. The effective cost stands in for the unmodeled machinery of the response, and virulence folds into the threat \(Q_a\). Because harm grows with time, the cost is convex in the repertoire, so local conditions under \(P_r \ge 0\) and \(\sum_r P_r = 1\) find the optimum. Power-law costs arise when harm and encounter rate both grow exponentially, with the exponent \(\alpha\) set by the ratio of their rates and \(\alpha = 1\) when the rates match.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

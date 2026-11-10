@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I. Introduction | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section I of Quantitative Immunology for Physicists: why recognizing an evolving, unknown enemy forces the immune system into statistical strategies across many scales, Burnet's clonal selection theory, and the plan of the review, with an interactive map of immune time and length scales.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="01-introduction">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section I</span> Introduction</h1>
+<p class="lede">The immune system must recognize enemies it has never met, and those enemies keep changing. That demand pushes it toward statistical strategies spread over many scales. Clonal selection theory gives adaptive immunity its framework, and the quantitative questions it leaves open run all the way from molecules to populations.</p>
+</header>
+
+<p>Adaptive immunity is a dynamical, self-organized system on many scales that guards vertebrates against pathogens and against internal irregularities such as tumors. Its multitude of cells and molecules both attracts and intimidates physicists, who have nonetheless contributed theory and experiments as the field has become more quantitative.</p>
+
+<p>The immune system's task is easy to state: spot a possible pathogen, confirm that it is harmful, and remove it. The hard part is the confirmation, because at the molecular level friend and foe can look alike. Immunologists sort the defenses in two ways. By what is recognized: the <em>innate</em> response is not molecularly specific, and ranges from scratching to receptors for protein patterns typical of bacteria, while the <em>adaptive</em> response uses specialized cells that recognize evolving features of pathogens never met before. By how the threat is removed: innate cells called neutrophils and macrophages swallow pathogens whole; killer T cells, part of the adaptive system, destroy the body's own cells when they are infected or cancerous; and the adaptive system secretes antibodies, which block pathogens from entering cells, neutralize bacterial toxins, or tag bacteria for macrophages to eat.</p>
+
+<section id="moving-target" data-page="2">
+<h2>A moving target</h2>
+
+<p>Both sides therefore have many strategies, at every level from molecules to populations (<a href="https://arxiv.org/pdf/1907.03891v2#page=3">figure on page 3</a>). Pathogens, whether bacteria, viruses or tumor cells, are built to divide, and the immune system is there to stop them. Above all it must recognize the unknown. The host keeps a fixed list of warning signs, mostly handled by innate immunity, but pathogens evolve to escape detection, so most threats are moving targets; influenza, whose vaccine must be renewed every year, is the everyday example.</p>
+
+<p>Hence the immune system works mostly by statistics: many encounters between different cell types, with checks and balances, playing out over many times and lengths (<a href="https://arxiv.org/pdf/1907.03891v2#page=4">figure on page 4</a>). Yet it is remarkably reliable. The overarching question is how interactions across all these scales organize themselves, without central control, into a sensory system aimed at a high-dimensional target that never stops moving. It can be broken into smaller problems, and physicists have contributed results and concepts to each of them. Biology is introduced as needed, and Lauren Sompayrac's short book is a recommended general introduction. The coverage is selective, favoring physical concepts over biological detail.</p>
+</section>
+
+<section id="tree-of-life" data-page="3">
+<h2>Immunity across the tree of life</h2>
+
+<p>All organisms defend themselves. Bacteria fight viruses with CRISPR–Cas systems, which are specific, and with restriction–modification systems, which are not. Innate immunity is shared by many animals and is much the same in humans and flies. Adaptive immunity appeared in jawed vertebrates and has changed little from fish to mammals. Plants have a well-studied innate system and, it was recently shown, elements of adaptive immunity. Immunity is a basic feature of life, though how it is implemented and organized in space varies with the organism.</p>
+</section>
+
+<section id="clonal-selection" data-page="3">
+<h2>Clonal selection</h2>
+
+<p>Burnet's clonal selection theory, which built on earlier ideas from Ehrlich, Jerne and others, is to adaptive immunity what Darwin's theory is to evolution. Before any infection the body holds a large ensemble of B and T lymphocytes, the cells of the adaptive system. Molecules from a pathogen stimulate the few lymphocytes that recognize them, and those cells multiply into a clone. Molecules recognized this way are called antigens. The theory explains the system's diversity, its specificity and its capacity to adapt, and is usually condensed into four assumptions:</p>
+<ol>
+<li>each lymphocyte carries a single kind of receptor;</li>
+<li>a cell, or its receptor, proliferates only after binding an antigen;</li>
+<li>daughter cells inherit their parent's receptor;</li>
+<li>cells whose receptors recognize the body's own molecules, the self-antigens, are eliminated early in development.</li>
+</ol>
+
+<p>Nossal and Lederberg confirmed that a B cell makes only one receptor, and Medawar and colleagues showed that animals become tolerant to foreign material introduced before or just after birth. Yet the theory, however successful, is not quantitative and cannot be tested against concrete measurements. What remains to be filled in may look like detail, but it still holds puzzles, some of them conceptual, and a number of recent quantitative ideas address them.</p>
+</section>
+
+<section id="route" data-page="3">
+<h2>The questions, scale by scale</h2>
+
+<p>The open questions sort by scale. At the molecular scale, after the <a href="02-physical-chemistry.html">physical chemistry of binding</a>, the question is how cells tell self from non-self so finely while integrating processes on many timescales (<a href="03-antigen-discrimination.html">antigen discrimination</a>). At the cellular scale, it is how cells communicate so that a response emerges collectively (<a href="04-cytokines.html">cytokines</a>), and how they differentiate into the specialized types the system needs (<a href="05-cell-fate.html">cell fate</a>). At the organismal scale, which also takes in <a href="07-lymphocyte-population-dynamics.html">lymphocyte population dynamics</a>, it is how the receptors cover the space of possible antigens, protecting against the unknown (<a href="06-repertoires.html">repertoires</a>), and how the system as a whole adapts to a changing environment (<a href="08-affinity-maturation.html">affinity maturation</a>). At the population scale, it is how the immune system shapes the evolution of viruses (<a href="09-pathogens-and-hosts.html">pathogens and hosts</a>).</p>
+
+<figure class="plate" data-anim="scales">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Where each process lives.</b> The immune processes from the original scales figure, plus a few from the overview figure, placed on one map: time scale across, length scale up, both logarithmic and each spanning more than twelve orders of magnitude. Colors follow the grouping into molecular, cellular, organismal and population levels. Each box is an order-of-magnitude placement, taken from that figure and from numbers quoted in the chapter that covers the process. Choose a process to see its scales and a link to its chapter. The dashed line, added here, is a physicist's reference: the distance a small protein spreads by diffusion alone in a given time, \(\sqrt{6Dt}\) with \(D\approx 200\ \mu\text{m}^2/\text{s}\), the solution value for a protein of radius 2&nbsp;nm. Processes near the line, such as cytokine signaling, can rely on diffusion; those far above it, up to the evolution of viruses across continents, need cells or hosts to carry the information.</figcaption>
+</figure>
+
+<p>The topics are connected, but each chapter stands alone, and they are best not read all at once, nor necessarily in order. General theoretical methods that immunology shares with other fields are not derived in these notes; their results are quoted where a chapter needs them.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Facing pathogens it cannot know in advance and that evolve to escape it, the immune system relies on statistical strategies built from many interacting cells, spread from milliseconds to years and from molecules to continents. Burnet's clonal selection theory gives adaptive immunity its framework but no numbers; quantitative models supply some, at every scale from molecular binding to the co-evolution of hosts and viruses.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

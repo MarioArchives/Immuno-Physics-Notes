@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VI. Repertoires | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section VI of Quantitative Immunology for Physicists: how large immune repertoires are, how V(D)J recombination is described by generation probabilities, thymic selection, diversity and clone-size power laws, and sharing between people, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="06-repertoires">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section VI</span> Repertoires</h1>
+<p class="lede">The adaptive immune system meets new pathogens with a huge, randomly assembled collection of receptors. How big is it, and how big must it be? How can its random assembly be written as a probability learned from data, and what does that probability predict about diversity, clone sizes and the receptors people share?</p>
+</header>
+
+<p>A <em>repertoire</em> is the set of distinct receptors carried by a person's B cells or T cells. Each receptor is made of two protein chains, and each chain is assembled anew, partly at random, in every developing lymphocyte.</p>
+
+<section id="size" data-part="A" data-page="29">
+<h2>Size of immune repertoires</h2>
+
+<p>Roughly \(4\times10^{11}\) T cells circulate in a human body, with a comparable number of B cells, and to a first approximation each cell displays a single kind of receptor. Because daughters keep their mother's receptor, cells with identical receptors form a <em>clonotype</em>, and a repertoire's size, its number of clonotypes, is smaller than its number of cells.</p>
+
+<p>An early extrapolation from part of the repertoire gave about \(10^{6}\) distinct β chains per person (Arstila and colleagues). Repertoire sequencing (RepSeq), available since 2009, now reads the receptors of a large but never complete share of the cells in a sample, and the AIRR community works to standardize how such data are reported.</p>
+
+<p>Extrapolating from a blood sample needs a statistical estimator. For TCR β chains the results run from \(4\times10^{6}\) distinct sequences (Robins and colleagues, with Fisher's Poisson abundance model) to about \(10^{8}\) (Qi and colleagues, with the Chao2 estimator); for BCR heavy chains the Poisson model gives \(1\) to \(2\times10^{9}\) (DeWitt and colleagues). These figures deserve great caution: each extrapolation assumes a shape for the distribution of clonotype abundances that is unverified and probably wrong (see <a href="#diversity">diversity and clone sizes</a>). Population-dynamics models in which naive cells rarely or never divide point to \(10^{10}\)–\(10^{11}\) instead, close to the number of cells (Lythe and colleagues; Mora and Walczak).</p>
+
+<h3>A minimal repertoire</h3>
+
+<p>De Boer and Perelson argued that self-tolerance, the need to leave the body's own molecules alone, is what sets the smallest workable repertoire. Their argument can be redone with current numbers, beginning with B cells, which bind antigen directly. Let \(p\ll1\) be the probability that a random receptor recognizes a random epitope, and \(n\sim10^{5}\)–\(10^{6}\) the number of self-epitopes in humans. Negative selection removes every receptor that recognizes a self-epitope, shrinking a newly generated repertoire of \(R_0\) receptors to \(R = fR_0\), with surviving fraction</p>
+
+<div class="equation">\[
+f = (1-p)^{n} \approx e^{-pn}.
+\]</div>
+
+<p>A foreign epitope escapes if none of the \(R\) remaining receptors binds it, which happens with probability</p>
+
+<div class="equation">\[
+p_e = (1-p)^{R} \approx e^{-pR}.
+\]</div>
+
+<p>Choosing \(p_e\) fixes \(R = -(1/p)\ln p_e\), and with it the number of receptors that must be made before selection,</p>
+
+<div class="equation">\[
+R_0 = -\frac{1}{p}\, e^{pn} \ln p_e .
+\]</div>
+
+<p>Very specific receptors survive selection but each covers little; promiscuous ones cover a lot but are almost all deleted. If evolution has tuned \(p\) to make \(R_0\) as small as possible, \(\partial R_0/\partial p = 0\) gives \(p^{*} = 1/n\) and</p>
+
+<div class="equation">\[
+R^{*} = R_0 f^{*} = -n \ln p_e, \qquad f^{*} = e^{-1} \approx 0.37 .
+\]</div>
+
+<p>The minimal repertoire thus grows linearly with the number of self-epitopes, and the recognition probability falls as its inverse. Geometrically, this is a covering problem in an abstract "shape space" where nearby receptors and antigens bind: each receptor covers a ball of volume \(p\), the balls must cover foreign antigens while missing all \(n\) self-antigens, so each can be only about \(1/n\) in volume and about \(n\) are needed.</p>
+
+<p>The numbers fit reasonably. Measured values, \(p\sim10^{-5}\) and \(n\sim10^{5}\)–\(10^{6}\), agree with \(p\sim1/n\), and the predicted 37% of cells surviving negative selection lies within the measured 25 to 45% (Wardemann and colleagues). The size itself hinges on \(p_e\), a quantity that is difficult to pin down. De Boer and Perelson reckoned that 99% of antigens, each carrying about 10 epitopes, are recognized by at least one antibody, so \(p_e^{10}\sim10^{-2}\). That gives \(R^{*}\sim5\times10^{4}\)–\(5\times10^{5}\), far below the roughly \(10^{9}\) distinct BCRs measured today.</p>
+
+<h3>T cells and MHC presentation</h3>
+
+<p>A TCR never sees a free antigen, only short peptides displayed on MHC molecules. Class I MHC shows peptides from inside the cell to CD8+ T cells, the killers, which destroy infected or cancerous cells. Class II MHC shows peptides taken up from outside to CD4+ T cells, the helpers, whose tasks include supporting B cells during <a href="08-affinity-maturation.html">affinity maturation</a>. A peptide must be presented by one of the \(m=6\) MHC genes of a class and then bound by one of the \(R\) receptors. With \(q\ll1\) the fraction of peptides that a given MHC molecule can present, the escape probability becomes</p>
+
+<div class="equation">\[
+p_e = \left(1-q+q(1-p)^{R}\right)^{m} \approx \exp\!\left[-mq\left(1-e^{-pR}\right)\right].
+\]</div>
+
+<p>The formula for \(f\) still holds, with \(n\) now counting every complex of a self-peptide with an MHC. Then \(R_0 = -(e^{pn}/p)\ln[1+\ln p_e/(mq)]\), and minimizing over \(p\) as before,</p>
+
+<div class="equation">\[
+R^{*} = -n \ln\!\left(1+\frac{\ln p_e}{mq}\right), \qquad p^{*} = \frac{1}{n}, \qquad f^{*} = e^{-1}.
+\]</div>
+
+<p>The scaling and the surviving fraction are as for B cells. (Since unpresented peptides always escape, \(p_e\ge(1-q)^{m}\approx e^{-mq}\), and \(R^{*}\) diverges at that floor.)</p>
+
+<p>Deep learning, in software such as netMHC that also builds in known biology, predicts well which peptides class I molecules present. Class II is harder, partly because its peptides range from 13 to 25 amino acids instead of a nearly fixed 9 to 11, and needs more training data. The models put the share of peptides presented by any particular MHC allele at about 1%, so \(q = 0.01\). The number of self complexes is \(n = qmn_{\rm p}\), where \(n_{\rm p}\) counts the peptides the human proteome can yield: about \(3\times10^{4}\) proteins of average length about 400, so \(n_{\rm p}\sim10^{7}\) and \(n\sim6\times10^{5}\). Measured recognition probabilities of \(10^{-4}\) to \(10^{-6}\) (Moon and colleagues) agree with \(p\sim1/n\), and estimates of the fraction of cells surviving negative selection, 20 to 50% (reviewed by Yates), bracket the predicted 37%. Without a good \(p_e\) the size cannot be predicted, but current estimates of \(10^{8}\)–\(10^{10}\) probably far exceed the formula whatever \(p_e\) is.</p>
+
+<p class="aside"><b>Note on the printed text.</b> In the T cell paragraph the paper describes the predicted 37% as the fraction of cells removed by negative selection. By its own definition \(f\) is the fraction that survives, as the B cell paragraph says, and the quoted 20–50% fits that reading, since part C states that negative selection removes 50 to 80% of cells. This page follows the definition.</p>
+
+<p>All told, the argument still captures how \(p\) relates to \(n\) for both T and B cells, even though real repertoires far exceed the size it predicts. Its main weakness is the assumption, built into \(f\), that each receptor is tested against every self-epitope, which the limited time a lymphocyte spends maturing rules out. How selection can work with such partial testing is the question behind <a href="#thymic-selection">quorum sensing</a>.</p>
+</section>
+
+<section id="generation" data-part="B" data-page="31">
+<h2>Inference of the generation process</h2>
+
+<p>Receptors are proteins and must be encoded in DNA, yet humans have only about \(10^{4}\) genes that code for proteins; writing \(10^{8}\)–\(10^{10}\) receptor genes into every genome would not fit in a nucleus. Instead each new lymphocyte builds its receptor genes by cutting and joining DNA at random. This is V(D)J recombination, which mixes combinatorial choice with chance.</p>
+
+<p>A BCR has a heavy and a light chain; a TCR has an α and a β chain. For each chain the genome holds families of gene templates: V, D and J segments for heavy and β chains, only V and J for light and α chains. The cell picks one template from each family and splices them together. Template choice alone gives about \(10^{3}\) receptors. The far larger diversity observed comes from the junctions, where a random number of nucleotides is chewed off the segment ends and random, untemplated nucleotides are added between them. This <em>junctional diversity</em> accounts for most of the variety of the repertoire (Murugan and colleagues; Elhanati and colleagues).</p>
+
+<p>RepSeq made the process measurable through out-of-frame sequences, whose insertions and deletions shift the reading frame so that no protein is made. They are raw, unselected products of recombination, and they persist because each cell has two chromosomes: a cell whose first rearrangement failed and whose second worked carries both.</p>
+
+<p>A sequence does not reveal how it was made: an inserted nucleotide may match the neighboring template, and trimming can trade off against insertion. The way out is to list every <em>scenario</em> that could have produced the sequence and weight each by a probability learned self-consistently. For the simpler α or light chains a scenario \(r\) fixes the V and J genes, the deletions at each end and the inserted nucleotides, and</p>
+
+<div class="equation">\[
+P_{\rm rearr}(r) = P(V,J)\, P(\text{del}V\,|\,V)\, P(\text{del}J\,|\,J)\, P(\text{ins}VJ).
+\]</div>
+
+<p>For β or heavy chains a D gene, its deletions and a second insertion are added in the same way. This factorized form is the most general one compatible with the data and with known biological constraints, such as the order of the genes along the chromosome. The probability of generating a sequence \(s\) sums over every scenario that produces it:</p>
+
+<div class="equation">\[
+\Pgen(s) = \sum_{r \to s} P_{\rm rearr}(r).
+\]</div>
+
+<p>The distributions in the product are fitted by maximum likelihood, with the expectation-maximization algorithm handling the hidden scenarios.</p>
+
+<p>Such models exist for human TCR β and α chains (Murugan and colleagues; Pogorelyy and colleagues), human BCR heavy and light chains (Elhanati and colleagues; Toledano and colleagues), mouse TCR β chains (Sethna and colleagues) and trout heavy chains (Magadan and colleagues). The IGoR software learns new models, generates synthetic sequences and evaluates \(\Pgen(s)\) for any nucleotide sequence; OLGA computes amino-acid probabilities, summing by dynamic programming over the many nucleotide sequences that encode them; other methods use hidden Markov models (HMM).</p>
+
+<p>Repertoires generated in silico from a learned model show how ambiguous single sequences are: inference recovers the true scenario in at best about 25% of cases, so sequences cannot be annotated one at a time. The perhaps surprising flip side is that the model parameters can still be inferred to arbitrary accuracy.</p>
+
+<figure class="plate" data-anim="vdj">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">One sequence, many histories.</b> A toy β-like chain built from made-up segments (three V, two D, three J, a few letters each), not real genes. Recombine draws a scenario with probability \(P(V)\,P(D,J)\,P(\text{del}V|V)\,P(\text{del}D_{5'}|D)\,P(\text{del}D_{3'}|D)\,P(\text{del}J|J)\,P(\text{ins}VD)\,P(\text{ins}DJ)\), the β-chain form of the formula above. Struck-through letters are deleted and pink letters inserted. Below are all the scenarios that spell the same letters, and the bar adds them up to \(\Pgen(s)\). The true scenario (outlined) is often not the likeliest: over 1,000 recombinations the likeliest is right only about half the time, even in this tiny model, against at best a quarter for real chains. Here the second D can only pair with the third J, an example of a positional constraint, and inserted nucleotides are independent.</figcaption>
+</figure>
+
+<p>The inferred models are strikingly reproducible within a species. Insertions and deletions dominate \(\Pgen\) and gene choice contributes little, yet gene usage is the feature that varies most between unrelated people, even after correcting for single nucleotide polymorphisms (SNP) in the V, D and J alleles. The α and β chains appear to be generated largely independently, so the probability of a whole TCR is close to the product of the probabilities of its chains (Dupic and colleagues). BCR chains have not been analyzed this way, but they are probably independent too.</p>
+
+<p>These models ignore selection, yet \(\Pgen\) still predicts well how common a particular TCR β chain is across the human population (Sethna and colleagues), and departures from it have been used to detect the signatures of immune responses (Pogorelyy and colleagues).</p>
+</section>
+
+<section id="thymic-selection" data-part="C" data-page="32">
+<h2>Thymic selection and central tolerance</h2>
+
+<p>New receptors are vetted before their cells are let out: T cells in the thymus, B cells in a similar step called central tolerance (Wardemann and colleagues). The focus here is on T cells, and on two lines of work in particular: quorum sensing, and models that learn from data how selection depends on sequence. Yates has reviewed the wider range of models.</p>
+
+<p>The thymus contains only the organism's own proteins, the self-proteins, and immature T cells are tested against self-peptides presented on MHC. A receptor that binds nothing, not even weakly, is unlikely to bind any presented peptide, and its cell is discarded. This <em>positive selection</em> removes about 80% of immature cells. A receptor that binds a self-peptide too strongly could later trigger autoimmune disease and is discarded too. This <em>negative selection</em>, which underlies the minimal-repertoire argument above, is estimated to remove 50 to 80% of cells. The whole sequence of events, including when the α and β chains are recombined, is laid out in the <a href="https://arxiv.org/pdf/1907.03891v2#page=33">figure on page 33</a>.</p>
+
+<p>Positive selection also assigns lineages: recognizing class I MHC makes a cell CD8+, mainly a killer of infected cells; recognizing class II makes it CD4+, one of the cells that help B cells mature their affinity and regulate the immune response. CD4+ cells outnumber CD8+ cells about four to one. Among the CD4+ cells, a small subset, the regulatory T cells (Treg), suppress immune responses and are essential to prevent autoimmunity. Selected for higher affinity to self than conventional T cells, they can damp responses to self specifically, though the picture seems complicated (Bains and colleagues).</p>
+
+<h3>Quorum sensing</h3>
+
+<p>Testing every receptor against every self-epitope would take too long. Experiments suggest that a developing T cell meets about 500 antigen-presenting cells (Le Borgne and colleagues), and theory puts the number of self-peptides it is shown at a few thousand (Butler and colleagues), the two being compatible because one presenting cell displays many peptides at once. Both are tiny next to the \(5\times10^{5}\)–\(5\times10^{6}\) self-peptide–MHC complexes that could be presented. If only a fraction \(x\) of self-peptides is shown during selection, self-reactive receptors slip through, and the probability that no surviving receptor is self-reactive drops to zero once \(R\) is even moderately large, even with \(p\) as small as one over the number of self-peptides.</p>
+
+<p>Butler, Kardar and Chakraborty proposed a way out: a response might require a minimum number \(t\) of T cells to recognize a peptide. With so many cells involved, the count of responders to a given self-peptide is nearly Gaussian, with mean and variance \(Rp(1-x)\), while for a foreign peptide both equal \(Rp\). The two distributions are well separated when</p>
+
+<div class="equation">\[
+Rp\,x^{2} \gg 1, \qquad\text{with the best threshold}\qquad t^{*} = Rp\left(1-\frac{x}{2}\right) \quad (x\ll1).
+\]</div>
+
+<p>With \(x=10^{-2}\), \(R=10^{9}\) and \(p=10^{-5}\) the condition is only just met, and the optimal threshold is about \(10^{4}\) T cells. The argument gives a second, stricter lower bound on the diversity needed for such a collective decision. It also implies <em>quorum sensing</em>: responding T cells must somehow gauge how many others are involved before they commit. Recent work suggests that this happens locally, probably through cytokine signaling (Polonsky and colleagues).</p>
+
+<h3>Models built on binding energies</h3>
+
+<p>Another approach describes binding with additive energy models of the kind used for <a href="02-physical-chemistry.html#specificity">receptor–antigen specificity</a> (Detours and colleagues; Kosmrlj and colleagues; George and colleagues). A receptor survives only if its strongest affinity \(E^{*}\) to any self-peptide falls between the thresholds for positive and negative selection, \((E_p, E_n)\). As a maximum over many peptides, \(E^{*}\) falls under extreme-value statistics, open to statistical mechanics (Kosmrlj and colleagues), and receptors passing negative selection turned out to favor weakly binding residues. The theory was later applied to clinical data on HIV "elite controllers" who carry the class I molecule HLA-B27, and a related theory examined how sensitive tumor-targeting TCRs are. The interaction energies are not inferred from data but taken from popular yet unrealistic amino-acid potentials such as the Miyazawa–Jernigan matrix; many conclusions nonetheless depend little on such details in the extreme-value regime.</p>
+
+<h3>Selection learned from sequences</h3>
+
+<p>RepSeq also allows a data-driven approach. Define a selection factor as the ratio of a sequence's probability in the selected repertoire to its probability at generation, \(Q(s) = P_{\rm sel}(s)/\Pgen(s)\). There are far too many sequences, with generation probabilities spread over more than 20 orders of magnitude, to estimate \(P_{\rm sel}\) one by one, but assumptions on the form of \(Q\) help. Elhanati and colleagues took</p>
+
+<div class="equation">\[
+Q(s) = q(L)\, q(V,J) \prod_{i=1}^{L} q_{i|L}(a_i),
+\]</div>
+
+<p>where \((a_1,\ldots,a_L)\) is the amino-acid sequence of the CDR3, the loop that matters most for antigen recognition and covers the most variable stretch of the chain, from the end of the V segment to the start of the J segment. There are factors for the CDR3 length, for the V and J genes, and for each amino acid at each position, but none for the D gene. The parameters are again fitted by maximum likelihood with expectation-maximization.</p>
+
+<p>For the first round of selection of β chains, α chains and BCR heavy and light chains, the factors differed little from person to person. They reflected general biophysical and biochemical preferences, a sign of positive selection for a working protein rather than of person-specific negative selection, as direct comparisons of immature and mature BCR repertoires also suggest (Kaplinsky and colleagues). Negative selection is much harder to model, because it punches holes into the repertoire: after selection the landscape resembles a golf course densely dotted with holes. A simple model removes a random fraction \(1-q\) of sequences (this \(q\) is unrelated to the presentation probability above) and raises the probability of each survivor by \(1/q\) (Elhanati and colleagues). In simulations, a hash function can assign each sequence a quasi-random number and keep those below a threshold, which makes selection reproducible yet blind to sequence features.</p>
+
+<p>Nothing ties factors of this form to the thymus. Comparing the distributions before and after any process gives its selection pressure, as was done for receptors that responded to yellow fever vaccination (Pogorelyy and colleagues). CD4+ and CD8+ cells, BCR isotypes, and cells in different organs or environments probably each have selection factors of their own.</p>
+</section>
+
+<section id="diversity" data-part="D" data-page="34">
+<h2>Diversity and the clone size distribution</h2>
+
+<p>Receptor distributions are vast and extremely uneven, so it helps to compress them into a single number, a diversity, that says how well prepared a repertoire is (Mora and Walczak review the measures). Diversity is tied to the distribution of clone sizes, which records how immune cells have responded to their environment, and to the overlap between people. A single object, a density of states, unifies all three.</p>
+
+<p>Diversities of a distribution \(p(s)\) are conveniently organized by the Rényi entropies,</p>
+
+<div class="equation">\[
+H_\beta = \frac{1}{1-\beta} \ln\left[\sum_s p(s)^{\beta}\right].
+\]</div>
+
+<p>For \(\beta=1\) this is the Shannon entropy, \(H_1 = -\sum_s p(s)\ln p(s)\); for \(\beta=0\) it counts the receptors, \(R = e^{H_0}\); for \(\beta=2\), \(e^{-H_2} = \sum_s p(s)^2\) is the chance that two receptors drawn with replacement are identical, which is the Simpson index (its inverse, \(e^{H_2}\), is the inverse Simpson index). The whole family is a transform of a single function. Let \(G(E)\) be the number of sequences with \(-\ln p(s) < E\); then</p>
+
+<div class="equation">\[
+H_\beta = \frac{1}{1-\beta} \ln\left[\int dG(E)\, e^{-\beta E}\right].
+\]</div>
+
+<p>Formally \(G(E)\) is a cumulative density of states. \(E = -\ln p\), sometimes called the surprise, acts as an energy through Boltzmann's law \(p\sim e^{-E}\), making \(\beta\) an inverse temperature, and passing between \(G(E)\) and \(H_\beta\) mirrors the equivalence of the microcanonical and canonical ensembles (Mora and Walczak). The lower the temperature, the more the Rényi entropy is dominated by the most probable, low-energy sequences. \(G(E)\) also has a plainer reading: ranking sequences from most to least probable, it is the rank of the sequence of probability \(e^{-E}\), so it encodes the rank–frequency plots commonly used for clone sizes.</p>
+
+<p>Two kinds of diversity must be kept apart. <em>Potential</em> diversity belongs to a model distribution such as \(\Pgen(s)\) or \(P_{\rm sel}(s)\). <em>Realized</em> diversity belongs to the receptors actually present in a sample, \(p(s) = n(s)/N_{\rm tot}\), where \(n(s)\) is the number of cells or molecules with sequence \(s\) and \(N_{\rm tot} = \sum_s n(s)\).</p>
+
+<h3>Potential diversity</h3>
+
+<p>For human TCR β chains the number of possible sequences, \(e^{H_0}\), exceeds \(10^{39}\), more than all the TCR β chains that humans have ever produced, so it is more useful to compare Shannon entropies. These follow from \(G(E)\), which can be estimated by sampling: if \(\rho(E)\) is the probability density of \(E\) among sequences drawn from \(p(s)\), then \(\rho(E) = (dG/dE)\,e^{-E}\), and</p>
+
+<div class="equation">\[
+G(E) = \int_0^{E} dE'\, \rho(E')\, e^{E'} .
+\]</div>
+
+<p>Sethna and colleagues report the entropies in bits: \(H_1\approx44\) bits for human TCR β nucleotide sequences and 30 for their amino-acid sequences, about 30 and 25 bits for α chains, and 67 and 53 bits for BCR heavy chains. A uniform distribution with the combined 55 amino-acid bits of α and β would contain \(2^{55}\approx3.6\times10^{16}\) distinct TCRs; since the real distribution is far from uniform, even the pooled repertoires of every human who has ever lived would not exhaust it. Once again, most of this is owed to the random insertions and deletions at the junctions.</p>
+
+<p>Selection in the thymus, and central tolerance for B cells, lower these numbers in \(P_{\rm sel}\) by about 9 bits for TCR β chains, 4 bits for α chains and 12 bits for BCR heavy chains, leaving them very large. Losing 13 bits over the two TCR chains does not mean that only \(2^{-13}\approx10^{-4}\) of receptors pass: \(Q(s)\) is correlated with \(\Pgen(s)\), so selection favors sequences that were likely to begin with.</p>
+
+<h3>Realized diversity and power laws</h3>
+
+<p>In a sample or an individual, the most complete description of diversity is the full distribution of clone sizes, which \(G(E)\) encodes. High-throughput experiments find long tails spanning several orders of magnitude (<a href="https://arxiv.org/pdf/1907.03891v2#page=35">figure on page 35</a>, for six donors), coming mostly from the memory part of the repertoire (de Greef and colleagues). Early fears that the tails were an artifact of the polymerase chain reaction (PCR), which amplifies small differences exponentially, were laid to rest by unique molecular identifiers (UMI), barcodes attached to each original mRNA molecule. Clone sizes follow a power law,</p>
+
+<div class="equation">\[
+G(E) \sim e^{\hat\beta E} \sim \frac{1}{p^{\hat\beta}},
+\]</div>
+
+<p>where \(\hat\beta\) is at most 1 and close to it. Equivalently, the distribution of clone frequencies is a power law with an exponent slightly below 2, and inverting the relation gives frequency as a function of rank:</p>
+
+<div class="equation">\[
+\rho(p) = -\frac{dG}{dp} \sim \frac{1}{p^{1+\hat\beta}}, \qquad p \sim \frac{1}{G^{1/\hat\beta}}.
+\]</div>
+
+<p>The second form, the rank–frequency relation, is called Zipf's law in this context when its exponent \(1/\hat\beta\) is close to 1.</p>
+
+<p class="aside"><b>Note on the printed text.</b> A few slips in this part are corrected here. The paper calls \(\sum_s p(s)^2\) the inverse of the Simpson index; in Simpson's original definition it is the index itself, and its reciprocal is the inverse Simpson index. It writes \(N_{\rm tot} = \sum_s p(s)\), which equals 1, where \(\sum_s n(s)\) is meant. It gives \(G(E)\) with a factor \(e^{-E'}\), whereas inverting \(\rho = (dG/dE)\,e^{-E}\) requires \(e^{+E'}\). And one bound on the exponent is printed as \(\beta\le1\) where \(\hat\beta\) is meant.</p>
+
+<p>Long tails and limited sampling together leave very few diversity measures that can be estimated reliably. Fitting a statistical model and extrapolating from it is one remedy: the size estimators met earlier, Fisher's Poisson abundance model and Chao's, work this way, and more elaborate methods use expectation-maximization (Kaplinsky and Arnaout) or rarefaction curves (Laydon and colleagues). All can err enormously when clone sizes follow a power law (Haegeman and colleagues), so the reported numbers are likely to fall far short of the real diversity of BCR and TCR repertoires alike. Reliable extrapolation of the tails will need models of <a href="07-lymphocyte-population-dynamics.html">lymphocyte population dynamics</a>.</p>
+</section>
+
+<section id="sharing" data-part="E" data-page="35">
+<h2>Repertoire sharing</h2>
+
+<p>Shared receptors are central to the debate about public and private repertoires. Public receptors appear in several members of a cohort, private ones in a single person. In a group with a condition such as cytomegalovirus (CMV) infection or ankylosing spondylitis, receptors shared within the group are candidate links to it, hence the hunt for public sequences. Humans and mice do share a non-negligible number of receptors, whatever their lifestyle, environment or family ties. But likely sequences are also recombined independently in different people, so some sharing is pure chance, called convergent recombination. One correction compares with an outgroup, a similar group without the condition, as was done for CMV (Emerson and colleagues); another computes the chance expectation directly from \(\Pgen\).</p>
+
+<p>Everything about sharing follows from \(G(E)\). For \(n\) independent repertoires sampled to sizes \(N_1,\ldots,N_n\), the expected number \(M_m\) of sequences found in exactly \(m\) of them has the generating function (Elhanati and colleagues)</p>
+
+<div class="equation">\[
+g(x) = \sum_{m=0}^{n} M_m x^m = \int_0^{+\infty} dG(E) \prod_{i=1}^{n}\left[e^{-N_i e^{-E}} + \left(1-e^{-N_i e^{-E}}\right)x\right].
+\]</div>
+
+<p>Each factor says that a sequence of probability \(e^{-E}\) is missing from sample \(i\) with probability \(e^{-N_ie^{-E}}\) and present otherwise. When both samples are small, \(N_{1,2}\,e^{-E}\ll1\), the overlap reduces to</p>
+
+<div class="equation">\[
+M_2 \approx N_1 N_2 \int dG(E)\, e^{-2E} \approx N_1 N_2 \sum_s p(s)^2 = N_1 N_2\, e^{-H_2},
+\]</div>
+
+<p>a birthday problem with unequal birthdays, controlled by the Simpson index and hence by the Rényi entropy of order 2. Sharing among \(m\) small samples is likewise governed by \(\int dG(E)\,e^{-mE}\), the Rényi entropy of order \(m\): the sequences shared by \(m\) samples are drawn from the generation probability at temperature \(1/m\), concentrating on ever more probable sequences as \(m\) grows.</p>
+
+<p>Real repertoires hold upward of \(10^{8}\) distinct receptors, so the most probable receptors should be generated independently, many times over, in different people. In a cohort of 658 donors (Emerson and colleagues), the numbers of shared TCR β sequences were well predicted by the generating function, and \(\Pgen\) alone was enough to build a classifier telling whether a sequence will be shared by at least \(m\) people, with more than 95% accuracy for \(m>10\).</p>
+
+<figure class="plate" data-anim="repertoire-sharing">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Sharing by chance.</b> Each of \(n\) people receives \(N\) sequences drawn independently from the toy model above, with no selection. Left: sequences found in exactly \(m\) people (bars) against the generating function (dots), computed from the toy's own \(\Pgen\). Right: generation probabilities in each group. Shared sequences are the probable ones, and the more people share a sequence the further right its group sits: this is the "temperature \(1/m\)" at work. Raise \(N\) and the overlap between two people grows roughly as \(N^2\). The last readout compares it with \(N^2\sum_s p(s)^2\), which overestimates once the likeliest sequences turn up in almost every sample. The toy has about 21 bits of entropy, against 44 for human TCR β chains, so its sharing sets in at far smaller samples.</figcaption>
+</figure>
+
+<p>Publicness therefore comes in degrees: a receptor shared by two people and one shared by a thousand are public in very different senses, and both notions depend sensitively on the sample sizes \(N_i\). If a single definition is wanted, a reasonable one is that a public sequence is present on average at least once in every individual, \(\Pgen(s) > 1/R\).</p>
+
+<p>The theory can also single out receptors shared for reasons other than chance: those shared far more often than their modest generation probability would allow. Such mismatches have revealed T cell clones shared by identical twins (Pogorelyy and colleagues), proposed TCR sequences associated with CMV or diabetes without a control group, and measured how public the B cell response of vaccinated trout is (Magadan and colleagues).</p>
+
+<p>Common receptors, even unexpectedly common ones, need not target one antigen or one pathogen, and even if they do, the target stays unknown: a response involves binding to various epitopes, signaling, commitment and communication between cells. Baseline statistics can still reveal deviations and propose candidate responding sequences for experiments to test.</p>
+</section>
+
+<section id="optimal-repertoire" data-part="F" data-page="36">
+<h2>Optimal receptor distribution</h2>
+
+<p>Real repertoires are much larger than the minimal-repertoire argument requires and, with their power-law clone sizes, very skewed, which suggests that the relative abundances of receptor types matter as much as their number. Mayer and colleagues looked for an optimization principle for that composition. Antigens \(a\) occur with probabilities \(Q_a\) in a high-dimensional shape space where proximity reflects affinity, and a cross-reactivity matrix \(f_{ar}\) gives the probability that a chance encounter between antigen \(a\) and receptor \(r\) sets off a response. The repertoire is a distribution \(P_r\). If an infection by \(a\) costs a decreasing function \(c\) of its chance of meeting a receptor that recognizes it, \(\sum_r f_{ar}P_r\), the expected cost of a random infection is</p>
+
+<div class="equation">\[
+C(\{P_r\},\{Q_a\}) = \sum_a Q_a\, c\!\left(\sum_r f_{ar} P_r\right).
+\]</div>
+
+<p>Minimizing this cost over \(P_r\) gives a distribution made of many sharp peaks. Cross-reactivity makes the solution degenerate, so two people facing practically the same pathogens can end up with very different repertoires that protect almost equally well. Large differences between people's responses to the same threat, in phenotype and still more in sequence, are then expected: even under convergent selection, each repertoire may find its own molecular solution, which may explain why most observed sharing looks like chance.</p>
+</section>
+
+<section id="response" data-part="G" data-page="37">
+<h2>Repertoire response to an immune challenge</h2>
+
+<p>RepSeq can follow a repertoire through infections, vaccinations and other changes. In mice or fish the same animal usually cannot be sampled repeatedly, so genetically identical animals are sampled at different times before and after a challenge, a design that by construction reveals only public features. In mice, machine learning on low-level sequence features (Thomas and colleagues) and support vector machines (Cinelli and colleagues) have classified responding repertoires; in immunized trout, particular V gene classes and sequence features were enriched in the BCR repertoire (Castro and colleagues; Magadan and colleagues).</p>
+
+<p>In humans, RepSeq has tracked responses to several vaccines: influenza (B cells), varicella-zoster (both B and T cells) and yellow fever (T cells), the last serving as a stand-in for an acute infection. Mostly descriptive, they prepare the ground for measuring how specific, reproducible and public responses are. Most find responses largely private, yet the clones that respond are shared more often than chance would predict, and they cluster in sequence space (Pogorelyy and colleagues). That clustering can identify responding sequences in a single snapshot: compare how many neighbors within one amino-acid substitution a sequence has in the repertoire with the number expected from the recombination model, \(\sum_{s',\,|s-s'|\le1}\Pgen(s')\).</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>A person carries close to \(10^{12}\) T and B cells, but how many distinct receptors they hold is uncertain by orders of magnitude, because extrapolation fails for long-tailed clone sizes. A classic self-tolerance argument predicts a recognition probability \(p\sim1/n\) and a surviving fraction of \(1/e\), both roughly borne out, yet it calls for far smaller repertoires than are observed. V(D)J recombination is now described by probabilistic models learned from nonproductive sequences, in which \(\Pgen(s)\) sums over hidden scenarios that no annotation can resolve. Together with selection factors, Rényi entropies and the density of states \(G(E)\), these models measure potential diversity, cast power-law clone sizes in the language of statistical physics, and predict how many receptors people share by chance alone, which exposes the ones shared for a reason.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

@@ -1,0 +1,766 @@
+[
+ {
+  "key": "AIC",
+  "expansion": "Akaike information criterion",
+  "description": "Model-selection score that penalizes the number of parameters less heavily than the BIC.",
+  "source": "paper"
+ },
+ {
+  "key": "AID",
+  "expansion": "activation-induced cytidine deaminase",
+  "description": "Enzyme in the germinal-center dark zone that introduces hypermutations as B cells divide.",
+  "source": "paper"
+ },
+ {
+  "key": "AIRR",
+  "expansion": "Adaptive Immune Receptor Repertoire",
+  "description": "Research community promoting common standards for reporting repertoire sequencing data.",
+  "source": "paper"
+ },
+ {
+  "key": "AKPR",
+  "expansion": "adaptive kinetic proofreading",
+  "description": "KPR scheme with an activated phosphatase that limits spurious activation by many non-agonist ligands.",
+  "source": "paper"
+ },
+ {
+  "key": "APC",
+  "expansion": "antigen presenting cell",
+  "description": "Dendritic cell or macrophage that internalizes material from tissues and presents it on MHC class II to T cells.",
+  "source": "paper"
+ },
+ {
+  "key": "B cell",
+  "expansion": "B lymphocyte (B for bursa of Fabricius, where first identified in birds)",
+  "description": "Lymphocyte that binds antigen directly through its BCR and secretes antibodies.",
+  "source": "standard",
+  "aliases": [
+   "B-cell",
+   "B lymphocyte"
+  ]
+ },
+ {
+  "key": "BCR",
+  "expansion": "B cell receptor",
+  "description": "Surface receptor of a B cell; binds proteins directly, and antibodies are its soluble version.",
+  "source": "paper"
+ },
+ {
+  "key": "BIC",
+  "expansion": "Bayesian information criterion",
+  "description": "Model-selection score balancing fit against parameter number; the model with the smallest BIC is more likely correct.",
+  "source": "paper"
+ },
+ {
+  "key": "BnAb",
+  "expansion": "broadly neutralizing antibody",
+  "description": "Antibody binding strongly to many strains of a variable pathogen; also written bnAb.",
+  "source": "paper"
+ },
+ {
+  "key": "Cas",
+  "expansion": "CRISPR-associated (protein)",
+  "description": "Enzymes that work with CRISPR in the bacterial defense against viruses.",
+  "source": "standard"
+ },
+ {
+  "key": "CD4",
+  "expansion": "cluster of differentiation 4",
+  "description": "Surface marker of helper T cells, which recognize peptides on MHC class II.",
+  "source": "standard"
+ },
+ {
+  "key": "CD45",
+  "expansion": "cluster of differentiation 45",
+  "description": "Phosphatase that removes phosphoryl groups from the TCR complex.",
+  "source": "standard"
+ },
+ {
+  "key": "CD8",
+  "expansion": "cluster of differentiation 8",
+  "description": "Surface marker of killer T cells, which recognize peptides on MHC class I.",
+  "source": "standard"
+ },
+ {
+  "key": "cDNA",
+  "expansion": "complementary DNA",
+  "description": "DNA copied from mRNA by reverse transcription before barcoding, amplification and sequencing.",
+  "source": "standard"
+ },
+ {
+  "key": "CDR3",
+  "expansion": "complementarity determining region 3",
+  "description": "Loop covering the most variable part of the receptor; important for antigen recognition.",
+  "source": "paper"
+ },
+ {
+  "key": "CISH",
+  "expansion": "cytokine inducible SH2-containing (protein)",
+  "description": "Negative regulator that competes with STAT for JAK binding, preventing activation.",
+  "source": "paper"
+ },
+ {
+  "key": "CMV",
+  "expansion": "cytomegalovirus",
+  "description": "Virus used as a test case for finding receptor sequences shared among infected people.",
+  "source": "paper"
+ },
+ {
+  "key": "CpG",
+  "expansion": "cytosine-phosphate-guanine (dinucleotide)",
+  "description": "Unmethylated DNA motif from pathogens, recognized by the Toll-Like Receptors of innate immune cells.",
+  "source": "standard"
+ },
+ {
+  "key": "CRISPR",
+  "expansion": "clustered regularly interspaced short palindromic repeats",
+  "description": "Specific defense of bacteria against viruses, working together with Cas proteins.",
+  "source": "paper"
+ },
+ {
+  "key": "CSR",
+  "expansion": "class switching recombination",
+  "description": "DNA recombination that changes a B cell's antibody class while keeping its variable region.",
+  "source": "paper"
+ },
+ {
+  "key": "CYTOF",
+  "expansion": "cytometry by time of flight",
+  "description": "Mass-cytometry method for high-throughput measurement of many markers on single cells.",
+  "source": "standard"
+ },
+ {
+  "key": "DB",
+  "expansion": "dendritic–B (progenitor state)",
+  "description": "Progenitor that has lost its myeloid potential and can still become dendritic or B cells.",
+  "source": "paper"
+ },
+ {
+  "key": "DNA",
+  "expansion": "deoxyribonucleic acid",
+  "description": "The genetic material; receptor genes are assembled from it by V(D)J recombination.",
+  "source": "standard"
+ },
+ {
+  "key": "ELP",
+  "expansion": "equal loss of potential",
+  "description": "Differentiation model where the rate of losing each fate is constant, independent of current cell type.",
+  "source": "paper"
+ },
+ {
+  "key": "EM",
+  "expansion": "expectation-maximization",
+  "description": "Iterative algorithm that maximizes the likelihood of models with hidden variables.",
+  "source": "paper"
+ },
+ {
+  "key": "Epo",
+  "expansion": "erythropoietin",
+  "description": "Cytokine sensed by erythroid progenitors over a more than 1000-fold concentration range.",
+  "source": "standard"
+ },
+ {
+  "key": "ERK",
+  "expansion": "extracellular signal-regulated kinase",
+  "description": "Signaling molecule whose digital activation, like that of NFAT, defines the onset of T-cell activation.",
+  "source": "standard"
+ },
+ {
+  "key": "FACS",
+  "expansion": "fluorescence-activated cell sorting",
+  "description": "Sorting of single cells by their fluorescently labeled markers.",
+  "source": "paper"
+ },
+ {
+  "key": "FDC",
+  "expansion": "follicular dendritic cell",
+  "description": "Germinal-center cell presenting the antigen to which B cells must bind.",
+  "source": "paper"
+ },
+ {
+  "key": "FoxP3",
+  "expansion": "forkhead box P3",
+  "description": "Transcription factor expressed by regulatory T cells, controlling their differentiation and downregulating responses.",
+  "source": "standard"
+ },
+ {
+  "key": "FWR",
+  "expansion": "framework region",
+  "description": "Conserved structural part of the receptor variable region; it mutates less readily than CDR3.",
+  "source": "paper"
+ },
+ {
+  "key": "Gag",
+  "expansion": "group-specific antigen",
+  "description": "HIV structural protein whose fitness landscape was learned from viral sequences by maximum entropy.",
+  "source": "standard"
+ },
+ {
+  "key": "GATA-3",
+  "expansion": "GATA-binding protein 3",
+  "description": "Transcription factor of Th2 differentiation, in mutual cross-regulation with Tbet.",
+  "source": "standard"
+ },
+ {
+  "key": "GC",
+  "expansion": "germinal center",
+  "description": "Lymph-node structure where B cells hypermutate and are selected for antigen binding.",
+  "source": "paper"
+ },
+ {
+  "key": "gp130",
+  "expansion": "glycoprotein 130",
+  "description": "Ubiquitous membrane protein needed for IL-6 signaling; printed once in the text as gp30.",
+  "source": "standard"
+ },
+ {
+  "key": "GTRGAMMA",
+  "expansion": "general time-reversible model with gamma-distributed rates",
+  "description": "Substitution model in RAxML with gamma-distributed mutation rates.",
+  "source": "standard"
+ },
+ {
+  "key": "HIV",
+  "expansion": "human immunodeficiency virus",
+  "description": "Fast-evolving virus; a main example here for in-host dynamics, drugs and antibody co-evolution.",
+  "source": "standard"
+ },
+ {
+  "key": "HLA-B27",
+  "expansion": "human leukocyte antigen B27",
+  "description": "A human MHC class I molecule, linked here to elite controllers of HIV.",
+  "source": "standard"
+ },
+ {
+  "key": "HMM",
+  "expansion": "hidden Markov model",
+  "description": "Model with a hidden Markov chain of states emitting observations; used to annotate receptor sequences.",
+  "source": "paper"
+ },
+ {
+  "key": "HSC",
+  "expansion": "hematopoietic stem cell",
+  "description": "Self-renewing bone-marrow stem cell at the origin of the blood cell lineages.",
+  "source": "paper"
+ },
+ {
+  "key": "ICAM-1",
+  "expansion": "intercellular adhesion molecule 1",
+  "description": "Adhesion protein binding the integrin LFA-1; the complex is larger than TCR-pMHC and sets membrane spacing.",
+  "source": "standard"
+ },
+ {
+  "key": "IFN",
+  "expansion": "interferon",
+  "description": "Cytokine family; IFN-γ is secreted by T cells and signals through pSTAT1, reinforcing Th1 fate.",
+  "source": "paper"
+ },
+ {
+  "key": "IFN-γ",
+  "expansion": "interferon gamma",
+  "description": "Cytokine made by Th1 cells, killer T cells and NK cells; it signals through STAT1 and reinforces the Th1 program.",
+  "source": "standard"
+ },
+ {
+  "key": "Ig",
+  "expansion": "immunoglobulin",
+  "description": "Antibody protein; its constant region defines the class (IgM, IgD, IgG, IgA, IgE).",
+  "source": "paper"
+ },
+ {
+  "key": "IgA",
+  "expansion": "immunoglobulin A",
+  "description": "Antibody class; IgA1 and IgA2 are among the classes B cells can switch to.",
+  "source": "standard"
+ },
+ {
+  "key": "IgD",
+  "expansion": "immunoglobulin D",
+  "description": "Antibody class expressed, together with IgM, on naive B cells.",
+  "source": "standard"
+ },
+ {
+  "key": "IgE",
+  "expansion": "immunoglobulin E",
+  "description": "Antibody class, among those B cells can switch to.",
+  "source": "standard"
+ },
+ {
+  "key": "IgG",
+  "expansion": "immunoglobulin G",
+  "description": "Antibody class B cells switch to from IgM, with two binding sites; subclasses IgG1 to IgG4.",
+  "source": "standard"
+ },
+ {
+  "key": "IgM",
+  "expansion": "immunoglobulin M",
+  "description": "First antibody class secreted in a response; a low-affinity pentamer relying on multimeric binding.",
+  "source": "paper"
+ },
+ {
+  "key": "IGoR",
+  "expansion": "Inference and Generation of Repertoires",
+  "description": "Software that learns recombination and hypermutation models and generates synthetic receptor sequences.",
+  "source": "standard"
+ },
+ {
+  "key": "IgPhyML",
+  "expansion": "immunoglobulin PhyML (phylogenetic maximum likelihood)",
+  "description": "Phylogenetics software with a non-reversible, context-aware mutation model for antibody lineages.",
+  "source": "standard"
+ },
+ {
+  "key": "IL",
+  "expansion": "interleukin",
+  "description": "Cytokine family, historically thought to be produced by leukocytes; members are numbered.",
+  "source": "paper"
+ },
+ {
+  "key": "IL-1",
+  "expansion": "interleukin 1",
+  "description": "Cytokine whose soluble receptors can act as decoys or boost signaling.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-10",
+  "expansion": "interleukin 10",
+  "description": "Anti-inflammatory cytokine from dendritic cells; its signal is long-ranged.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-2",
+  "expansion": "interleukin 2",
+  "description": "Key anti-apoptotic cytokine for T cells and activator of regulatory T cells, which consume it.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-2R",
+  "expansion": "IL-2 receptor",
+  "description": "Receptor for IL-2, with alpha, beta and common-gamma chains; alpha levels differ among T-cell types.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-2Rα",
+  "expansion": "interleukin-2 receptor alpha chain",
+  "description": "The IL-2 receptor subunit (also called CD25) that raises the receptor's affinity for IL-2; activated T cells and Tregs express it.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-6",
+  "expansion": "interleukin 6",
+  "description": "Cytokine that can trans-activate cells lacking its receptor, via soluble receptor and gp130.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-6R",
+  "expansion": "IL-6 receptor",
+  "description": "Membrane receptor for IL-6; its soluble form is called sIL-6R.",
+  "source": "standard"
+ },
+ {
+  "key": "IL-7",
+  "expansion": "interleukin 7",
+  "description": "Hematopoietic growth factor for lymphocytes: anti-apoptotic and pro-proliferative.",
+  "source": "standard"
+ },
+ {
+  "key": "JAK",
+  "expansion": "Janus kinase",
+  "description": "Receptor-associated kinase, activated by cytokine binding, that phosphorylates STAT proteins.",
+  "source": "paper"
+ },
+ {
+  "key": "JH",
+  "expansion": "joining gene segment, heavy chain",
+  "description": "J gene templates of the antibody heavy chain.",
+  "source": "standard"
+ },
+ {
+  "key": "KPR",
+  "expansion": "kinetic proofreading",
+  "description": "Scheme where multistep phosphorylation amplifies differences in ligand binding lifetime.",
+  "source": "paper"
+ },
+ {
+  "key": "LFA-1",
+  "expansion": "lymphocyte function-associated antigen 1",
+  "description": "T-cell integrin binding ICAM-1, forming large adhesion complexes in the immune synapse.",
+  "source": "standard"
+ },
+ {
+  "key": "LMPP",
+  "expansion": "lymphoid primed multipotent progenitor",
+  "description": "Early progenitor able to become myeloid, dendritic or B cells.",
+  "source": "paper"
+ },
+ {
+  "key": "LPS",
+  "expansion": "lipopolysaccharide",
+  "description": "Bacterial cell-envelope molecule recognized non-specifically by the innate immune system.",
+  "source": "paper"
+ },
+ {
+  "key": "M1",
+  "expansion": "M1 (pro-inflammatory) macrophage type",
+  "description": "Macrophage states that mirror the Th1 and Th2 decisions of helper T cells.",
+  "source": "paper"
+ },
+ {
+  "key": "M2",
+  "expansion": "M2 (anti-inflammatory) macrophage type",
+  "description": "Macrophage states that mirror the Th1 and Th2 decisions of helper T cells.",
+  "source": "paper"
+ },
+ {
+  "key": "MB",
+  "expansion": "myeloid–B (progenitor state)",
+  "description": "Progenitor restricted to myeloid or B cell fates; excluded by the classical model but needed to explain barcoding data.",
+  "source": "paper"
+ },
+ {
+  "key": "MD",
+  "expansion": "myeloid–dendritic (progenitor state)",
+  "description": "Progenitor that has lost its B cell potential but can still give rise to myeloid or dendritic cells.",
+  "source": "paper"
+ },
+ {
+  "key": "MDB",
+  "expansion": "myeloid, dendritic, B (cell potentials)",
+  "description": "Progenitor state able to become M, D or B cells; MD, MB and DB have lost one potential.",
+  "source": "paper"
+ },
+ {
+  "key": "MHC",
+  "expansion": "major histocompatibility complex",
+  "description": "Protein presenting short peptides to T cells; class I on most cells, class II on antigen presenting cells.",
+  "source": "paper"
+ },
+ {
+  "key": "MPP",
+  "expansion": "multipotent progenitor",
+  "description": "Blood-cell precursor downstream of HSCs, with less self-renewal and faster proliferation.",
+  "source": "paper"
+ },
+ {
+  "key": "MRCA",
+  "expansion": "most recent common ancestor",
+  "description": "Latest ancestor shared by sampled cells; printed in the text as “mean recent common ancestor”.",
+  "source": "standard"
+ },
+ {
+  "key": "mRNA",
+  "expansion": "messenger RNA",
+  "description": "Transcript carrying a gene's sequence to make protein; often the template for repertoire sequencing.",
+  "source": "standard"
+ },
+ {
+  "key": "netMHC",
+  "expansion": "software name (neural-network prediction of MHC binding)",
+  "description": "Software that predicts which peptides bind a given MHC molecule.",
+  "source": "standard"
+ },
+ {
+  "key": "NFAT",
+  "expansion": "nuclear factor of activated T cells",
+  "description": "Transcription factor whose digital activation, like that of ERK, defines the onset of T-cell activation.",
+  "source": "standard"
+ },
+ {
+  "key": "NK",
+  "expansion": "natural killer (cell)",
+  "description": "Lymphocyte contributing cytotoxic responses against infected cells.",
+  "source": "paper"
+ },
+ {
+  "key": "OLGA",
+  "expansion": "Optimized Likelihood estimate of immunoGlobulin Amino-acid sequences",
+  "description": "Software computing receptor amino-acid generation probabilities by dynamic programming.",
+  "source": "standard"
+ },
+ {
+  "key": "PCR",
+  "expansion": "polymerase chain reaction",
+  "description": "Enzymatic amplification of DNA before sequencing; a source of noise in read counts.",
+  "source": "paper"
+ },
+ {
+  "key": "pH",
+  "expansion": "potential of hydrogen",
+  "description": "Acidity scale; low pH in lysosomes releases cytokines from their receptors.",
+  "source": "standard"
+ },
+ {
+  "key": "PI",
+  "expansion": "protease inhibitor",
+  "description": "HIV drug class causing production of non-infectious virus.",
+  "source": "paper"
+ },
+ {
+  "key": "pMHC",
+  "expansion": "peptide-MHC complex",
+  "description": "Short peptide loaded onto MHC; the ligand recognized by the T-cell receptor.",
+  "source": "paper"
+ },
+ {
+  "key": "pSTAT",
+  "expansion": "phosphorylated STAT",
+  "description": "Activated form of a STAT protein, produced by JAK; pSTAT1 is phosphorylated STAT1.",
+  "source": "paper"
+ },
+ {
+  "key": "pSTAT1",
+  "expansion": "phosphorylated STAT1",
+  "description": "Activated STAT1, which relays interferon γ signals and induces Tbet in cells heading for the Th1 fate.",
+  "source": "paper"
+ },
+ {
+  "key": "pTCM",
+  "expansion": "progenitor central memory (T cell)",
+  "description": "T-cell state whose adoption depends collectively on local cell number.",
+  "source": "paper"
+ },
+ {
+  "key": "PU-1",
+  "expansion": "PU.1 transcription factor (binds the purine-rich PU box)",
+  "description": "Transcription factor controlling differentiation in the myeloid compartment.",
+  "source": "standard"
+ },
+ {
+  "key": "PWM",
+  "expansion": "position-weight matrix",
+  "description": "Table of per-position values giving the sequence-context effect on hypermutation.",
+  "source": "paper"
+ },
+ {
+  "key": "RACE",
+  "expansion": "rapid amplification of cDNA ends",
+  "description": "Common amplification technique that adds a linker with a primer binding site at the 5' end of the V gene.",
+  "source": "paper"
+ },
+ {
+  "key": "RAxML",
+  "expansion": "Randomized Axelerated Maximum Likelihood",
+  "description": "Phylogenetic tree-inference software.",
+  "source": "standard"
+ },
+ {
+  "key": "RepSeq",
+  "expansion": "repertoire high-throughput sequencing",
+  "description": "Method reading a substantial portion of all immune receptor sequences in a biological sample.",
+  "source": "paper"
+ },
+ {
+  "key": "RNA",
+  "expansion": "ribonucleic acid",
+  "description": "Nucleic acid transcribed from DNA; transcript counts measure gene expression.",
+  "source": "standard"
+ },
+ {
+  "key": "RORγt",
+  "expansion": "RAR-related orphan receptor gamma t",
+  "description": "Transcription factor controlling Th17 differentiation, repressed by FoxP3.",
+  "source": "standard"
+ },
+ {
+  "key": "RT",
+  "expansion": "reverse transcriptase",
+  "description": "HIV enzyme; in the drug model, its inhibitors block the virus from infecting new cells.",
+  "source": "paper"
+ },
+ {
+  "key": "S5F",
+  "expansion": "synonymous 5-mer functional (model)",
+  "description": "Hypermutation model giving 5-mer mutation probabilities, learned from synonymous mutations.",
+  "source": "standard"
+ },
+ {
+  "key": "SFS",
+  "expansion": "site-frequency spectrum",
+  "description": "Distribution of mutation frequencies in a population; its shape reveals the evolutionary process.",
+  "source": "paper"
+ },
+ {
+  "key": "SH2",
+  "expansion": "Src homology 2",
+  "description": "Protein domain that binds phosphorylated tyrosines; found in the regulator CISH.",
+  "source": "standard"
+ },
+ {
+  "key": "SHM",
+  "expansion": "somatic hypermutation",
+  "description": "Mutations acquired by BCR genes during an immune response, exploring the binding landscape.",
+  "source": "paper"
+ },
+ {
+  "key": "sIL-6R",
+  "expansion": "soluble IL-6 receptor",
+  "description": "Secreted part of the IL-6 receptor; stabilizes IL-6 and enables trans-activation via gp130.",
+  "source": "paper"
+ },
+ {
+  "key": "SIR",
+  "expansion": "susceptible-infected-recovered",
+  "description": "Compartmental model of epidemics that tracks these three classes of hosts.",
+  "source": "paper"
+ },
+ {
+  "key": "SIS",
+  "expansion": "susceptible-infected-susceptible",
+  "description": "SIR variant in which infected hosts return to the susceptible class.",
+  "source": "paper"
+ },
+ {
+  "key": "SMAC",
+  "expansion": "supramolecular assembly complex",
+  "description": "Bullseye zones of the immune synapse: central (c), peripheral (p), distal (d). Elsewhere: supramolecular activation cluster.",
+  "source": "paper"
+ },
+ {
+  "key": "SNP",
+  "expansion": "single nucleotide polymorphism",
+  "description": "A single-base difference between individuals' genomes, here in V, D and J alleles.",
+  "source": "paper"
+ },
+ {
+  "key": "SOCS",
+  "expansion": "suppressor of cytokine signaling",
+  "description": "Negative regulator of JAK-STAT signaling; competes with STAT for JAK binding.",
+  "source": "paper"
+ },
+ {
+  "key": "SODA",
+  "expansion": "SoDA, Somatic Diversification Analysis",
+  "description": "Software using hidden Markov models to annotate receptor sequences to the germline.",
+  "source": "standard"
+ },
+ {
+  "key": "SPURF",
+  "expansion": "Substitution Profiles Using Related Families",
+  "description": "Method predicting B-cell receptor substitution profiles from public repertoire data.",
+  "source": "standard"
+ },
+ {
+  "key": "ST-HSC",
+  "expansion": "short-term hematopoietic stem cell",
+  "description": "Stage between HSC and MPP, with limited self-renewal and a death rate of about 1 per month.",
+  "source": "paper"
+ },
+ {
+  "key": "STAT",
+  "expansion": "signal transducer and activator of transcription",
+  "description": "Protein phosphorylated by JAK that turns cytokine signals into transcriptional responses.",
+  "source": "paper"
+ },
+ {
+  "key": "STAT5",
+  "expansion": "signal transducer and activator of transcription 5",
+  "description": "STAT family member; its phosphorylation is triggered by cytokines such as IL-2.",
+  "source": "standard"
+ },
+ {
+  "key": "T cell",
+  "expansion": "T lymphocyte (T for thymus)",
+  "description": "Lymphocyte whose receptor recognizes peptide on MHC; includes helper, killer and regulatory types.",
+  "source": "standard",
+  "aliases": [
+   "T-cell",
+   "T lymphocyte"
+  ]
+ },
+ {
+  "key": "Tbet",
+  "expansion": "T-box expressed in T cells (T-bet)",
+  "description": "Transcription factor driving Th1 differentiation and IFN-γ secretion; cross-regulated with GATA-3.",
+  "source": "standard"
+ },
+ {
+  "key": "TCMp",
+  "expansion": "central effector memory precursor",
+  "description": "One of four T-cell states in a fate-mapping differentiation model.",
+  "source": "paper"
+ },
+ {
+  "key": "TCR",
+  "expansion": "T-cell receptor",
+  "description": "Surface receptor of a T cell; recognizes antigen as peptide on MHC (pMHC).",
+  "source": "paper"
+ },
+ {
+  "key": "TEF",
+  "expansion": "effector T cell",
+  "description": "Effector state among the four T-cell states of a fate-mapping differentiation model.",
+  "source": "paper"
+ },
+ {
+  "key": "TEMp",
+  "expansion": "effector memory precursor",
+  "description": "One of four T-cell states in a fate-mapping differentiation model.",
+  "source": "paper"
+ },
+ {
+  "key": "TF",
+  "expansion": "transcription factor",
+  "description": "Protein controlling gene expression; here, mutually regulating pairs set T-cell fate.",
+  "source": "paper"
+ },
+ {
+  "key": "TGF-β",
+  "expansion": "transforming growth factor beta",
+  "description": "Cytokine regulating T-cell differentiation into Th17 or Treg; pro- or anti-inflammatory by context.",
+  "source": "standard"
+ },
+ {
+  "key": "Th1",
+  "expansion": "T helper 1",
+  "description": "Helper T-cell type unleashing T and NK cytotoxic responses against intracellular infections.",
+  "source": "standard"
+ },
+ {
+  "key": "Th17",
+  "expansion": "T helper 17",
+  "description": "Pro-inflammatory helper T-cell type that protects mucosal barriers from infection.",
+  "source": "standard"
+ },
+ {
+  "key": "Th2",
+  "expansion": "T helper 2",
+  "description": "Helper T-cell type engaging B cells, driving affinity maturation and class switching.",
+  "source": "standard"
+ },
+ {
+  "key": "TNFα",
+  "expansion": "tumor necrosis factor alpha",
+  "description": "Pro-inflammatory cytokine from dendritic cells; its signal is short-ranged.",
+  "source": "standard"
+ },
+ {
+  "key": "Treg",
+  "expansion": "regulatory T cell",
+  "description": "T cell that suppresses immune responses, notably against self; consumes IL-2 and expresses FoxP3.",
+  "source": "paper"
+ },
+ {
+  "key": "UMI",
+  "expansion": "unique molecular identifier",
+  "description": "Barcode attached to each initial molecule so sequence counts can be corrected for amplification.",
+  "source": "paper"
+ },
+ {
+  "key": "VDJ",
+  "expansion": "variable, diversity, joining (gene segments)",
+  "description": "Recombination of V, D and J templates that creates the diversity of T- and B-cell receptors.",
+  "source": "standard"
+ },
+ {
+  "key": "VH",
+  "expansion": "variable gene segment, heavy chain",
+  "description": "V gene templates of the antibody heavy chain.",
+  "source": "standard"
+ },
+ {
+  "key": "WT",
+  "expansion": "wild type",
+  "description": "The unmutated reference variant of a sequence or antigen.",
+  "source": "standard"
+ }
+]

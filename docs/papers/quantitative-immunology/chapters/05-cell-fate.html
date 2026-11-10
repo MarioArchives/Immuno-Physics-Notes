@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V. Cell fate | Immuno-Physics Notes</title>
+<meta name="description" content="A walkthrough of Section V of Quantitative Immunology for Physicists: bistable gene circuits behind helper T cell types, the timescales and lineage tree of blood cell production, and how lymphocytes time their decisions during a response, with interactive models.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="quantitative-immunology" data-chapter="05-cell-fate">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Section V</span> Cell fate</h1>
+<p class="lede">Every immune cell ends up as one of many types, and it has to get there somehow. The questions are how gene circuits make that choice sharp and lasting, how the bone marrow's production line is organized and timed, and how dividing lymphocytes decide what to become in the middle of an infection.</p>
+</header>
+
+<p>Immunology's bewildering cast of cell types is one reason newcomers find the field hard going. A cell gets its identity either during <em>hematopoiesis</em>, when stem cells produce every kind of blood cell through successive differentiation steps, or later, when it meets an infection and specializes further to fight it. Three problems follow: the gene-regulatory physics that makes fates stable, the reconstruction of the hematopoietic tree, and how cells pick a fate once an immune response is under way.</p>
+
+<section id="gene-regulation" data-part="A" data-page="20">
+<h2>Gene regulation and cell differentiation</h2>
+
+<p>Many decisions of immune cells come down to which genes they express: a few <em>transcription factors</em>, proteins that switch other genes on or off, set what a cell becomes and does. A T cell, for instance, reads the cytokine mixture around it, a gauge of inflammation, and responds by inducing transcription factors, which then dictate the cytokines it will secrete.</p>
+
+<p>The standard example is the CD4+ helper T cell, which directs other immune cells by secreting cytokines, the immune system's messenger molecules. A naive helper cell, one that has not yet met its antigen, is close to a blank slate. Once stimulated it can launch a <strong>Th1</strong> response, boosting the killing of infected cells by cytotoxic T cells and natural killer (NK) cells, as needed against intracellular pathogens such as viruses; a <strong>Th2</strong> response, engaging B cells and driving affinity maturation and class switching toward antibodies against extracellular pathogens such as bacteria; or a <strong>Th17</strong> response, which protects mucosal barriers. Each program answers a particular cytokine environment and amplifies it. Macrophages face a parallel choice between pro-inflammatory M1 and anti-inflammatory M2 states.</p>
+
+<p>Nonlinear dynamics explains how such a choice can be both sharp and exclusive. One ingredient is positive feedback, often indirect: Tbet makes a Th1 cell secrete the cytokine interferon γ (IFN-γ), which signals through pSTAT1 and so induces more Tbet. The other is multimerization. Transcription factors often bind a gene as complexes of several copies, as phosphorylated STAT (pSTAT) does after cytokine signaling, and since an \(n\)-mer forms at a rate proportional to the \(n\)th power of the monomer concentration, gene control becomes nonlinear. A stability analysis shows, for instance, that a gene activated by dimers of its own protein has two stable states, off and on, once its maximal production is large enough relative to its degradation. This is the generic origin of the bimodal distributions of transcription factors, cytokines and surface markers that cytometry and single-cell transcriptomics keep revealing.</p>
+
+<h3>Th1/Th2 differentiation</h3>
+
+<p>Early experiments showed that CD4+ helper T cells, activated by antigen and exposed to inflammatory cues, commit to one of two states that exclude each other, Th1 or Th2. The model rests on two inhibitory links: transcription factor \(P_1\) represses the production of \(P_2\), and \(P_2\) represses that of \(P_1\). With \(R_1\) and \(R_2\) the numbers of messenger RNA molecules encoding them,</p>
+
+<div class="equation">\[
+\begin{aligned}
+\frac{dR_1}{dt} &= v_1\,\frac{K_2^{n_2}}{K_2^{n_2}+P_2^{n_2}} - \gamma_{R_1} R_1, &\qquad \frac{dP_1}{dt} &= k_1 R_1 - \gamma_{P_1} P_1,\\
+\frac{dR_2}{dt} &= v_2\,\frac{K_1^{n_1}}{K_1^{n_1}+P_1^{n_1}} - \gamma_{R_2} R_2, &\qquad \frac{dP_2}{dt} &= k_2 R_2 - \gamma_{P_2} P_2,
+\end{aligned}
+\]</div>
+
+<p>where \(v_i\) and \(k_i\) are production rates, the \(\gamma\)s are decay rates, the \(K_i\) are dissociation constants for a repressor on its target gene, and the \(n_i\) are Hill coefficients. The candidates for \(P_1\) and \(P_2\) are Tbet and GATA-3, the master regulators of the two programs (circuit sketched in the <a href="https://arxiv.org/pdf/1907.03891v2#page=23">figure on page 23</a>). At steady state each protein lies on a nullcline,</p>
+
+<div class="equation">\[
+P_1 \propto \frac{K_2^{n_2}}{K_2^{n_2}+P_2^{n_2}}, \qquad P_2 \propto \frac{K_1^{n_1}}{K_1^{n_1}+P_1^{n_1}},
+\]</div>
+
+<p>to which a small constant can be added to represent leaky expression.</p>
+
+<p>The Hill coefficients exceed one because the factors act as multimers, and this steepness makes the nullclines cross three times in the \((P_1, P_2)\) plane: two stable states, \(P_1\) high with \(P_2\) low (Th1) and the mirror image (Th2), and an unstable one between them. Mutual repression alone has made a classic toggle switch. The model also predicts hysteresis. If the tonic drive \(v_1\), set by antigen stimulation, rises slowly, \(P_1\) stays low until its low state disappears and then jumps up; lowered again, it stays high well below the jump. At intermediate drives a population can therefore be bimodal. Such hysteresis has been seen in experiments on T cell differentiation.</p>
+
+<figure class="plate" data-anim="th-switch">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">A toggle switch for helper T cells.</b> The four equations above with \(n_1 = n_2 = n\), \(K_i = 1\), and rates chosen so that a fully active gene settles at a protein level equal to its drive \(v_i\); no measured values are given for this model, so units are arbitrary. Left: the \(P_1\) (blue) and \(P_2\) (brown) nullclines, their crossings, and 80 naive cells colored by their dominant factor. With equal drives the cells split between Th1 and Th2, a bimodal population; at \(n = 1\) the switch disappears. Right: the steady Tbet level against \(v_1\), unstable branch dashed, bistable range shaded. The sweep button raises \(v_1\) to 6 and back: the pink paths of a few cells jump up at the right edge of the band and fall back at its left edge, a hysteresis loop, lagging slightly because the dynamics slow near the edges. Noise lets cells switch early.</figcaption>
+</figure>
+
+<h3>Other differentiation switches</h3>
+
+<p>A similar formalism describes the choice between Th17 cells and regulatory T cells (Treg). Th17 cells promote inflammation and fight infections of mucosal tissues; Tregs restrain responses that go too far, from autoimmune disorders, where the body's own antigens come under strong attack, to runaway reactions such as septic shock. Both fates open up on exposure to the cytokine TGF-β, which promotes inflammation in some contexts and suppresses it in others. To explain this, Tyson and coworkers let each protein level relax toward a sigmoidal function of a weighted sum of inputs:</p>
+
+<div class="equation">\[
+\frac{dX_i}{dt} = \gamma_i\left(\frac{X_i^{\text{eq}}}{1+e^{-\sigma_i\omega_i}} - X_i\right), \qquad \omega_i = \omega_i^0 + \sum_j \omega_{j\to i}\,X_j .
+\]</div>
+
+<p>Here \(X_i^{\text{eq}}\) is the steady level of the protein in differentiated cells, \(\gamma_i\) its degradation rate, \(\omega_i^0\) a constitutive bias, \(\omega_{j\to i}\) the influence, possibly negative, of species \(j\) on species \(i\), and \(\sigma_i\) the steepness. A protein may regulate itself, \(\omega_{i\to i}\neq 0\).</p>
+
+<p>The species are \(X_1\) = FoxP3 and \(X_2\) = RORγt, the transcription factors of Treg and Th17 cells, and \(X_3\) = TGF-β, held fixed as an external stimulus. RORγt, for example, is activated by TGF-β (\(\omega_{3\to 2}>0\)) and by itself (\(\omega_{2\to 2}>0\)), and repressed by FoxP3 (\(\omega_{1\to 2}&lt;0\)). The nullclines of the two factors now cross several times, and three of the crossings are stable: RORγt+FoxP3−, the Th17 cell; FoxP3+RORγt−, the Treg; and a mixed state with both factors on, whose existence was later confirmed by experiment. The appeal of the formalism is that couplings and feedbacks enter only as effective weights, without committing to the mechanisms that implement them.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The printed equation has \(e^{-x}\) in the denominator, but the definitions that follow describe a steepness \(\sigma_i\) acting on \(\omega_i\), so we write \(e^{-\sigma_i\omega_i}\). The printed text also says RORγt is repressed by RORγt; the coefficient it gives, \(\omega_{1\to 2}\), is the effect of FoxP3, which is what we use.</p>
+
+<h3>Testing bistability against experiments</h3>
+
+<p>These models explain, qualitatively, why many activation conditions push T cells into clear, separate and stable fates, and similar models exist for hematopoietic differentiation (Laslo and colleagues; Kueh and colleagues). But do they agree with experiments?</p>
+
+<p>Antebi and colleagues showed that bistability is not, in fact, generic in the Th1/Th2 model. Scanning physiological values of the parameters for inducing Tbet and GATA-3, they found that the balance of self-reinforcement against inhibition usually gave a single stable state, and seldom more. Gene induction is also noisy, both intrinsically and through cell-to-cell variation in signaling molecules (measured in T cells by Feinerman and colleagues). The simplest toggle, elegant as it is, does not match observations.</p>
+
+<p>The story is typical of quantitative immunology. Early insight came from drastic genetic manipulations: knocking out Tbet reduces the secretion of Th1 cytokines while that of Th2 cytokines is maintained (Szabo and colleagues). Such results need reinterpreting in unperturbed settings, for example by watching Tbet switch on by itself in differentiating cells, and similar reassessments are under way for M1/M2 macrophages (Palma and colleagues) and for myeloid differentiation controlled by PU-1 (Kueh and colleagues). Progress will need better parameters and models that can handle the combinatorial, changing complexity of cytokine signaling and gene regulation.</p>
+
+<p>The murkiness can even be useful. Peine and colleagues followed cells expressing both Tbet and GATA-3, a mixed Th1/Th2 phenotype at odds with bistability, and found that they limit the damage done by all-out Th1 or Th2 inflammation. Knowing how noisy and how stable differentiation really is will therefore be central to telling healthy from pathological inflammation.</p>
+</section>
+
+<section id="hematopoiesis" data-part="B" data-page="24">
+<h2>Hematopoiesis</h2>
+
+<h3>Timescales</h3>
+
+<p>So where does the immune system get its cells? Of the roughly \(5\times10^{13}\) cells in a human body, more than half come from hematopoietic stem cells (HSC) in the bone marrow. A human life involves about \(10^{16}\) cell divisions, around \(10^{6}\) per second, most of them linked to HSC. A mouse has about \(10^{4}\) HSC, many made in the fetus; human numbers are not reliably known. Through a series of commitment steps, from HSC to short-term HSC (ST-HSC) to multipotent progenitors (MPP), they produce every blood cell, red cells and all immune cells included (tree sketched in the <a href="https://arxiv.org/pdf/1907.03891v2#page=24">figure on page 24</a>).</p>
+
+<p>The first branch point, whose timing is now debated, yields the myeloid progenitor. Its descendants include red blood cells, mast cells and thrombocytes, which do not count as immune cells, and also dendritic cells, macrophages and granulocytes (neutrophils, eosinophils and basophils), which engulf cells and proteins without specificity. These belong to innate immunity, though some, dendritic cells above all, also serve the adaptive system as antigen-presenting cells (APC). The other branch is lymphoid: B and T cells, plus natural killer cells. The choice between branches is thought to be swayed by external signals rather than made by the cell alone.</p>
+
+<p>How do \(10^{4}\) HSC in a mouse supply about \(10^{7}\) granulocytes that live a day, and about \(10^{11}\) lymphocytes, some living for years? How long does it take, and what keeps the output right? Two kinds of experiment supply most answers. In labeling experiments, upstream cells take up a dye or a marker, such as deuterium or a bromine-containing compound, that each division dilutes, and the decay curves give lifetimes. In adoptive transfers, marked cells are transplanted, usually into a mouse, and turn up in a given compartment after some delay \(\delta t\). For early hematopoiesis the host's own cells must first be cleared, and differentiation after a transplant may then differ greatly from normal (Busch and colleagues); lymphocyte divisions can be studied without that step.</p>
+
+<p>At the level of populations, cells at stage \(i\) proliferate at rate \(\lambda_i\), differentiate onward at rate \(\alpha_i\) and die at rate \(\delta_i\). A compartment R fed from an upstream compartment u then obeys (Höfer and colleagues; Busch and colleagues)</p>
+
+<div class="equation">\[
+\frac{dn_{\text{R}}}{dt} = \alpha_{\text{u}}\, n_{\text{u}} - (\alpha_{\text{R}} + \delta_{\text{R}} - \lambda_{\text{R}})\, n_{\text{R}} .
+\]</div>
+
+<p>Migration would bring in space, and rates that depend on population sizes make the equations nonlinear. Only \(k_{\text{R}} = \alpha_{\text{R}} + \delta_{\text{R}} - \lambda_{\text{R}}\), the collective decay rate of the compartment, enters: an identifiability problem, since without experiments designed around the theory the timescales of interest are hard to separate. If the adult is at steady state, \(n_{\text{R}}/n_{\text{u}} = \alpha_{\text{u}}/(\alpha_{\text{R}} - \beta_{\text{R}})\) with \(\beta_{\text{R}} = \lambda_{\text{R}} - \delta_{\text{R}}\), an approach Zilman and colleagues used to estimate T cell proliferation rates. Stochastic versions exist too, and theories of age-structured populations turn out to be equivalent to branching processes.</p>
+
+<p>Fate mapping, the tracking of labeled cells, supplies numbers. An HSC divides about once every 110 days (\(\lambda_{\text{R}} = 1/110\ \text{days}^{-1}\)), and its label reaches granulocytes after about a year. Granulocytes, which then live a day, make this measurement easier because they do not proliferate and have no other source. A mouse lives about two years, so a production time of one year puts the steady-state assumption in doubt. In the fetus it fails altogether: the dynamics are very different and a new granulocyte appears within a few weeks (Busch and colleagues).</p>
+
+<p class="aside"><b>Note on the printed text.</b> One sentence of the paper says an HSC divides "once every 50 days" while giving \(\lambda_{\text{R}} = 1/110\) days in the same breath, and the next paragraph twice uses 110 days. We use 110 days throughout.</p>
+
+<p>Cell counts suffer from sampling bias, so one measures ratios \(f_i = n_i/n_{\text{total}}\) instead, as in the steady-state formula above. At steady state</p>
+
+<div class="equation">\[
+\frac{df_i}{dt} = k_i\,(f_{i-1} - f_i), \qquad k_i = \alpha_i - \beta_i ,
+\]</div>
+
+<p>and comparing successive compartments separates self-renewal (\(\beta_i\)) from supply from upstream (\(\alpha_i\)). A perfect stem cell would have \(k_i\to 0\); HSC come close, renewing on a timescale comparable to a mouse's lifetime, while transitional compartments have \(k_i^{-1}\sim 1\) day. An HSC both divides and differentiates about once per 110 days, so HSC seem to replace themselves every 110 days (still to be confirmed directly). ST-HSC die at about one per month, MPP at about one per day: self-renewal falls steeply from HSC to MPP while proliferation rises at a comparable rate. These opposing trends may guard against malignancy by keeping output right; overproduction of myeloid cells has been linked to disturbances of the balance, and it appears only in old individuals, once excess cells have built up.</p>
+
+<p>Only about one HSC descendant in 100 becomes lymphoid. Lymphoid cells survive for a very long time, and the thymus keeps working for long periods without fresh input from HSC. The system therefore has great inertia: killing every HSC in a young adult mouse has no visible effect for about five months, unless hematopoiesis is stressed (Schoedel and colleagues). Feedback from downstream cells onto upstream ones has not been seen directly, although nothing forbids it, and some is probably at work.</p>
+</section>
+
+<section id="lineage-tree" data-part="C" data-page="25">
+<h2>Inferring the hematopoietic tree</h2>
+
+<p>Perié and colleagues combined barcoding, a stochastic model and maximum likelihood inference and found myeloid and lymphoid differentiation to be less tidy than thought. They followed lymphoid-primed multipotent progenitors (LMPP), each called an MDB because it can still give rise to myeloid (M), dendritic (D) or B cells. In their branching-process model a step can remove one or two potentials: an MDB can become an MD, MB or DB, or directly an M, D or B; an MD cell can still turn into M or D; and so on. The traditional alternative forbids MB and never removes two potentials at once.</p>
+
+<p>Using mice whose progenitors carried unique barcodes, they built lineage trees, linked each descendant to the cell it came from, and tallied the offspring of each type, \(N_i\) for \(i\in\{M, D, B\}\), from every MDB cell. The probability \(P(N_M, N_D, N_B)\) of each combination is encoded in a generating function assembled from simple branching processes:</p>
+
+<div class="equation">\[
+G(z_M, z_D, z_B) = \sum_{m,d,b} z_M^{m} z_D^{d} z_B^{b}\, P(m,d,b) = H\big(p_{\text{MDB}},\, G_{\text{MDB}}(z_M, z_D, z_B)\big),
+\]</div>
+<div class="equation">\[
+G_{\text{MDB}} = \sum_{i\in\{M,D,B\}} p_{\text{MDB}\to i}\, z_i \;+\! \sum_{i\neq j} p_{\text{MDB}\to ij}\, H\big(p_{ij},\, G_{ij}\big).
+\]</div>
+
+<p>\(H(p, z)\) is the generating function for the total progeny of a branching process in which a cell divides with probability \(p\) at each step. The probabilities \(p_{\text{MDB}}\), \(p_{\text{MD}}\), \(p_{\text{MB}}\) and \(p_{\text{DB}}\) are those of remaining in a state rather than differentiating, and \(p_{\text{MDB}\to ij}\) those of moving to a two-potential state, whose own \(G_{ij}\) is built the same way, for example \(G_{\text{MD}}(z_M, z_D) = p_{\text{MD}\to M}\, z_M + p_{\text{MD}\to D}\, z_D\).</p>
+
+<p>Taking marginals gives the chance of finding a barcode in each of the seven possible combinations of cell types. Under the equal loss of potential (ELP) model, each potential is lost at a constant rate whatever the current state, so three rates, \(\alpha_M\), \(\alpha_D\) and \(\alpha_B\), fix all the allowed transitions \(p_{i\to j}\). They were fitted by maximum likelihood,</p>
+
+<div class="equation">\[
+\vec{p}_{\max} = \underset{\vec p}{\operatorname{argmax}} \sum_i n_i \ln \pi_i(\vec p),
+\]</div>
+
+<p>with \(n_i\) the number of barcodes seen in state \(i\) and \(\pi_i\) the model probability that a barcoded ancestor leaves offspring in exactly that combination, read off the generating function: \(\pi_{\text{MDB}} = \sum_{m,d,b\ge1} P(m,d,b)\), \(\pi_{\text{MD}} = \sum_{m,d\ge1} P(m,d,0)\), \(\pi_{M} = \sum_{m\ge1} P(m,0,0)\), and so on.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The paper prints the objective as \(\sum_i n_i\pi_i(\vec p)\). The log-likelihood of counts spread over seven categories is \(\sum_i n_i\ln\pi_i\), which is what we write.</p>
+
+<p>The classical sequential model without MB proved inconsistent with the data: the MB state is rare, but it is needed to explain the barcodes. Simulations of the fitted model put about 20 rounds of differentiation, roughly two weeks, between an LMPP and committed cells. Later barcoding from the HSC stage, with similar inference (Pei and colleagues), showed that most HSC give rise to many fates. Earlier still, Yates and colleagues had paired branching processes with likelihood inference to extract the division and death rates of T cells from fluorescent dye experiments.</p>
+</section>
+
+<section id="immune-response" data-part="D" data-page="26">
+<h2>Cell fate during the immune response</h2>
+
+<h3>Choosing a fate, and when</h3>
+
+<p>Stimulated by an infection, B and T lymphocytes grow, divide, take on specialized functions, and decide cell by cell whether to divide again, to switch the class of their immunoglobulin (Ig), to become memory cells (both T and B cells can) or, for B cells, to become plasmablasts. Eventually they stop dividing and die, and the population shrinks back to its size before infection. Since each cell may take its own path, the outcome is a huge combinatorial variety, from cells that divided a few times and became memory cells to cells that divided many times and left no offspring.</p>
+
+<p>B cells can also change class by class switch recombination (CSR), which keeps the antibody's variable region, and so its specificity, but replaces the constant region: affinity is unchanged, while the antibody's interactions with signaling molecules change. The constant-region genes lie in a fixed order in the heavy-chain locus, and CSR deletes the DNA in between. The breaks occur at conserved motifs, so isotype genes are the same across cells and individuals, and since skipped genes are lost, classes are generally visited in a fixed order, unless translocation from the other allele restores a deleted locus (Laffleur and colleagues).</p>
+
+<p>How are these decisions made? Cells certainly integrate environmental cues, and cocktails of cytokines can induce chosen fates in vitro. The <em>cyton</em> model of Hawkins and colleagues offers a compatible alternative: each cell picks at random among its possible fates using internal, preprogrammed timers for division and death. Every timer samples a distribution, so every cell lives a different scenario and the population is heterogeneous; yet the population distribution of each trait, from division times to the share of memory cells, is reproducible.</p>
+
+<p>In the simplest version a stimulated cell can divide, die, or do nothing. Let \(\phi_i(t)\) and \(\psi_i(t)\) be the measured distributions of the times to division and to death in division round \(i\), and \(F_i\) the fraction of cells in round \(i\) that divide when stimulated. The numbers of cells dividing or dying per unit time in rounds \(i = 1, \dots, m\) are</p>
+
+<div class="equation">\[
+\begin{aligned}
+n_i^{\text{div}}(t) &= 2F_i \int_0^t dt'\, n_{i-1}^{\text{div}}(t') \left(1 - \int_0^{t-t'} dt''\, \psi_i(t'')\right) \phi_i(t-t'),\\
+n_i^{\text{die}}(t) &= 2 \int_0^t dt'\, n_{i-1}^{\text{div}}(t') \left(1 - F_i \int_0^{t-t'} dt''\, \phi_i(t'')\right) \psi_i(t-t').
+\end{aligned}
+\]</div>
+
+<p>Each division in round \(i-1\) sends two cells into round \(i\), and the terms in parentheses discard cells that would have divided at time \(t\) but had already died, or would have died but had already divided. Summing gains and losses, starting from \(N\) cells,</p>
+
+<div class="equation">\[
+N_0(t) = N - \int_0^t dt' \left(n_0^{\text{div}}(t') + n_0^{\text{die}}(t')\right), \qquad
+N_i(t) = \int_0^t dt' \left(2n_{i-1}^{\text{div}}(t') - n_i^{\text{div}}(t') - n_i^{\text{die}}(t')\right).
+\]</div>
+
+<p>Exponential distributions make the integrals analytic, but measured times are better described by log-normal distributions (Deenick and colleagues; Tangye and colleagues), so the integrals are done numerically.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The paper's equation for \(n_i^{\text{div}}\) carries an extra factor \(p\) that is never defined; we leave it out, since \(F_i\) already sets the fraction of cells that divide. The integrands in the cell-count equations are also printed with \(t\) where the integration variable \(t'\) is meant.</p>
+
+<p>The cyton model reproduces measured cell counts, with or without stimulation. A skeptic might say it merely turns measured timer distributions into counts of survivors. The reply is that its power lies in a change of paradigm, the assumption that cells follow rules, so that a system built on randomness and heterogeneity is still predictable. On this view a programmed stochastic system, rather than a black box integrating cues, is a very powerful idea.</p>
+
+<p>Marchingo and colleagues, with transgenic mice infected by influenza virus, showed that signals through the T cell receptor and costimulatory receptors give each cell an intrinsic division destiny. Cells then count through generations, as in the cyton model, before returning to rest. This heritable priming can later be adjusted by cytokine signals, which cells also integrate in a dose-dependent way, so that different mixtures of costimulation and cytokines can produce signals of similar size. The cyton model and decisions driven by signaling are thus compatible.</p>
+
+<figure class="plate" data-anim="cyton">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Division and death as a race between timers.</b> Each cell draws log-normal times to division and to death and does whichever comes first. A fraction \(F_0\) of founders respond, later rounds always try to divide, and division stops after a set number of rounds, the division destiny. Later divisions take about 10 hours; the other values are adjustable and illustrative, since no measured values are given for them. Left: family trees of six founders, colored by generation, with crosses for deaths; some die undivided, others fill every branch their destiny allows. Right: cells per founder in each generation from a simulation of 500 founders (solid) and from the cyton equations above (dashed), total in black. They agree: the population is reproducible although no single family is. Widen the timer spread and the generations blur; shorten the time to death and the expansion collapses.</figcaption>
+</figure>
+
+<h3>An aside on cell types</h3>
+
+<p>Cell types are defined by surface markers: to join a cytokine conversation a cell must express the matching receptor, so its receptors tell the experimenter how it will behave when triggered. This phenomenological notion has served immunology well. FACS (fluorescence-activated cell sorting) splits cells into high and low expressers of many markers, but marker levels form a distribution that is bimodal only with luck, and placing the boundaries, called <em>gating</em>, is an art built into analysis software that machine learning should make more automatic and easier to validate. Whole distributions often reveal a continuum of phenotypes where a binary scheme fails, and high-throughput mass cytometry (CYTOF) shows cell types to be more continuous and changeable than assumed.</p>
+
+<h3>Inferring the timeline of fates</h3>
+
+<p>The cyton framework could also handle this question, but a more data-driven approach comes from Buchholz, Flossdorf and colleagues, working on CD8 T cells. In the standard textbook account, a clone, meaning all T cells whose receptors respond to one antigen, starts as about 10 to 100 long-lived naive cells (living about 80 days in mice), grows during infection to about \(10^{7}\) short-lived effectors, and after clearance leaves about \(10^{3}\) memory cells of intermediate lifetime (about 15 days in mice) that respond more robustly next time. Memory and effector cells also divide within their own class to keep their pools stocked, prompted by weak antigenic signals for memory cells and strong ones for effectors.</p>
+
+<p>This picture carries no measured numbers and was drawn by eye from bulk data. Population-level transfers can fit a known model, but inferring the network's topology, especially from a snapshot, is much harder, so Flossdorf and colleagues used single-cell adoptive transfers, mapping the progeny of one cell at a time. Their model distinguished four types of cell: naive cells (N), effectors (TEF), effector memory precursors (TEMp) and central memory precursors (TCMp). In the most general network any non-naive type can become any other, all proliferate and differentiate further, and naive cells can become any type but nothing reverts to naive: 302 models in all. What the marker-defined types mean immunologically is debated; the method is the point here.</p>
+
+<p>Each model has stochastic differentiation reactions, with rates \(\vec\alpha\), and proliferation reactions, with rates \(\vec\beta\). Because naive cells and rates measured in vitro vary, differentiation rates were drawn from exponential or gamma distributions; the data could not tell these apart, and the exponential sufficed. Proliferation rates were fixed, since correlations between successive divisions fade fast (Dowling and colleagues). Naive phenotypic heterogeneity was ignored, and since a variable number of starting cells would have made model selection impossible, each experiment began from one naive cell (\(N_{\text{naive}} = 1\)). The master equation for the joint probability of the cell numbers,</p>
+
+<div class="equation">\[
+\partial_t P(\vec N) = F\big(P(\vec N), \vec\alpha, \vec\beta, n_{\text{naive}}, \vec r\big),
+\]</div>
+
+<p>with \(F\) a linear operator, \(\vec N = (N_{\text{TEMp}}, N_{\text{TCMp}}, N_{\text{TEF}})\) and \(\vec r\) the death rates, gives analytic first and second moments. These were fitted by least squares to the measured means \(\avg{N_i}(t)\), coefficients of variation \(CV_i(t)\) and covariances \(\Sigma_{ij}(t)\), and topologies were then ranked by the Akaike information criterion (AIC). Tests on artificial data, simulated from known topologies and parameter values, showed why the covariances are indispensable: a chain \(A\to B\to C\) and a tree \(C\leftarrow A\to B\) can give identical mean dynamics for suitable parameters, but distinct covariances. The approach parallels the model selection used to infer the <a href="#lineage-tree">hematopoietic tree</a>.</p>
+
+<p>For CD8 T cells responding in mice to Listeria bacteria that express chicken ovalbumin (the antigen these T cells recognize), two of the 302 models stood out:</p>
+
+<div class="equation">\[
+\begin{aligned}
+&\text{naive} \to \text{TCMp} \to \text{TEMp} \to \text{TEF},\\
+&\text{naive} \to \text{TCMp} \to \text{TEMp} \to \text{TEF} \quad\text{together with}\quad \text{naive} \xrightarrow{\;10\%\;} \text{TEMp}.
+\end{aligned}
+\]</div>
+
+<p>In both, every type except naive cells proliferates, and the parameters are well identified. Growth in this acute infection is exponential, and the proliferation rates decline steadily from TEF, the fastest, to naive cells, the slowest. Both models predict the mean numbers over time, and the linear one, trained on single-cell progeny from one time point, also predicts the composition at earlier times. Some scenarios are ruled out: about 90% of divisions are symmetric, giving two daughters of one type, though not the mother's type, and about 10% asymmetric, giving daughters of two different types. Rates must also vary in time, and these time-dependent rates are the same for bacterial (Listeria) and viral infections, hinting at a universal program.</p>
+
+<p>Miles and colleagues found the model consistent with the data of Buchholz and colleagues, but applied to the data of Kinjyo and colleagues the same approach suggests that memory precursors appear before effectors. The inference is robust; its biological reading depends on the experimental conditions and the model's assumptions.</p>
+
+<h3>Quorum sensing</h3>
+
+<p>Polonsky and colleagues looked for collective effects of communication in how naive T cells become memory cells. Filming live cells, labeled with antibodies against marker proteins, in microwells seeded with different numbers of cells, they tracked each cell's state and divisions, free of the poorly controlled local densities of bulk experiments.</p>
+
+<p>Becoming a progenitor central memory cell (pTCM) proved to be a collective decision: in identical media, cells with more neighbors differentiated faster, at a rate set only by how many cells the well held at that moment. Rates from different media and starting numbers collapsed onto one curve, by which differentiation becomes more likely once a cluster exceeds \(N_c \sim 30\) cells. A stochastic model of division, death and differentiation at rate \(R\) explains the data, and the variability between wells, only if \(R(N)\) depends on the cell number \(N\).</p>
+
+<p>The cytokines IL-2 and IL-6 seem to carry the message. Blocking IL-2 lowered the maximum of the universal curve, while blocking IL-6 raised \(N_c\) with little change to the plateau, and the receptors for both gathered in patches facing neighboring cells. The split between memory and effector fates thus depends on the local T cell density at each moment, independently of any further effect of T cell receptor signal strength or of antigen-presenting cells.</p>
+
+<p>If cells talk through diffusing cytokines, a threshold of 30 cells per well ought to depend on the well's size. Cytokine signals <a href="04-cytokines.html">travel only short distances</a> because neighbors absorb them (Oyler-Yaniv and colleagues, for CD4+ T cells choosing between Treg and helper fates). Receptors pointed at the secreting cells help pTCM differentiation, but over large distances diffusion matters, and active clustering may keep cells out of the diffusive regime. The range also depends on the signal: dendritic cells emit IL-10, an anti-inflammatory signal that acts far away, and TNFα, a pro-inflammatory one that acts nearby, and they too cluster, in culture and in the body. Marcou and colleagues explained how these cells combine the two, nonlinearly, with a two-step model: an intermediate molecule sums both signals without distinction up to a threshold, a bottleneck either signal can open, and its output is then turned down by the anti-inflammatory signal alone. Collective decisions plus such a modulated bottleneck were proposed as a check on responses that overshoot.</p>
+
+<p>Quorum sensing had earlier been proposed in theory as a way to sharpen self/non-self discrimination (Butler and colleagues): by communicating, cells take a census across many clones and correct individual errors, a cellular error-correcting code akin to <a href="03-antigen-discrimination.html">kinetic proofreading</a>. Polonsky's populations were monoclonal, whereas a census needs clones deciding independently, but the collective decision is probably of the same nature, and the results are likely to hold for distinct clones of similar affinity. Real responses are multiclonal, so quorum sensing presumably involves many clones; how memory and effector pools are controlled in that setting remains open.</p>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>Cross-repressing transcription factors with cooperative binding form toggle switches that hold helper T cells in Th1 or Th2 states, or in Th17, Treg and mixed states, and predict hysteresis, though realistic parameters and noise often undo strict bistability and mixed phenotypes prove useful. Blood cells descend from a small pool of slowly dividing stem cells, about \(10^{4}\) in a mouse, through compartments whose turnover can be untangled only from ratios and well-designed experiments, and barcoding with branching-process likelihoods reveals unexpected branches in the tree. During a response, the cyton model treats division and death as competing random timers that make heterogeneous cells add up to reproducible populations, while single-cell fate mapping and live imaging of collective decisions are pinning down the order and rules of differentiation.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>

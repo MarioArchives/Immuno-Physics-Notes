@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Cross-reactivity and sparse repertoires | Immuno-Physics Notes</title>
+<meta name="description" content="Notes on cross-reactivity in How a well-adapted immune system is organized: shape space, the solvable Gaussian case, why optimal repertoires break into peaks, how the optimum is computed, hyperuniform tilings, robustness checks and two individuals with different receptors but the same coverage.">
+<script>try{var t=localStorage.getItem("qi-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&amp;family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,700&amp;display=swap">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<script src="../../../assets/js/mathjax-config.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+<script type="module" src="../../../assets/js/site.js"></script>
+</head>
+<body data-paper="well-adapted-immune-system" data-chapter="04-cross-reactivity">
+<main id="content">
+<article class="chapter">
+
+<header class="chapter-head">
+<h1><span class="numeral">Part 4</span> Cross-reactivity and sparse repertoires</h1>
+<p class="lede">Once each receptor recognizes a whole neighborhood of antigens, the best repertoire is no longer a smoothed copy of the threats. It breaks into a sparse set of receptor types, spaced roughly one cross-reactivity width apart, whose combined coverage is nonetheless smooth. Two people facing the same pathogens can then be equally well protected by mostly different receptors.</p>
+</header>
+
+<p>The setting is the one built in <a href="02-cost-of-infection.html">the cost of an infection</a>. Lymphocytes, the B and T cells of adaptive immunity, each display one kind of receptor protein, and the cells sharing a receptor form a clone. The repertoire is the distribution \(P_r\), the fraction of lymphocytes that carry receptor \(r\). The environment is the distribution \(Q_a\), the probability that the next infection presents antigen \(a\), an antigen being a molecular piece of a pathogen that receptors can bind. A receptor \(r\) meeting antigen \(a\) recognizes it with probability \(f_{r,a}\), so a random encounter succeeds with probability \(\tilde P_a=\sum_r f_{r,a}P_r\), the coverage of \(a\). The repertoire should minimize</p>
+
+<div class="equation">\[
+\langle F\rangle=\sum_a Q_a\,\bar F(\tilde P_a),
+\qquad
+\bar F(\tilde P_a)=\tilde P_a\int_0^\infty dm\,F(m)\,e^{-m\tilde P_a},
+\]</div>
+
+<p>with \(P_r\ge0\) and \(\sum_rP_r=1\), where \(F(m)\) is the harm done by the time the pathogen has had \(m\) encounters with receptors. When every receptor recognizes exactly one antigen, the optimum is a power of the threat, \(P^*_r\propto Q_r^{1/(1+\alpha)}\) for \(F(m)=m^\alpha\), and \(P^*_r\propto\sqrt{Q_r}\) for linear cost (<a href="03-flatter-than-the-threats.html">more uniform than the threats</a>). The question now is what changes when recognition is not one to one.</p>
+
+<section id="shape-space" data-part="A" data-page="4">
+<h2>Receptors and antigens in one space</h2>
+
+<p>Real receptors are cross-reactive: each binds many antigens, and each antigen is bound by many receptors. That should help, because a receptor that guards a whole neighborhood of antigens means fewer receptor types are needed to guard against everything. The result to be established goes further. With enough cross-reactivity, the optimal repertoire puts all its cells onto a small number of receptor types, and between them these types tile antigen space.</p>
+
+<p>Speaking of neighborhoods needs a geometry, and Perelson and Oster's shape space supplies one. Receptors and antigens are points in a single space of many dimensions, whose coordinates stand for physical and chemical properties that are left unspecified. Nearby points describe molecules that fit each other well and bind strongly; distant points describe a poor fit and weak recognition. The simplest choice lets recognition depend only on the separation,</p>
+
+<div class="equation">\[ f_{r,a}=f(r-a), \]</div>
+
+<p>with \(f\) a decreasing function of the distance between \(r\) and \(a\). In a continuous space the coverage then becomes a convolution of the repertoire with the kernel \(f\), \(\tilde P(a)=\int dr\,P(r)\,f(r-a)\). Most of what follows is a consequence of what convolution does.</p>
+</section>
+
+<section id="gaussian" data-part="B" data-page="4">
+<h2>A solvable case: Gaussian threats, Gaussian kernel</h2>
+
+<p>Let shape space be a line, let the threats be Gaussian with variance \(\sigma_Q^2\), and let cross-reactivity be Gaussian too, \(f(r-a)=\exp[-(r-a)^2/2\sigma^2]\). The width \(\sigma\) is the distance over which a receptor and an antigen still interact. With a power-law cost \(F(m)=m^\alpha\) the optimum can be found exactly, and it depends on how \(\sigma\) compares with a critical width,</p>
+
+<div class="equation">\[ \sigma_c=\sigma_Q\sqrt{1+\alpha}. \]</div>
+
+<p><strong>Narrow kernels, \(\sigma&lt;\sigma_c\).</strong> The optimal repertoire is a Gaussian centered on the threats, with variance \((1+\alpha)\sigma_Q^2-\sigma^2\). There is a quick way to see where this comes from. Without cross-reactivity the optimum is proportional to \(Q^{1/(1+\alpha)}\), a Gaussian of variance \((1+\alpha)\sigma_Q^2\), wider than the threats. With cross-reactivity it is the coverage that must take this shape (derived below), and the coverage is the repertoire blurred by a Gaussian of variance \(\sigma^2\). Blurring one Gaussian with another adds their variances, so the repertoire has to be narrower than the target coverage by exactly \(\sigma^2\).</p>
+
+<p>Comparing costs across values of \(\sigma\) needs one correction. A wider kernel simply recognizes more: its total recognition capability is \(\int f=\sqrt{2\pi}\,\sigma\). For a power-law cost \(\bar F\propto\tilde P^{-\alpha}\), so multiplying every coverage by a factor divides the cost by that factor to the power \(\alpha\). A fair comparison, at constant recognition capability, therefore multiplies the cost by \((\sigma/\sigma_Q)^\alpha\). Measured this way, the optimal cost does not depend on \(\sigma\) below \(\sigma_c\): the repertoire narrows by just enough to undo the extra blurring, and the coverage keeps its shape.</p>
+
+<p><strong>Broad kernels, \(\sigma\ge\sigma_c\).</strong> At \(\sigma=\sigma_c\) the variance of the Gaussian reaches zero, and the repertoire collapses onto one receptor type sitting at the center of the threat distribution. For broader kernels it stays there: a single receptor type is optimal. But now the repertoire cannot narrow any further to compensate, and the coverage of that lone receptor, which is the kernel itself, is wider than the ideal shape. Recognition is wasted on distant antigens that seldom appear, because the receptor is more broadly reactive than it needs to be, and the normalized cost rises with \(\sigma\). For linear cost, \(\alpha=1\), the transition is at \(\sigma_c=\sqrt2\,\sigma_Q\).</p>
+
+<p>Two opposite pressures shape this answer. As without cross-reactivity, the need to cover rare threats spreads the repertoire out more widely than the threats themselves. Cross-reactivity pulls the other way and concentrates it, since every receptor already reaches its neighbors. In this smooth example the compromise is a narrower Gaussian, and past \(\sigma_c\) concentration wins outright.</p>
+
+<figure class="plate" data-anim="gaussian-crossreactivity">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Broader recognition, narrower repertoire.</b> The upper panel draws the threats \(Q(a)\), the optimal repertoire \(P^*(r)\) and its coverage \(\tilde P(a)\) for the Gaussian case; the lower panel plots the normalized optimal cost \(\langle F\rangle\,(\sigma/\sigma_Q)^\alpha\) against \(\sigma/\sigma_Q\), with marks at \(\sigma_c\) and at the current width. Slide \(\sigma\) up from small values: the repertoire narrows, its variance being \((1+\alpha)\sigma_Q^2-\sigma^2\), while the coverage keeps the same shape and the normalized cost stays flat. At \(\sigma_c\) the repertoire becomes a single spike at the center; beyond it the coverage is just the kernel, too wide for the threats, and the cost climbs. Raising \(\alpha\) moves \(\sigma_c=\sigma_Q\sqrt{1+\alpha}\) to the right: costs that grow faster call for broader coverage, so the spread-out solution survives up to broader kernels.</figcaption>
+</figure>
+</section>
+
+<section id="deconvolution" data-part="C" data-page="11">
+<h2>Optimality as a deconvolution</h2>
+
+<h3>The conditions in Fourier space</h3>
+<p>The optimum obeys the Karush–Kuhn–Tucker conditions, which extend Lagrange multipliers to inequality constraints and were already used for the case without cross-reactivity. Every receptor type present in the optimal repertoire has the same marginal effect on the cost, and no absent type would lower it:</p>
+
+<div class="equation">\[
+\frac{\partial\langle F\rangle}{\partial P(r)}
+=\int da\,Q(a)\,\bar F'\big[\tilde P^*(a)\big]\,f(r-a)
+\;\begin{cases} =-\lambda^* & \text{if } P^*(r)&gt;0,\\ \ge-\lambda^* & \text{if } P^*(r)=0, \end{cases}
+\]</div>
+
+<p>with \(\lambda^*\ge0\) the multiplier of the normalization. The left side is again a convolution with \(f\). Convolving a constant with \(f\) gives back a constant, so one way to meet the equality at every \(r\) is to make the function being convolved constant:</p>
+
+<div class="equation">\[ Q(a)\,\bar F'\big[\tilde P^*(a)\big]=-\lambda',\qquad \lambda'&gt;0. \]</div>
+
+<p>This is the condition of the non-cross-reactive problem, with the coverage standing where the repertoire stood. Inverting it with \(h=(\bar F')^{-1}\) gives the optimal coverage, \(\tilde P^*(a)=h[-\lambda'/Q(a)]\). What is left is to find the repertoire whose blurred version equals this coverage, which is a deconvolution. With the Fourier transform \(\mathcal F[g](k)=\int dx\,g(x)\,e^{ikx}\) and its inverse \(\mathcal F^{-1}[\tilde g](x)=\frac{1}{2\pi}\int dk\,\tilde g(k)\,e^{-ikx}\), a convolution becomes a product, \(\mathcal F[\tilde P]=\mathcal F[P]\,\mathcal F[f]\), and undoing it is a division:</p>
+
+<div class="equation">\[
+P^*=\mathcal F^{-1}\!\left[\frac{\mathcal F\big[h(-\lambda'/Q)\big]}{\mathcal F[f]}\right].
+\]</div>
+
+<p>This holds only as long as the result is non-negative and normalizable. When it is not, some of the constraints \(P\ge0\) become active and the solution changes character.</p>
+
+<h3>The Gaussian case</h3>
+<p>Take</p>
+<div class="equation">\[
+Q(a)=\frac{1}{\sqrt{2\pi\sigma_Q^2}}\,e^{-a^2/2\sigma_Q^2},
+\qquad f(r-a)=e^{-(r-a)^2/2\sigma^2},
+\qquad F(m)=m^\alpha .
+\]</div>
+
+<p>The integral defining \(\bar F\) gives \(\bar F(\tilde P)=\Gamma(1+\alpha)\,\tilde P^{-\alpha}\), so \(\bar F'(\tilde P)=-\alpha\,\Gamma(1+\alpha)\,\tilde P^{-(1+\alpha)}\). Setting \(Q\bar F'=-\lambda'\) gives \(\tilde P^*\propto Q^{1/(1+\alpha)}\propto\exp[-a^2/2(1+\alpha)\sigma_Q^2]\), and since constants are fixed at the end by normalization,</p>
+
+<div class="equation">\[
+P^*\propto\mathcal F^{-1}\!\left[\frac{\mathcal F[Q^{1/(1+\alpha)}]}{\mathcal F[f]}\right].
+\]</div>
+
+<p>A Gaussian of variance \(s^2\) has a Fourier transform that is a Gaussian of variance \(1/s^2\), so</p>
+
+<div class="equation">\[
+\mathcal F[Q^{1/(1+\alpha)}](q)\propto e^{-(1+\alpha)\sigma_Q^2q^2/2},
+\qquad
+\mathcal F[f](q)\propto e^{-\sigma^2q^2/2},
+\qquad
+\frac{\mathcal F[Q^{1/(1+\alpha)}]}{\mathcal F[f]}\propto e^{-[(1+\alpha)\sigma_Q^2-\sigma^2]\,q^2/2}.
+\]</div>
+
+<p>Transforming back and normalizing,</p>
+
+<div class="equation">\[
+P^*(r)=\frac{1}{\sqrt{2\pi[(1+\alpha)\sigma_Q^2-\sigma^2]}}\,
+\exp\!\left(-\frac{r^2}{2[(1+\alpha)\sigma_Q^2-\sigma^2]}\right).
+\]</div>
+
+<p>This can be normalized only if \(\sigma&lt;\sigma_Q\sqrt{1+\alpha}=\sigma_c\). Beyond that the ratio of transforms grows without bound at large \(q\) and has no inverse; as \(\sigma\) approaches \(\sigma_c\) from below, the Gaussian shrinks to a Dirac delta function.</p>
+
+<h3>One receptor type beyond the transition</h3>
+<p>The natural guess for \(\sigma\ge\sigma_c\) is that the delta function at \(r=0\) stays optimal. Since \(P\) vanishes everywhere but at one point, only the inequality needs checking: adding receptors at any \(r\neq0\) must lower the cost by no more than adding them at \(r=0\). The coverage is now the kernel itself, \(\tilde P(a)=f(a)=e^{-a^2/2\sigma^2}\), so \(\bar F'[\tilde P(a)]\propto-e^{(1+\alpha)a^2/2\sigma^2}\), and the marginal cost is a Gaussian integral over \(a\). It converges because \(\sigma^2&gt;\alpha\sigma_Q^2\), and completing the square leaves</p>
+
+<div class="equation">\[
+\frac{\partial\langle F\rangle}{\partial P(r)}\propto
+-\exp\!\left\{-\frac{r^2\,[\sigma^2-(1+\alpha)\sigma_Q^2]}{2\sigma^2(\sigma^2-\alpha\sigma_Q^2)}\right\}.
+\]</div>
+
+<p>For \(\sigma\ge\sigma_c\) both brackets are non-negative, so this is an inverted bell whose lowest point is \(r=0\). The marginal cost is higher everywhere else than at the center, which is the inequality required: the single receptor type is optimal. Exactly at \(\sigma=\sigma_c\) the exponent vanishes, every position is marginal, and the two regimes meet.</p>
+
+<h3>The optimal cost</h3>
+<p>Below the transition, the coverage of the optimal Gaussian is \(\tilde P^*(a)=(\sigma/\sigma_c)\,e^{-a^2/2\sigma_c^2}\): its shape is fixed and only its height grows with \(\sigma\). Averaging \(\Gamma(1+\alpha)\tilde P^{-\alpha}\) over \(Q\) in each regime is a Gaussian integral, and gives</p>
+
+<div class="equation">\[
+\langle F\rangle(P^*)=\Gamma(1+\alpha)\times
+\begin{cases}
+\left(\dfrac{\sigma_Q}{\sigma}\right)^{\alpha}(1+\alpha)^{\frac{1+\alpha}{2}}, & \sigma&lt;\sigma_c,\\
+\dfrac{1}{\sqrt{1-\alpha\,(\sigma_Q/\sigma)^2}}, & \sigma\ge\sigma_c.
+\end{cases}
+\]</div>
+
+<p>At \(\sigma=\sigma_c\) both lines equal \(\Gamma(1+\alpha)\sqrt{1+\alpha}\), so the cost is continuous through the transition. Multiplied by \((\sigma/\sigma_Q)^\alpha\), the normalized cost is the constant \(\Gamma(1+\alpha)(1+\alpha)^{(1+\alpha)/2}\) below \(\sigma_c\) and \(\Gamma(1+\alpha)(\sigma/\sigma_Q)^\alpha/\sqrt{1-\alpha(\sigma_Q/\sigma)^2}\) above it. The second expression joins the constant with zero slope at \(\sigma_c\) and then increases, eventually like \(\sigma^\alpha\). For linear cost the normalized cost is 2 up to \(\sqrt2\,\sigma_Q\) and \((\sigma/\sigma_Q)^2/\sqrt{(\sigma/\sigma_Q)^2-1}\) beyond.</p>
+
+<p class="aside"><b>Note on the printed text.</b> In the preprint's version of this calculation, the entry \(h(x)\) for \(F(m)=m^\alpha\) in the table of intermediate results is upside down: inverting \(\bar F'\) gives \(h(x)=[-\alpha\Gamma(1+\alpha)/x]^{1/(1+\alpha)}\), which is what yields \(\tilde P^*\propto Q^{1/(1+\alpha)}\). The transform of \(f\) is written with \(a\) where \(q\) is meant, and the cost formula omits the overall factor \(\Gamma(1+\alpha)\), which equals 1 for linear cost and does not depend on \(\sigma\).</p>
+</section>
+
+<section id="why-peaks" data-part="D" data-page="12">
+<h2>Why peaks are the rule</h2>
+
+<p>The Gaussian example is special: its target coverage is no rougher than the kernel can produce. A simple argument suggests why rough landscapes give peaks instead. Convolution with \(f\) is smoothing. In Fourier space it acts as a low-pass filter, passing long wavelengths and suppressing wave numbers above about \(1/\sigma\).</p>
+
+<p>Leave aside the constraint \(P\ge0\) for a moment. Optimality then asks the coverage to equal \(h(-\lambda'/Q)\), a function that inherits every irregularity of the landscape. Recovering the repertoire means dividing by \(\mathcal F[f]\), which magnifies precisely the high-frequency components that the filter would otherwise remove. The result oscillates strongly, and oscillations that strong dip below zero. Negative amounts of receptors are not allowed, so in the true optimum the repertoire is set to zero over wide stretches, and what remains is concentrated in peaks. The Gaussian case beyond \(\sigma_c\) is the extreme version, where the division blows up at every large wave number and only a single peak survives.</p>
+
+<p>Because the cutoff frequency of the filter is inversely proportional to the width of the kernel, the spacing of the peaks should be set by \(\sigma\).</p>
+</section>
+
+<section id="forest" data-part="E" data-page="4">
+<h2>Numerical optima: a forest of peaks</h2>
+
+<p>The argument can be tested by computing the optimum directly on random environments. Take linear cost, \(F(m)=m\), the Gaussian kernel, and a bounded, discretized shape space in one or two dimensions. Each \(Q_a\) is an independent log-normal random number whose coefficient of variation, the ratio of standard deviation to mean, is \(\kappa\); the larger \(\kappa\), the more uneven the threats.</p>
+
+<p>The optimal repertoire \(P^*\) comes out strongly peaked: a discrete forest of receptor types, with \(P^*=0\) in between, in one dimension as in two (the examples use \(\kappa=1\)). For all its spikiness, it covers antigen space fairly evenly: its coverage \(\tilde P^*_a=\sum_rf_{r,a}P^*_r\) varies smoothly.</p>
+
+<p>Are the peaks genuine or an artifact of the grid? Refining the grid answers this. Starting from a grid step \(\Delta=0.1\sigma\), coarser versions of one problem are made by downsampling the landscape two- and fourfold, to \(\Delta=0.2\sigma\) and \(0.4\sigma\). Solving each and plotting the density \(P^*/\Delta\) shows the peaks growing narrower as the grid becomes finer (<a href="https://arxiv.org/pdf/1407.6888v1#page=8">figure on page 8</a>, with \(\kappa=0.25\)). This suggests that in the continuum limit the optimum is a weighted sum of Dirac delta functions: distinct receptor types at discrete positions, each present in its own amount.</p>
+
+<figure class="plate" data-anim="peaked-repertoire">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">A uniform repertoire breaks into peaks.</b> The expected cost with \(F(m)=m\) and a Gaussian kernel is minimized live, by the accelerated projected gradient method described next, on a random log-normal landscape laid out on a ring. Brown: the threats \(Q\); blue spikes: the repertoire \(P^*\); teal line: the coverage \(\tilde P\). From a uniform start, watch receptors drain away from most positions into isolated peaks while the coverage stays smooth and follows the landscape at scales larger than \(\sigma\). The readouts give the certified gap to the optimum, the number of peaks, and their mean spacing in units of \(\sigma\), which stays of order one. Change \(\kappa\) or draw a new landscape: the peaks move and change height, but the repertoire stays peaked. Widen the cross-reactivity (the pink bar) and the peaks move apart, so their spacing measured in units of \(\sigma\) barely changes. In 2D, on a torus, the peaks are drawn as disks over a map of \(Q\), and a small panel plots their power spectrum \(S(q)\) against the value 1 expected for randomly placed peaks; its dip at small \(q\) is the hyperuniformity discussed below.</figcaption>
+</figure>
+</section>
+
+<section id="numerics" data-part="F" data-page="12">
+<h2>Computing the optimum</h2>
+
+<p>On a grid the task is to minimize a convex function \(g(x)\) of a vector \(x\) over the set \(C\) fixed by the constraints, here the simplex \(x_i\ge0\), \(\sum_ix_i=1\). A projected gradient method suits this: step downhill, then return to the nearest point of \(C\). The accelerated version adds momentum. From a starting point \(x^0\in C\) it iterates</p>
+
+<div class="equation">\[
+y^{k+1}=x^k+\omega^k\big(x^k-x^{k-1}\big),
+\qquad
+x^{k+1}=\mathcal P\big(y^{k+1}-s^k\,\nabla g(y^{k+1})\big),
+\]</div>
+
+<p>first extrapolating along the previous move, then taking a gradient step of size \(s^k\) from the extrapolated point and projecting the result back onto \(C\) with \(\mathcal P\). The extrapolation weight must be chosen with care if the method is to converge faster than plain gradient descent; following Parikh and Boyd it is \(\omega^k=k/(k+3)\), so momentum builds up as the iteration proceeds.</p>
+
+<p>The step size is set by backtracking, as in Beck and Teboulle's fast iterative algorithm. Starting from a generous \(s\), it is multiplied by a fixed factor below one until the projected point \(z=\mathcal P\big(y-s\nabla g(y)\big)\) satisfies</p>
+
+<div class="equation">\[
+g(z)\le g(y)+(z-y)\cdot\nabla g(y)+\frac{1}{2s}\,|z-y|^2,
+\]</div>
+
+<p>that is, until the quadratic model with curvature \(1/s\) really lies above \(g\) at the new point. In practice \(s\) is found this way at the first step and then kept fixed.</p>
+
+<p class="aside"><b>Note on the printed text.</b> The preprint writes this test with \((x-y)\cdot\nabla g(y^k)\), where \(x\) is not defined; the standard backtracking condition, used here, has \((z-y)\).</p>
+
+<p>The projection is a small quadratic problem of its own, \(\mathcal P(y)=\arg\min_{x\in C}\tfrac12|x-y|^2\). On a simplex it has a fast exact solution, here the algorithm of Duchi, Shalev-Shwartz, Singer and Chandra: subtract one common threshold from every component and set the negative ones to zero, with the threshold, found by sorting, chosen so that the result sums to one. This clipping is how exact zeros appear in the computed repertoire.</p>
+
+<p>When to stop? Convexity provides a certificate. A convex function lies above each of its tangent planes, so for the unknown optimum \(x^*\)</p>
+
+<div class="equation">\[
+g(x^*)\;\ge\; g(x^k)+(x^*-x^k)\cdot\nabla g(x^k)\;\ge\; g(x^k)+\min_{x\in C}\,(x-x^k)\cdot\nabla g(x^k)\;\equiv\; g_{\rm lb}.
+\]</div>
+
+<p>A linear function on the simplex is smallest at a corner, the unit vector \(e_{i^*}\) along the coordinate with the smallest gradient component, \(i^*=\arg\min_i(\nabla g(x^k))_i\). The bound is therefore explicit:</p>
+
+<div class="equation">\[
+g_{\rm lb}=g(x^k)+\min_i\,\big(\nabla g(x^k)\big)_i-x^k\cdot\nabla g(x^k).
+\]</div>
+
+<p>The gap \(g(x^k)-g_{\rm lb}\) is the gradient averaged over occupied sites minus the smallest gradient anywhere, so it vanishes exactly when the optimality conditions above hold. The iteration stops once \((g(x^k)-g_{\rm lb})/g_{\rm lb}&lt;\epsilon\), with \(\epsilon=10^{-8}\) for all reported results. The grid step was \(0.1\sigma\) for the random landscapes and \(0.05\sigma\) for the comparison of two individuals below.</p>
+</section>
+
+<section id="tiling" data-part="G" data-page="4">
+<h2>Repulsion, tiling and hyperuniformity</h2>
+
+<p>Looking at the optima, the peaks appear to keep their distance from one another and to arrange themselves in local tilings. The radial distribution function, borrowed from the physics of liquids, makes this precise:</p>
+
+<div class="equation">\[ g(R)=\big\langle P(r)\,P(r')\big\rangle_{|r-r'|=R}, \]</div>
+
+<p>the average product of the repertoire at two points a distance \(R\) apart. In two dimensions it drops at small \(R\), an exclusion zone around each peak, and then shows damped oscillations, the mark of a tiling that is locally ordered but disordered overall. Dense random packings of hard spheres, which must fill space without overlapping, have a similar \(g(R)\). For a repertoire the exclusion is sensible: two receptor types closer than the reach of cross-reactivity would protect twice against the same pathogens.</p>
+
+<p>The spacing between peaks is roughly \(\sigma\). At scales larger than \(\sigma\), then, \(P^*\) looks smooth, and its coverage \(\tilde P^*\) follows the broad variations of \(Q\) closely. Coarse-grained in this way, cross-reactivity no longer matters, and \(P^*\) approaches the solutions found without it, such as \(P^*\propto\sqrt Q\) for linear cost.</p>
+
+<p>The large-scale evenness shows up clearly in the normalized power spectral density of the pattern,</p>
+
+<div class="equation">\[
+S(q)=\frac{\sum_{r,r'}P_rP_{r'}\,e^{iq\cdot(r-r')}}{\sum_rP_r^2},
+\]</div>
+
+<p>where large \(|q|\) probes short distances in shape space. If \(P_r\) is a set of delta peaks of equal heights, \(S(q)\) is the structure factor of their positions and tends to 1 as \(q\to\infty\); peaks scattered independently, as a Poisson process, would give \(S=1\) at every \(q\). Averaged over landscapes and over directions of \(q\), the optimal repertoires have \(S\to1\) at large \(q\), so where exactly each peak sits is random at short range (what little deviation from 1 remains is an effect of the grid). At small \(q\), \(S\) is very low: the number of receptors inside any large region of shape space is highly reproducible.</p>
+
+<p>Randomness at short range combined with regularity at long range is called disordered hyperuniformity, after Torquato and Stillinger: the variance of the number of points in a large window grows more slowly than the window's area, whereas for points scattered at random it grows in proportion to it; equivalently, \(S(q)\to0\) as \(q\to0\). It is found in jammed packings, where it expresses the incompressibility of the material. For the immune system it means that the peaks cover antigen space much more evenly than peaks dropped at random would.</p>
+
+<p>What large-scale fluctuations remain are not noise but a response to the landscape. Below \(\sigma\), fluctuations are blurred away by cross-reactivity, so they do no harm and are tolerated; above \(\sigma\), they follow the variations of \(Q\) so that the coverage stays smooth. Dividing the power spectrum by \(\kappa^2\) makes the curves for different \(\kappa\) collapse at small \(q\), showing that these fluctuations come entirely from the environment and scale with its heterogeneity; at those scales the spectrum rises with \(q\) as the division by \(\mathcal F[f]\) in the deconvolution predicts (<a href="https://arxiv.org/pdf/1407.6888v1#page=9">figure on page 9</a>).</p>
+</section>
+
+<section id="robustness" data-part="H" data-page="5">
+<h2>How general the peaks are</h2>
+
+<p><strong>Other kernels.</strong> A single cross-reactivity scale \(\sigma\) agrees with recent reports that recognition is local in antigen space. Yet recognition can also be exquisitely specific, lost after a single mutation of the antigen, or remarkably degenerate, extending to antigens that look nothing alike. To allow for such long-range effects, fat-tailed kernels were tried along with other shapes. One family used is</p>
+
+<div class="equation">\[ f(r-a)=\exp\!\big[-(|r-a|/\eta)^\gamma\big], \]</div>
+
+<p>which runs from an exponential (\(\gamma=1\)) through the Gaussian (\(\gamma=2\)) to a top hat (\(\gamma\to\infty\)). Up to \(\gamma=2\) these kernels have positive Fourier transforms; beyond, the transform also takes negative values, a property that matters because the deconvolution divides by it, and one familiar from <a href="06-discussion.html">competition kernels in ecology</a>. Whether their tails are long or short, these non-Gaussian kernels still give a strongly peaked optimum. What changes is where the peaks sit, how many there are and how large they are (<a href="https://arxiv.org/pdf/1407.6888v1#page=10">figure on page 10</a>).</p>
+
+<p><strong>Unequal widths.</strong> Receptors need not all share one width. Drawing a width \(\sigma_r\) for each receptor from a log-normal distribution makes the local tiling less regular, as expected for a packing of spheres of different sizes, but large-scale hyperuniformity survives.</p>
+
+<p><strong>Correlated antigens.</strong> Related pathogens carry related antigens, so \(Q\) need not be independent from point to point. Landscapes with such correlations can be built by filtering uncorrelated Gaussian noise to a power spectrum \(\propto1/[1+(10q\sigma)^2]\) and exponentiating it to keep \(Q\) positive. They again give peaked optimal repertoires, much like those of uncorrelated landscapes.</p>
+
+<p><strong>Dimension.</strong> For computational reasons the landscapes go up to two dimensions only. The analogy with random packings leads one to expect the same results to hold in higher dimensions.</p>
+
+<p><strong>Self-avoidance.</strong> The immune system must also avoid attacking the body's own molecules, the self-antigens; developing lymphocytes whose receptors bind them strongly are largely eliminated. A minimal version removes from the optimization every receptor lying within \(\sigma\) of any of a set of randomly placed self-antigens. Receptors then tend to sit near the edges of these exclusion zones, the closest allowed positions, from which cross-reactivity still reaches into the forbidden region; elsewhere the tiling is unchanged.</p>
+
+<p>Altogether, then: below the cross-reactivity width the optimal repertoire looks random, above it the peaks form a disordered tiling, and once blurred by cross-reactivity the repertoire covers the pathogen landscape smoothly.</p>
+</section>
+
+<section id="individuals" data-part="I" data-page="6">
+<h2>Two individuals, one world</h2>
+
+<p>Randomness at small scales has a striking consequence when two people are compared. Individuals sharing an environment never experience quite the same antigens: encounters are random, and other sources of variability add to that. In the model, both face one landscape \(Q\) but perceive it as \(Qe^{z_1}\) and \(Qe^{z_2}\), where \(z_1\) and \(z_2\) are independent Gaussian noise fields over antigen space, of mean zero and variance \(\epsilon^2\). The landscape \(Q\) is itself random but varies only on scales larger than \(\sigma\) (power spectrum \(\propto1/[1+(10q\sigma)^2]\), coefficient of variation 0.5). Cost and kernel are as before: \(F(m)=m\) and a Gaussian.</p>
+
+<p>The two optimal repertoires are then compared through their overlaps, normalized to lie between 0 and 1, alongside the overlaps of the two perceived landscapes and of the two coverages, as the noise \(\epsilon\) grows. The repertoires turn out to be largely different, while the coverages stay similar. A slight difference in experience moves the peaks, whose exact positions are set by fine detail and are effectively random; the coverage is set by the broad shape of the landscape, which both people share. At \(\epsilon=0.2\), for example, the two individuals see nearly the same world and achieve nearly the same coverage with largely non-overlapping receptors.</p>
+
+<p>The prediction can be set against surveys of "public" receptors, those found in many different individuals. In this picture, sharing an environment makes people share coverage, not necessarily receptors.</p>
+
+<figure class="plate" data-anim="two-individuals">
+<div class="plate-stage"></div>
+<div class="plate-controls"></div>
+<figcaption><b class="plate-title">Same coverage, different receptors.</b> Two people face one smooth landscape but perceive it with independent noise of size \(\epsilon\), set by the slider. Each person's optimal repertoire is computed live and drawn mirrored, one above the axis and one below, together with its coverage. The readouts are overlaps, from 0 for disjoint to 1 for identical, between the two perceived landscapes, the two repertoires and the two coverages. At \(\epsilon=0.2\) the landscapes and coverages overlap almost perfectly while the repertoires overlap much less. Look closely at the mirrored peaks: many sit at slightly different positions, a fraction of \(\sigma\) apart, and in shape space a shifted position is a different receptor. At \(\epsilon=0\) everything coincides. Raise \(\epsilon\) from zero and compare how fast each of the three overlaps falls.</figcaption>
+</figure>
+</section>
+
+<section class="in-short" id="in-short">
+<h2>In short</h2>
+<p>With cross-reactivity the coverage, not the repertoire, takes the shape \(Q^{1/(1+\alpha)}\) found without it, and recovering the repertoire is a deconvolution. For Gaussian threats and kernel this gives a Gaussian repertoire of variance \((1+\alpha)\sigma_Q^2-\sigma^2\), with a cost per unit recognition capability that is independent of \(\sigma\), until at \(\sigma_c=\sigma_Q\sqrt{1+\alpha}\) the repertoire collapses onto one receptor type and the normalized cost starts to rise. On rough landscapes, deconvolution amplifies fine-scale wiggles that the positivity constraint clips, so the optimum is a sum of delta peaks, computed by an accelerated projected gradient with a convexity bound that certifies how close it is. The peaks repel one another, sit about \(\sigma\) apart and form a disordered, hyperuniform tiling whose coarse-grained coverage tracks the landscape, a picture that survives other kernels, unequal widths, correlated antigens and self-avoidance. As a result two people perceiving the same world with slight noise reach nearly the same coverage with largely different receptors.</p>
+</section>
+
+</article>
+</main>
+</body>
+</html>
